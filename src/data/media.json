@@ -1,0 +1,12 @@
+[
+  {
+    "id": "media_001",
+    "name": "company-logo.png",
+    "url": "/placeholder-logo.png",
+    "type": "image",
+    "mimeType": "image/png",
+    "size": 102400,
+    "alt": "Company Logo",
+    "createdAt": "2026-01-01T00:00:00.000Z"
+  }
+]

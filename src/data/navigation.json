@@ -1,0 +1,22 @@
+[
+  {
+    "id": "nav_001",
+    "label": "Home",
+    "url": "/",
+    "type": "PAGE",
+    "pageId": "page_home",
+    "parentId": null,
+    "order": 1,
+    "visible": true
+  },
+  {
+    "id": "nav_002",
+    "label": "About",
+    "url": "/about-us",
+    "type": "PAGE",
+    "pageId": "page_about",
+    "parentId": null,
+    "order": 2,
+    "visible": true
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "id": "page_home",
+    "title": "Home",
+    "slug": "home",
+    "status": "PUBLISHED",
+    "isHome": true,
+    "seo": {
+      "title": "Home",
+      "description": ""
+    },
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "page_about",
+    "title": "About Us",
+    "slug": "about-us",
+    "status": "DRAFT",
+    "isHome": false,
+    "seo": {
+      "title": "About Us",
+      "description": ""
+    },
+    "createdAt": "2026-01-01T00:00:00.000Z",
+    "updatedAt": "2026-01-01T00:00:00.000Z"
+  }
+]

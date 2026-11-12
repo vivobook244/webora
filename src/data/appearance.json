@@ -1,0 +1,25 @@
+{
+  "colors": {
+    "primary": "#2563EB",
+    "secondary": "#0F172A",
+    "background": "#FFFFFF",
+    "surface": "#F8FAFC",
+    "text": "#0F172A",
+    "mutedText": "#64748B"
+  },
+  "typography": {
+    "headingFont": "Inter",
+    "bodyFont": "Inter",
+    "baseSize": "16px"
+  },
+  "layout": {
+    "containerWidth": "1200px",
+    "sectionSpacing": "80px",
+    "contentSpacing": "24px"
+  },
+  "radius": {
+    "small": "6px",
+    "medium": "10px",
+    "large": "16px"
+  }
+}

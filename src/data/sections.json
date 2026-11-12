@@ -1,0 +1,16 @@
+[
+  {
+    "id": "section_001",
+    "pageId": "page_home",
+    "type": "hero",
+    "variant": "center",
+    "order": 1,
+    "visible": true,
+    "content": {
+      "title": "Welcome to Our Company",
+      "subtitle": "Professional company profile website",
+      "buttonText": "Learn More",
+      "buttonUrl": "/about-us"
+    }
+  }
+]

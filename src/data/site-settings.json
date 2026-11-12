@@ -1,0 +1,19 @@
+{
+  "siteName": "CMS Lite",
+  "siteDescription": "Simple Content Management System",
+  "logo": "",
+  "favicon": "",
+  "contact": {
+    "email": "admin@example.com",
+    "phone": "",
+    "whatsapp": "",
+    "address": ""
+  },
+  "social": {
+    "facebook": "",
+    "instagram": "",
+    "youtube": "",
+    "tiktok": "",
+    "linkedin": ""
+  }
+}

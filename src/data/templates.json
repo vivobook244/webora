@@ -1,0 +1,21 @@
+[
+  {
+    "id": "template_corporate",
+    "name": "Corporate",
+    "slug": "corporate",
+    "description": "Clean modern corporate website template",
+    "thumbnail": "",
+    "status": "ACTIVE",
+    "sections": [
+      "header",
+      "hero",
+      "about",
+      "services",
+      "gallery",
+      "testimonial",
+      "cta",
+      "contact",
+      "footer"
+    ]
+  }
+]
