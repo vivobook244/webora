@@ -230,7 +230,11 @@ export const translations = {
   "Back to Editor": "Kembali ke Editor",
   "Publish validation issues:": "Masalah validasi publikasi:",
   "Draft page": "Halaman draf",
-  "Published page": "Halaman dipublikasikan"
+  "Published page": "Halaman dipublikasikan",
+  "Administrator": "Administrator",
+  "Loading navigation...": "Memuat navigasi...",
+  "Loading SEO settings...": "Memuat pengaturan SEO...",
+  "Reset": "Atur Ulang"
 }
 }
 
