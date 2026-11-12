@@ -28,7 +28,13 @@ export function getCssVars(appearance) {
 export function resolveMediaUrl(value, mediaList) {
   if (!value || typeof value !== 'string') return null
   const media = mediaList?.find((item) => item.id === value)
-  if (media) return media.url || null
+  if (media) {
+    const mediaUrl = media.url
+    if (typeof mediaUrl !== 'string') return null
+    if (media.storageId && mediaUrl.startsWith('blob:')) return mediaUrl
+    if (isSafeUrl(mediaUrl) && (mediaUrl.startsWith('http://') || mediaUrl.startsWith('https://') || (mediaUrl.startsWith('/') && !mediaUrl.startsWith('//')))) return mediaUrl
+    return null
+  }
   if (!isSafeUrl(value)) return null
   if (/^https?:\/\//i.test(value) || (value.startsWith('/') && !value.startsWith('//'))) return value
   return null

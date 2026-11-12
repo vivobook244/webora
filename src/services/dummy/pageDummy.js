@@ -31,7 +31,7 @@ function savePages(pages) {
 function assertPageData(data, pages, excludeId = null) {
   if (!String(data.title || '').trim()) throw new Error('Page title is required')
   if (!isValidSlug(data.slug)) throw new Error('Slug must contain lowercase letters, numbers, and hyphens')
-  if (pages.some((page) => page.id !== excludeId && page.slug.toLowerCase() === data.slug.toLowerCase())) {
+  if (pages.some((page) => page.id !== excludeId && String(page.slug || '').toLowerCase() === data.slug.toLowerCase())) {
     throw new Error('Slug is already in use')
   }
   if (data.seo?.title && String(data.seo.title).length > 60) throw new Error('SEO title must be 60 characters or fewer')

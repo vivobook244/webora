@@ -1,4 +1,5 @@
 import defaultSections from '../../data/sections.json'
+import defaultPages from '../../data/pages.json'
 import defaultTemplates from '../../data/templates.json'
 import { getStorageItem, setStorageItem } from '../../lib/storage'
 import { isValidSectionVariant, SECTION_VARIANT_CONFIG } from '../../data/sectionVariants'
@@ -23,6 +24,14 @@ function saveSections(sections) {
 
 function validateSection(data) {
   if (!data.pageId) throw new Error('Section must belong to a page.')
+  let pages
+  try {
+    const parsed = JSON.parse(getStorageItem('cms_lite_pages') || 'null')
+    pages = Array.isArray(parsed) ? parsed : defaultPages
+  } catch {
+    pages = defaultPages
+  }
+  if (!pages.some((page) => page.id === data.pageId)) throw new Error('The selected page no longer exists.')
   if (!SECTION_VARIANT_CONFIG[data.type]) throw new Error('Unknown section type.')
   if (!isValidSectionVariant(data.type, data.variant)) throw new Error('Invalid variant for this section type.')
   const activeId = getStorageItem(ACTIVE_TEMPLATE_KEY)

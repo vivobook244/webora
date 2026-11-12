@@ -107,7 +107,9 @@ export default function PublicPage() {
     ? null
     : resolveMediaUrl(page?.seo?.ogImage || seo?.ogImage, mediaList)
 
-  const publicOgImage = ogImage && !ogImage.startsWith('blob:') ? ogImage : null
+  const publicOgImage = ogImage && !ogImage.startsWith('blob:')
+    ? (ogImage.startsWith('/') && typeof window !== 'undefined' ? window.location.origin + ogImage : ogImage)
+    : null
 
   useSeoMeta({
     title: seoTitle,

@@ -12,13 +12,15 @@ function loadSeo() {
   if (!raw) return cloneDefault()
   try {
     const stored = JSON.parse(raw)
-    return {
+    const merged = {
       ...defaultSeo,
       ...(stored && typeof stored === 'object' ? stored : {}),
       keywords: Array.isArray(stored?.keywords)
         ? stored.keywords.filter((keyword) => typeof keyword === 'string')
         : [...(defaultSeo.keywords || [])],
     }
+    validateSeo(merged)
+    return merged
   } catch {
     return cloneDefault()
   }

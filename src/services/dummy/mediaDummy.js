@@ -28,8 +28,12 @@ async function hydrateMedia(item) {
   }
 
   if (!objectUrls.has(item.storageId)) {
-    const blob = await getMediaBlob(item.storageId)
-    if (blob) objectUrls.set(item.storageId, URL.createObjectURL(blob))
+    try {
+      const blob = await getMediaBlob(item.storageId)
+      if (blob) objectUrls.set(item.storageId, URL.createObjectURL(blob))
+    } catch {
+      return { ...item, url: null }
+    }
   }
 
   return { ...item, url: objectUrls.get(item.storageId) || null }
