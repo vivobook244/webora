@@ -275,7 +275,7 @@ export default function NavigationPage() {
                   </span>
                   {!item.visible && (
                     <span className="inline-flex items-center rounded-md bg-warning-100 px-2 py-0.5 text-xs font-medium text-warning-700">
-                      Hidden
+                      {t("Hidden")}
                     </span>
                   )}
                 </div>
@@ -351,7 +351,7 @@ export default function NavigationPage() {
   return (
     <div>
       <PageHeader title=={t("Navigation")} subtitle="Manage your website menu">
-        <Button onClick={openCreate}>Add Menu Item</Button>
+        <Button onClick={openCreate}>{t("Add Menu Item")}</Button>
       </PageHeader>
 
       {error && (
@@ -377,7 +377,7 @@ export default function NavigationPage() {
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={editingId ? 'Edit Menu Item' : 'Add Menu Item'}
+        title={editingId ? 'Edit Menu Item' : t("Add Menu Item")}
         footer={
           <>
             <Button variant="secondary" onClick={() => setModalOpen(false)} disabled={saving}>
@@ -451,7 +451,7 @@ export default function NavigationPage() {
               className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
             />
             <label htmlFor="navVisible" className="text-sm font-medium text-gray-700">
-              Visible in menu
+              {t("Visible in menu")}
             </label>
           </div>
         </div>
