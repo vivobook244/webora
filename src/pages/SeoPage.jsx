@@ -136,7 +136,7 @@ export default function SeoPage() {
   if (loading || !seo) {
     return (
       <div>
-        <PageHeader title="SEO" subtitle="Search engine optimization settings" />
+        <PageHeader title="SEO" subtitle={t("Search engine optimization settings")} />
         <Card className="p-6">
           <LoadingState message={t("Loading SEO settings...")} />
         </Card>
