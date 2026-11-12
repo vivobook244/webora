@@ -1,7 +1,6 @@
-import { createContext, useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { AuthContext } from './authContext'
 import { getCurrentUserDummy, loginDummy, logoutDummy } from '../services/dummy/authDummy'
-
-export const AuthContext = createContext(null)
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)

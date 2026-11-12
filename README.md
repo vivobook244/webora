@@ -15,7 +15,7 @@ It intentionally avoids arbitrary HTML/CSS/JavaScript editing and keeps the webs
 
 ## Requirements
 
-- Node.js 18+
+- Node.js 20.19+
 - npm
 
 ## Install
@@ -37,11 +37,15 @@ npm run build
 npm run preview
 ```
 
-## Lint
+## Quality Checks
 
 ```bash
+npm test
 npm run lint
+npm run build
 ```
+
+GitHub Actions also runs dependency auditing, core tests, lint, and a production build on pushes to `main` and pull requests.
 
 ## Demo Credentials
 
