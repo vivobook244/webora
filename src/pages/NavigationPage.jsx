@@ -338,7 +338,7 @@ export default function NavigationPage() {
   if (loading) {
     return (
       <div>
-        <PageHeader title={t("Navigation")} subtitle="Manage your website menu" />
+        <PageHeader title={t("Navigation")} subtitle={t("Manage your website menu")} />
         <Card className="p-6">
           <LoadingState message={t("Loading navigation...")} />
         </Card>
