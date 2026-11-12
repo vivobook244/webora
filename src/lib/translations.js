@@ -229,7 +229,7 @@ export const translations = {
   "Save SEO Settings": "Simpan Pengaturan SEO",
   "Preview Mode": "Mode Pratinjau",
   "Back to Editor": "Kembali ke Editor",
-  "Publish validation issues:": "Masalah validasi publikasi:",
+  "Publish validation issues:": "Masalah validasi publikasi",
   "Draft page": "Halaman draf",
   "Published page": "Halaman dipublikasikan",
   "Administrator": "Administrator",
@@ -250,18 +250,13 @@ export const translations = {
   "No image selected": "Belum ada gambar dipilih",
   "Variant": "Varian",
   "Live": "Langsung",
-  "Manage your website menu": "Kelola menu situs web"
-}
+  "Manage your website menu": "Kelola menu situs web",
   "Page title is missing": "Judul halaman belum diisi",
   "Page slug is invalid": "Slug halaman tidak valid",
   "Add at least one visible section before publishing": "Tambahkan setidaknya satu bagian yang terlihat sebelum mempublikasikan",
   "Untitled": "Tanpa Judul",
   "Preview mode - not indexed": "Mode pratinjau - tidak diindeks",
   "PREVIEW MODE": "MODE PRATINJAU",
-  "Draft": "Draf",
-  "Published": "Dipublikasikan",
-  "Back to Editor": "Kembali ke Editor",
-  "Publish validation issues:": "Masalah validasi publikasi",
   "Section \"{type}\" has an invalid variant": "Bagian \"{type}\" memiliki varian yang tidak valid",
   "Section type \"{type}\" is not recognized": "Jenis bagian \"{type}\" tidak dikenali",
   "The active template does not support the \"{type}\" section": "Template aktif tidak mendukung bagian \"{type}\"",
@@ -271,7 +266,8 @@ export const translations = {
   "Index, Follow (Default)": "Indeks, Ikuti (Default)",
   "No Index, No Follow": "Jangan Indeks, Jangan Ikuti",
   "Index, No Follow": "Indeks, Jangan Ikuti",
-  "No Index, Follow": "Jangan Indeks, Ikuti",
+  "No Index, Follow": "Jangan Indeks, Ikuti"
+}
 }
 
 export function translate(value, language = 'en') {
