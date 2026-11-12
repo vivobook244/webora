@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../lib/LanguageContext'
+import { useLanguage } from '../lib/LanguageContext'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
 import Button from '../components/Button'
@@ -10,6 +11,7 @@ import { getSiteSettingsDummy, updateSiteSettingsDummy } from '../services/dummy
 import { isSafeUrl } from '../lib/validation'
 
 export default function SettingsPage() {
+  const { t } = useLanguage()
   const { t } = useLanguage()
   const [settings, setSettings] = useState(null)
   const [loading, setLoading] = useState(true)
