@@ -187,7 +187,7 @@ export default function AppearancePage() {
   if (loading || !appearance) {
     return (
       <div>
-        <PageHeader title="Appearance" subtitle={t("Customize your website design")} />
+        <PageHeader title={t("Appearance")} subtitle={t("Customize your website design")} />
         <Card className="p-6">
           <LoadingState message="Loading appearance..." />
         </Card>
