@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../lib/LanguageContext'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
@@ -161,6 +162,7 @@ function VariantSelector({ type, selectedVariant, onSelect, appearance, mediaLis
 }
 
 export default function SectionBuilderPage() {
+  const { t } = useLanguage()
   const { pageId } = useParams()
   const navigate = useNavigate()
   const [page, setPage] = useState(null)
@@ -363,7 +365,7 @@ export default function SectionBuilderPage() {
   if (loading) {
     return (
       <div>
-        <PageHeader title="Section Builder" subtitle="Loading..." />
+        <PageHeader title=={t("Section Builder")} subtitle=={t("Loading...")} />
         <Card className="p-6">
           <LoadingState message="Loading sections..." />
         </Card>
@@ -374,13 +376,13 @@ export default function SectionBuilderPage() {
   if (!page) {
     return (
       <div>
-        <PageHeader title="Section Builder" subtitle="Page not found" />
+        <PageHeader title=={t("Section Builder")} subtitle=={t("Page not found")} />
         <Card className="p-6">
-          <EmptyState title="Page not found" message="This page may have been deleted" icon={SectionIcon} />
+          <EmptyState title=={t("Page not found")} message=={t("This page may have been deleted")} icon={SectionIcon} />
         </Card>
         <div className="mt-4">
           <Link to="/admin/pages" className="text-sm font-medium text-primary-600 hover:text-primary-700">
-            Back to Pages
+            {t("Back to Pages")}
           </Link>
         </div>
       </div>
@@ -394,14 +396,14 @@ export default function SectionBuilderPage() {
         subtitle={
           <span className="flex items-center gap-2">
             <StatusBadge status={page.status} />
-            <span>Section Builder</span>
+            <span>{t("Section Builder")}</span>
           </span>
         }
       >
         <Button variant="secondary" onClick={() => navigate('/admin/pages')}>
-          Back to Pages
+          {t("Back to Pages")}
         </Button>
-        <Button onClick={() => setAddOpen(true)}>Add Section</Button>
+        <Button onClick={() => setAddOpen(true)}>{t("Add Section")}</Button>
       </PageHeader>
 
       {error && (
@@ -412,8 +414,8 @@ export default function SectionBuilderPage() {
 
       <Card className="mb-6 overflow-hidden">
         <div className="border-b border-gray-100 px-4 py-3">
-          <h2 className="text-sm font-semibold text-gray-900">Live Website Preview</h2>
-          <p className="mt-1 text-xs text-gray-500">This preview uses the same layout and section renderer as the published website.</p>
+          <h2 className="text-sm font-semibold text-gray-900">{t("Live Website Preview")}</h2>
+          <p className="mt-1 text-xs text-gray-500">{t("This preview uses the same layout and section renderer as the published website.")}</p>
         </div>
         <div className="max-h-[760px] overflow-auto">
           <PublicLayout settings={settings} navItems={navItems} pages={pages} appearance={appearance} template={template}>
@@ -425,8 +427,8 @@ export default function SectionBuilderPage() {
       {sections.length === 0 ? (
         <Card className="p-6">
           <EmptyState
-            title="No sections yet"
-            message="Add your first section to start building this page"
+            title=={t("No sections yet")}
+            message=={t("Add your first section to start building this page")}
             icon={SectionIcon}
           />
         </Card>
@@ -447,7 +449,7 @@ export default function SectionBuilderPage() {
                       </span>
                       {!section.visible && (
                         <span className="inline-flex items-center rounded-md bg-warning-100 px-2 py-0.5 text-xs font-medium text-warning-700">
-                          Hidden
+                          {t("Hidden")}
                         </span>
                       )}
                     </div>
@@ -462,7 +464,7 @@ export default function SectionBuilderPage() {
                     onClick={() => handleMove(section, 'up')}
                     disabled={index === 0}
                     className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-30"
-                    title="Move Up"
+                    title=={t("Move Up")}
                   >
                     <ArrowUpIcon className="h-4 w-4" />
                   </button>
@@ -470,14 +472,14 @@ export default function SectionBuilderPage() {
                     onClick={() => handleMove(section, 'down')}
                     disabled={index === arr.length - 1}
                     className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-30"
-                    title="Move Down"
+                    title=={t("Move Down")}
                   >
                     <ArrowDownIcon className="h-4 w-4" />
                   </button>
                   <button
                     onClick={() => handleToggleVisibility(section.id)}
                     className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-                    title={section.visible ? 'Hide' : 'Show'}
+                    title={section.visible ? t("Hide") : t("Show")}
                   >
                     {section.visible ? <EyeIcon className="h-4 w-4" /> : <EyeOffIcon className="h-4 w-4" />}
                   </button>
@@ -491,7 +493,7 @@ export default function SectionBuilderPage() {
                   <button
                     onClick={() => setDuplicateId(section.id)}
                     className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-                    title="Duplicate"
+                    title=={t("Duplicate")}
                   >
                     <CopyIcon className="h-4 w-4" />
                   </button>
@@ -517,7 +519,7 @@ export default function SectionBuilderPage() {
       <Modal
         open={addOpen}
         onClose={() => setAddOpen(false)}
-        title="Add Section"
+        title=={t("Add Section")}
         size="lg"
         footer={
           <>
@@ -525,14 +527,14 @@ export default function SectionBuilderPage() {
               Cancel
             </Button>
             <Button onClick={handleCreate} loading={creating} disabled={!newType}>
-              {creating ? 'Creating...' : 'Add Section'}
+              {creating ? t("Creating...") : t("Add Section")}
             </Button>
           </>
         }
       >
         <div className="space-y-4">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-gray-700">Section Type <span className="text-error-500">*</span></label>
+            <label className="mb-1.5 block text-sm font-medium text-gray-700">{t("Section Type")} <span className="text-error-500">*</span></label>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
               {allowedTypes.map((type) => (
                 <button
@@ -603,8 +605,8 @@ export default function SectionBuilderPage() {
         open={!!deleteId}
         onClose={() => setDeleteId(null)}
         onConfirm={handleDelete}
-        title="Delete Section"
-        message="Are you sure you want to delete this section? This action cannot be undone."
+        title=={t("Delete Section")}
+        message=={t("Are you sure you want to delete this section? This action cannot be undone.")}
         loading={deleting}
       />
 
@@ -612,9 +614,9 @@ export default function SectionBuilderPage() {
         open={!!duplicateId}
         onClose={() => setDuplicateId(null)}
         onConfirm={handleDuplicate}
-        title="Duplicate Section"
-        message="This will create a copy of this section placed right after the original."
-        confirmLabel="Duplicate"
+        title=={t("Duplicate Section")}
+        message=={t("This will create a copy of this section placed right after the original.")}
+        confirmLabel=={t("Duplicate")}
         loading={duplicating}
       />
     </div>
