@@ -1,13 +1,11 @@
 import { useState } from 'react'
 import { useLanguage } from '../lib/LanguageContext'
-import { useLanguage } from '../lib/LanguageContext'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../lib/useAuth'
 import Button from '../components/Button'
 import Input from '../components/Input'
 
 export default function LoginPage() {
-  const { t } = useLanguage()
   const { t } = useLanguage()
   const navigate = useNavigate()
   const { login } = useAuth()
