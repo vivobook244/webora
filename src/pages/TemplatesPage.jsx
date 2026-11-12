@@ -6,11 +6,19 @@ import StatusBadge from '../components/StatusBadge'
 import LoadingState from '../components/LoadingState'
 import EmptyState from '../components/EmptyState'
 import Modal from '../components/Modal'
+import PageRenderer from '../components/public/PageRenderer'
+import PublicLayout from '../layouts/PublicLayout'
 import {
   getTemplatesDummy,
   getActiveTemplateDummy,
   activateTemplateDummy,
 } from '../services/dummy/templateDummy'
+import { getPagesDummy } from '../services/dummy/pageDummy'
+import { getSectionsByPageDummy } from '../services/dummy/sectionDummy'
+import { getSiteSettingsDummy } from '../services/dummy/settingsDummy'
+import { getNavigationDummy } from '../services/dummy/navigationDummy'
+import { getAppearanceDummy } from '../services/dummy/appearanceDummy'
+import { getMediaDummy } from '../services/dummy/mediaDummy'
 
 function TemplateIcon({ className }) {
   return (
@@ -20,28 +28,52 @@ function TemplateIcon({ className }) {
   )
 }
 
-function TemplatePreview() {
+function TemplatePreview({ template, previewData, compact = false }) {
+  if (!previewData) {
+    return (
+      <div className="flex min-h-48 items-center justify-center bg-gray-50 p-6 text-sm text-gray-500">
+        Website preview is unavailable.
+      </div>
+    )
+  }
+
+  const website = (
+    <PublicLayout
+      settings={previewData.settings}
+      navItems={previewData.navItems}
+      pages={previewData.pages}
+      appearance={previewData.appearance}
+      template={template}
+    >
+      <PageRenderer
+        page={previewData.page}
+        sections={previewData.sections}
+        mediaList={previewData.mediaList}
+        template={template}
+      />
+    </PublicLayout>
+  )
+
+  if (compact) {
+    return (
+      <div className="h-[280px] overflow-hidden bg-white">
+        <div
+          className="pointer-events-none"
+          style={{
+            width: '138.89%',
+            transform: 'scale(0.72)',
+            transformOrigin: 'top left',
+          }}
+        >
+          {website}
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className="overflow-hidden rounded-lg border border-gray-200">
-      <div className="flex h-8 items-center gap-1.5 border-b border-gray-200 bg-gray-100 px-3">
-        <div className="h-2 w-2 rounded-full bg-gray-300" />
-        <div className="h-2 w-2 rounded-full bg-gray-300" />
-        <div className="h-2 w-2 rounded-full bg-gray-300" />
-      </div>
-      <div className="space-y-2 p-3">
-        <div className="h-20 rounded bg-gradient-to-br from-primary-100 to-primary-50" />
-        <div className="space-y-1.5">
-          <div className="h-3 w-3/4 rounded bg-gray-200" />
-          <div className="h-3 w-full rounded bg-gray-100" />
-          <div className="h-3 w-5/6 rounded bg-gray-100" />
-        </div>
-        <div className="grid grid-cols-3 gap-2">
-          <div className="h-12 rounded bg-gray-100" />
-          <div className="h-12 rounded bg-gray-100" />
-          <div className="h-12 rounded bg-gray-100" />
-        </div>
-        <div className="h-8 rounded bg-gray-50" />
-      </div>
+    <div className="max-h-[70vh] overflow-auto rounded-lg border border-gray-200 bg-white">
+      {website}
     </div>
   )
 }
@@ -52,19 +84,51 @@ export default function TemplatesPage() {
   const [loading, setLoading] = useState(true)
   const [activating, setActivating] = useState(null)
   const [previewTemplate, setPreviewTemplate] = useState(null)
+  const [previewData, setPreviewData] = useState(null)
   const [error, setError] = useState('')
+  const [previewError, setPreviewError] = useState('')
 
   useEffect(() => {
     let active = true
+
     ;(async () => {
       try {
         const [list, activeTemplate] = await Promise.all([
           getTemplatesDummy(),
           getActiveTemplateDummy(),
         ])
-        if (active) {
-          setTemplates(list)
-          setActiveId(activeTemplate?.id || null)
+
+        if (!active) return
+        setTemplates(list)
+        setActiveId(activeTemplate?.id || null)
+
+        try {
+          const [pages, settings, navItems, appearance, mediaList] = await Promise.all([
+            getPagesDummy(),
+            getSiteSettingsDummy(),
+            getNavigationDummy(),
+            getAppearanceDummy(),
+            getMediaDummy(),
+          ])
+          const page = pages.find((item) => item.isHome)
+            || pages.find((item) => item.status === 'PUBLISHED')
+            || pages[0]
+            || null
+          const sections = page ? await getSectionsByPageDummy(page.id) : []
+
+          if (active) {
+            setPreviewData({
+              page,
+              pages,
+              sections,
+              settings,
+              navItems,
+              appearance,
+              mediaList,
+            })
+          }
+        } catch {
+          if (active) setPreviewError('Website preview data could not be loaded.')
         }
       } catch {
         if (active) setError('Failed to load templates')
@@ -72,6 +136,7 @@ export default function TemplatesPage() {
         if (active) setLoading(false)
       }
     })()
+
     return () => { active = false }
   }, [])
 
@@ -109,6 +174,12 @@ export default function TemplatesPage() {
         </div>
       )}
 
+      {previewError && (
+        <div className="mb-4 rounded-lg border border-warning-200 bg-warning-50 px-4 py-3 text-sm text-warning-700">
+          {previewError}
+        </div>
+      )}
+
       {templates.length === 0 ? (
         <Card className="p-6">
           <EmptyState title="No templates" message="Templates will appear here" icon={TemplateIcon} />
@@ -120,7 +191,9 @@ export default function TemplatesPage() {
             return (
               <Card key={template.id} className="overflow-hidden">
                 <div className="border-b border-gray-100 bg-gray-50 p-4">
-                  <TemplatePreview template={template} />
+                  <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+                    <TemplatePreview template={template} previewData={previewData} compact />
+                  </div>
                 </div>
                 <div className="p-5">
                   <div className="flex items-center justify-between">
@@ -153,6 +226,7 @@ export default function TemplatesPage() {
                     <Button
                       variant="secondary"
                       onClick={() => setPreviewTemplate(template)}
+                      disabled={!previewData}
                     >
                       Preview
                     </Button>
@@ -191,29 +265,7 @@ export default function TemplatesPage() {
               </div>
               {previewTemplate.id === activeId && <StatusBadge status="ACTIVE" />}
             </div>
-            <div className="overflow-hidden rounded-lg border border-gray-200">
-              <div className="flex h-12 items-center justify-between border-b border-gray-200 bg-gray-100 px-6">
-                <div className="h-3 w-20 rounded bg-gray-300" />
-                <div className="flex gap-4">
-                  <div className="h-3 w-12 rounded bg-gray-200" />
-                  <div className="h-3 w-12 rounded bg-gray-200" />
-                  <div className="h-3 w-12 rounded bg-gray-200" />
-                </div>
-              </div>
-              <div className="flex flex-col items-center justify-center gap-3 border-b border-gray-200 bg-gradient-to-br from-primary-50 to-white py-16">
-                <div className="h-6 w-64 rounded bg-gray-200" />
-                <div className="h-4 w-96 rounded bg-gray-100" />
-                <div className="h-10 w-32 rounded bg-primary-200" />
-              </div>
-              <div className="grid grid-cols-3 gap-4 p-6">
-                <div className="h-24 rounded-lg bg-gray-100" />
-                <div className="h-24 rounded-lg bg-gray-100" />
-                <div className="h-24 rounded-lg bg-gray-100" />
-              </div>
-              <div className="border-t border-gray-200 bg-gray-50 p-4">
-                <div className="mx-auto h-4 w-48 rounded bg-gray-200" />
-              </div>
-            </div>
+            <TemplatePreview template={previewTemplate} previewData={previewData} />
           </div>
         )}
       </Modal>
