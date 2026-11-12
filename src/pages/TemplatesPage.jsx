@@ -159,9 +159,9 @@ export default function TemplatesPage() {
   if (loading) {
     return (
       <div>
-        <PageHeader title="Templates" subtitle=={t("Choose your website template")} />
+        <PageHeader title="Templates" subtitle={t("Choose your website template")} />
         <Card className="p-6">
-          <LoadingState message=={t("Loading templates...")} />
+          <LoadingState message={t("Loading templates...")} />
         </Card>
       </div>
     )
@@ -169,7 +169,7 @@ export default function TemplatesPage() {
 
   return (
     <div>
-      <PageHeader title="Templates" subtitle=={t("Choose your website template")} />
+      <PageHeader title="Templates" subtitle={t("Choose your website template")} />
 
       {error && (
         <div className="mb-4 rounded-lg border border-error-200 bg-error-50 px-4 py-3 text-sm text-error-700">
@@ -185,7 +185,7 @@ export default function TemplatesPage() {
 
       {templates.length === 0 ? (
         <Card className="p-6">
-          <EmptyState title=={t("No templates")} message=={t("Templates will appear here")} icon={TemplateIcon} />
+          <EmptyState title={t("No templates")} message={t("Templates will appear here")} icon={TemplateIcon} />
         </Card>
       ) : (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -251,7 +251,7 @@ export default function TemplatesPage() {
       <Modal
         open={!!previewTemplate}
         onClose={() => setPreviewTemplate(null)}
-        title=={t("Template Preview")}
+        title={t("Template Preview")}
         size="lg"
         footer={
           <Button variant="secondary" onClick={() => setPreviewTemplate(null)}>
