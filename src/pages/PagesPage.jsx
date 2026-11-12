@@ -253,9 +253,9 @@ export default function PagesPage() {
   if (loading) {
     return (
       <div>
-        <PageHeader title=={t("Pages")} subtitle=={t("Manage your website pages")} />
+        <PageHeader title={t("Pages")} subtitle={t("Manage your website pages")} />
         <Card className="p-6">
-          <LoadingState message=={t("Loading pages...")} />
+          <LoadingState message={t("Loading pages...")} />
         </Card>
       </div>
     )
@@ -263,7 +263,7 @@ export default function PagesPage() {
 
   return (
     <div>
-      <PageHeader title=={t("Pages")} subtitle=={t("Manage your website pages")}>
+      <PageHeader title={t("Pages")} subtitle={t("Manage your website pages")}>
         <Button onClick={openCreate}>{t("Create Page")}</Button>
       </PageHeader>
 
@@ -284,7 +284,7 @@ export default function PagesPage() {
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="flex-1 max-w-sm">
-          <SearchInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder=={t("Search pages...")} />
+          <SearchInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("Search pages...")} />
         </div>
         <div className="w-full sm:w-40">
           <Select
@@ -342,14 +342,14 @@ export default function PagesPage() {
                         <button
                           onClick={() => navigate(`/admin/pages/${page.id}/preview`)}
                           className="rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
-                          title=={t("Preview page")}
+                          title={t("Preview page")}
                         >
                           {t("Preview")}
                         </button>
                         <button
                           onClick={() => navigate(`/admin/pages/${page.id}/sections`)}
                           className="rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
-                          title=={t("Manage Sections")}
+                          title={t("Manage Sections")}
                         >
                           {t("Sections")}
                         </button>
@@ -407,16 +407,16 @@ export default function PagesPage() {
       >
         <div className="space-y-4">
           <Input
-            label=={t("Title")}
+            label={t("Title")}
             name="title"
             value={form.title}
             onChange={handleTitleChange}
             error={errors.title}
             required
-            placeholder=={t("Page title")}
+            placeholder={t("Page title")}
           />
           <Input
-            label=={t("Slug")}
+            label={t("Slug")}
             name="slug"
             value={form.slug}
             onChange={handleSlugChange}
@@ -425,7 +425,7 @@ export default function PagesPage() {
             placeholder="url-friendly-slug"
           />
           <Select
-            label=={t("Status")}
+            label={t("Status")}
             name="status"
             value={form.status}
             onChange={(e) => setForm((prev) => ({ ...prev, status: e.target.value }))}
@@ -449,7 +449,7 @@ export default function PagesPage() {
           <div className="border-t border-gray-100 pt-4">
             <p className="mb-3 text-sm font-semibold text-gray-700">{t("SEO")}</p>
             <Input
-              label=={t("SEO Title")}
+              label={t("SEO Title")}
               name="seoTitle"
               value={form.seoTitle}
               onChange={(e) => setForm((prev) => ({ ...prev, seoTitle: e.target.value }))}
@@ -457,7 +457,7 @@ export default function PagesPage() {
             />
             <div className="mt-4">
               <Textarea
-                label=={t("SEO Description")}
+                label={t("SEO Description")}
                 name="seoDescription"
                 value={form.seoDescription}
                 onChange={(e) => setForm((prev) => ({ ...prev, seoDescription: e.target.value }))}
@@ -503,8 +503,8 @@ export default function PagesPage() {
         open={!!deleteId}
         onClose={() => setDeleteId(null)}
         onConfirm={handleDelete}
-        title=={t("Delete Page")}
-        message=={t("Are you sure you want to delete this page? This action cannot be undone.")}
+        title={t("Delete Page")}
+        message={t("Are you sure you want to delete this page? This action cannot be undone.")}
         loading={deleting}
       />
 
@@ -512,9 +512,9 @@ export default function PagesPage() {
         open={!!publishId}
         onClose={() => setPublishId(null)}
         onConfirm={handlePublish}
-        title=={t("Publish Page")}
-        message=={t("This page will be visible on your public website. Continue?")}
-        confirmLabel=={t("Publish")}
+        title={t("Publish Page")}
+        message={t("This page will be visible on your public website. Continue?")}
+        confirmLabel={t("Publish")}
         loading={publishing}
       />
 
@@ -522,9 +522,9 @@ export default function PagesPage() {
         open={!!unpublishId}
         onClose={() => setUnpublishId(null)}
         onConfirm={handleUnpublish}
-        title=={t("Unpublish Page")}
-        message=={t("This page will no longer be visible on your public website. It will return to draft status.")}
-        confirmLabel=={t("Unpublish")}
+        title={t("Unpublish Page")}
+        message={t("This page will no longer be visible on your public website. It will return to draft status.")}
+        confirmLabel={t("Unpublish")}
         loading={unpublishing}
       />
 
