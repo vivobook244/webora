@@ -6,7 +6,7 @@ import Button from '../components/Button'
 import Input from '../components/Input'
 
 export default function LoginPage() {
-  const { t } = useLanguage()
+  const { t, language, setLanguage } = useLanguage()
   const navigate = useNavigate()
   const { login } = useAuth()
   const [email, setEmail] = useState('')
@@ -50,6 +50,10 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md">
+        <div className="mb-4 flex justify-end gap-2">
+          <button type="button" onClick={() => setLanguage('id')} aria-pressed={language === 'id'} className={language === 'id' ? 'rounded-md bg-primary-50 px-3 py-1.5 text-xs font-semibold text-primary-700' : 'rounded-md px-3 py-1.5 text-xs font-semibold text-gray-500'}>ID</button>
+          <button type="button" onClick={() => setLanguage('en')} aria-pressed={language === 'en'} className={language === 'en' ? 'rounded-md bg-primary-50 px-3 py-1.5 text-xs font-semibold text-primary-700' : 'rounded-md px-3 py-1.5 text-xs font-semibold text-gray-500'}>EN</button>
+        </div>
         <div className="mb-8 text-center">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-xl bg-primary-600 text-white">
             <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
