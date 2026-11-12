@@ -95,9 +95,9 @@ export default function SettingsPage() {
   if (loading || !settings) {
     return (
       <div>
-        <PageHeader title=={t("Site Settings")} subtitle=={t("Configure your website")} />
+        <PageHeader title={t("Site Settings")} subtitle={t("Configure your website")} />
         <Card className="p-6">
-          <LoadingState message=={t("Loading settings...")} />
+          <LoadingState message={t("Loading settings...")} />
         </Card>
       </div>
     )
@@ -105,7 +105,7 @@ export default function SettingsPage() {
 
   return (
     <div>
-      <PageHeader title=={t("Site Settings")} subtitle=={t("Configure your website")} />
+      <PageHeader title={t("Site Settings")} subtitle={t("Configure your website")} />
 
       {successMessage && (
         <div className="mb-4 flex items-center gap-2 rounded-lg border border-success-200 bg-success-50 px-4 py-3 text-sm text-success-700 animate-fade-in">
@@ -127,7 +127,7 @@ export default function SettingsPage() {
           <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Website")}</h2>
           <div className="space-y-4">
             <Input
-              label=={t("Site Name")}
+              label={t("Site Name")}
               name="siteName"
               value={settings.siteName}
               onChange={(e) => handleFieldChange(null, 'siteName', e.target.value)}
@@ -135,21 +135,21 @@ export default function SettingsPage() {
               required
             />
             <Textarea
-              label=={t("Site Description")}
+              label={t("Site Description")}
               name="siteDescription"
               value={settings.siteDescription}
               onChange={(e) => handleFieldChange(null, 'siteDescription', e.target.value)}
               rows={3}
             />
             <Input
-              label=={t("Logo URL")}
+              label={t("Logo URL")}
               name="logo"
               value={settings.logo}
               onChange={(e) => handleFieldChange(null, 'logo', e.target.value)}
               placeholder="https://example.com/logo.png"
             />
             <Input
-              label=={t("Favicon URL")}
+              label={t("Favicon URL")}
               name="favicon"
               value={settings.favicon}
               onChange={(e) => handleFieldChange(null, 'favicon', e.target.value)}
@@ -162,7 +162,7 @@ export default function SettingsPage() {
           <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Contact")}</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Input
-              label=={t("Email")}
+              label={t("Email")}
               name="contactEmail"
               type="email"
               value={settings.contact.email}
@@ -171,21 +171,21 @@ export default function SettingsPage() {
               placeholder="admin@example.com"
             />
             <Input
-              label=={t("Phone")}
+              label={t("Phone")}
               name="contactPhone"
               value={settings.contact.phone}
               onChange={(e) => handleFieldChange('contact', 'phone', e.target.value)}
               placeholder="+1 234 567 890"
             />
             <Input
-              label=={t("WhatsApp")}
+              label={t("WhatsApp")}
               name="contactWhatsapp"
               value={settings.contact.whatsapp}
               onChange={(e) => handleFieldChange('contact', 'whatsapp', e.target.value)}
               placeholder="+1 234 567 890"
             />
             <Input
-              label=={t("Address")}
+              label={t("Address")}
               name="contactAddress"
               value={settings.contact.address}
               onChange={(e) => handleFieldChange('contact', 'address', e.target.value)}
