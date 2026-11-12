@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../lib/LanguageContext'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
 import Button from '../components/Button'
@@ -32,7 +33,7 @@ function TemplatePreview({ template, previewData, compact = false }) {
   if (!previewData) {
     return (
       <div className="flex min-h-48 items-center justify-center bg-gray-50 p-6 text-sm text-gray-500">
-        Website preview is unavailable.
+        {t("Website preview is unavailable.")}
       </div>
     )
   }
@@ -79,6 +80,7 @@ function TemplatePreview({ template, previewData, compact = false }) {
 }
 
 export default function TemplatesPage() {
+  const { t } = useLanguage()
   const [templates, setTemplates] = useState([])
   const [activeId, setActiveId] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -128,10 +130,10 @@ export default function TemplatesPage() {
             })
           }
         } catch {
-          if (active) setPreviewError('Website preview data could not be loaded.')
+          if (active) setPreviewError(t("Website preview data could not be loaded."))
         }
       } catch {
-        if (active) setError('Failed to load templates')
+        if (active) setError(t("Failed to load templates"))
       } finally {
         if (active) setLoading(false)
       }
@@ -156,9 +158,9 @@ export default function TemplatesPage() {
   if (loading) {
     return (
       <div>
-        <PageHeader title="Templates" subtitle="Choose your website template" />
+        <PageHeader title="Templates" subtitle=={t("Choose your website template")} />
         <Card className="p-6">
-          <LoadingState message="Loading templates..." />
+          <LoadingState message=={t("Loading templates...")} />
         </Card>
       </div>
     )
@@ -166,7 +168,7 @@ export default function TemplatesPage() {
 
   return (
     <div>
-      <PageHeader title="Templates" subtitle="Choose your website template" />
+      <PageHeader title="Templates" subtitle=={t("Choose your website template")} />
 
       {error && (
         <div className="mb-4 rounded-lg border border-error-200 bg-error-50 px-4 py-3 text-sm text-error-700">
@@ -182,7 +184,7 @@ export default function TemplatesPage() {
 
       {templates.length === 0 ? (
         <Card className="p-6">
-          <EmptyState title="No templates" message="Templates will appear here" icon={TemplateIcon} />
+          <EmptyState title=={t("No templates")} message=={t("Templates will appear here")} icon={TemplateIcon} />
         </Card>
       ) : (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -208,7 +210,7 @@ export default function TemplatesPage() {
 
                   <div className="mt-4">
                     <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-                      Available Sections
+                      {t("Available Sections")}
                     </p>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {template.sections.map((section) => (
@@ -228,14 +230,14 @@ export default function TemplatesPage() {
                       onClick={() => setPreviewTemplate(template)}
                       disabled={!previewData}
                     >
-                      Preview
+                      {t("Preview")}
                     </Button>
                     <Button
                       onClick={() => handleActivate(template.id)}
                       loading={activating === template.id}
                       disabled={isActive}
                     >
-                      {isActive ? 'Activated' : 'Activate'}
+                      {isActive ? t("Activated") : t("Activate")}
                     </Button>
                   </div>
                 </div>
@@ -248,11 +250,11 @@ export default function TemplatesPage() {
       <Modal
         open={!!previewTemplate}
         onClose={() => setPreviewTemplate(null)}
-        title="Template Preview"
+        title=={t("Template Preview")}
         size="lg"
         footer={
           <Button variant="secondary" onClick={() => setPreviewTemplate(null)}>
-            Close
+            {t("Close")}
           </Button>
         }
       >
