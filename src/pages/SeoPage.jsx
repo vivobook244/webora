@@ -153,10 +153,10 @@ export default function SeoPage() {
     <div>
       <PageHeader title="SEO" subtitle="Search engine optimization settings">
         <Button variant="secondary" onClick={() => setResetOpen(true)}>
-          Reset to Defaults
+          {t("Reset to Defaults")}
         </Button>
         <Button onClick={handleSave} loading={saving}>
-          {saving ? 'Saving...' : t("Save Changes")}
+          {saving ? t("Saving...") : t("Save Changes")}
         </Button>
       </PageHeader>
 
@@ -219,7 +219,7 @@ export default function SeoPage() {
                     className="input-field"
                   />
                   <Button variant="secondary" onClick={addKeyword} type="button">
-                    Add
+                    {t("Add")}
                   </Button>
                 </div>
                 {seo.keywords && seo.keywords.length > 0 && (
@@ -259,10 +259,10 @@ export default function SeoPage() {
                       />
                     </div>
                     <Button variant="secondary" onClick={() => setMediaPickerOpen(true)} type="button">
-                      Change
+                      {t("Change")}
                     </Button>
                     <Button variant="secondary" onClick={() => setSeo((prev) => ({ ...prev, ogImage: '' }))} type="button">
-                      Remove
+                      {t("Remove")}
                     </Button>
                   </div>
                 ) : (
