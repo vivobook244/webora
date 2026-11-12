@@ -270,7 +270,7 @@ export default function AppearancePage() {
                 <h2 className="text-lg font-semibold text-gray-900">{t("Live Website Preview")}</h2>
                 <p className="text-xs text-gray-500">{t("Uses the current page content and active template")}</p>
               </div>
-              <span className="shrink-0 rounded-full bg-success-50 px-2.5 py-1 text-xs font-medium text-success-700">Live</span>
+              <span className="shrink-0 rounded-full bg-success-50 px-2.5 py-1 text-xs font-medium text-success-700">{t("Live")}</span>
             </div>
 
             <div className="max-h-[75vh] overflow-auto rounded-lg border border-gray-200 bg-white">
