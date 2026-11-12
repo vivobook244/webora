@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../lib/LanguageContext'
+import { useLanguage } from '../lib/LanguageContext'
 import { useAuth } from '../lib/useAuth'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
@@ -25,6 +26,7 @@ function StatCard({ label, value, icon }) {
 }
 
 export default function DashboardPage() {
+  const { t } = useLanguage()
   const { t } = useLanguage()
   const { user } = useAuth()
   const [stats, setStats] = useState({ pages: 0, published: 0, draft: 0, media: 0 })
@@ -114,7 +116,7 @@ export default function DashboardPage() {
     return (
       <div>
         <PageHeader
-          title={`Welcome, ${user?.name || 'Administrator'}`}
+          title={`Welcome, ${user?.name || t("Administrator")}`}
           subtitle=={t("Here's an overview of your website")}
         />
         <Card className="p-6">
@@ -127,7 +129,7 @@ export default function DashboardPage() {
   return (
     <div>
       <PageHeader
-        title={`Welcome, ${user?.name || 'Administrator'}`}
+        title={`Welcome, ${user?.name || t("Administrator")}`}
         subtitle=={t("Here's an overview of your website")}
       />
 
