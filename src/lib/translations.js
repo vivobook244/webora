@@ -254,6 +254,22 @@ export const translations = {
   "Variant": "Varian",
   "Live": "Langsung",
   "Your homepage is still a draft. Publish it to make your website visible to visitors.": "Beranda Anda masih berupa draf. Publikasikan agar dapat dilihat pengunjung.",
+  "Manage your website menu": "Kelola menu situs web",
+  "Reset to Defaults": "Atur Ulang ke Default",
+  "Add": "Tambah",
+  "Change": "Ubah",
+  "Remove": "Hapus",
+  "Page not found": "Halaman tidak ditemukan",
+  "Cancel": "Batal",
+  "Saving...": "Menyimpan...",
+  "Open Graph Image": "Gambar Open Graph",
+  "Controls whether search engines can index your website.": "Mengatur apakah mesin pencari dapat mengindeks situs web Anda.",
+  "Google Search Preview": "Pratinjau Google Search",
+  "Social Preview": "Pratinjau Sosial",
+  "No image selected": "Belum ada gambar dipilih",
+  "Visible in menu": "Tampil di menu",
+  "Add Menu Item": "Tambah Item Menu",
+  "Hidden": "Tersembunyi",
 }
 
 export function translate(value, language = 'en') {
