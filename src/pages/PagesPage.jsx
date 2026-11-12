@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../lib/LanguageContext'
-import { useLanguage } from '../lib/LanguageContext'
 import { useNavigate } from 'react-router-dom'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
@@ -52,7 +51,6 @@ const EMPTY_FORM = {
 }
 
 export default function PagesPage() {
-  const { t } = useLanguage()
   const { t } = useLanguage()
   const navigate = useNavigate()
   const [pages, setPages] = useState([])
