@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../lib/LanguageContext'
 import { useAuth } from '../lib/useAuth'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
@@ -24,9 +25,10 @@ function StatCard({ label, value, icon }) {
 }
 
 export default function DashboardPage() {
+  const { t } = useLanguage()
   const { user } = useAuth()
   const [stats, setStats] = useState({ pages: 0, published: 0, draft: 0, media: 0 })
-  const [activeTemplate, setActiveTemplate] = useState('Not configured')
+  const [activeTemplate, setActiveTemplate] = useState(t("Not configured"))
   const [homepageWarning, setHomepageWarning] = useState('')
   const [loading, setLoading] = useState(true)
 
@@ -46,13 +48,13 @@ export default function DashboardPage() {
             draft: pages.filter((p) => p.status === 'DRAFT').length,
             media: media.length,
           })
-          setActiveTemplate(template?.name || 'Not configured')
+          setActiveTemplate(template?.name || t("Not configured"))
 
           const homepage = pages.find((p) => p.isHome)
           if (homepage && homepage.status === 'DRAFT') {
             setHomepageWarning(`Your homepage "${homepage.title}" is still a draft. Publish it to make your website visible to visitors.`)
           } else if (!homepage) {
-            setHomepageWarning('No homepage has been set. Go to Pages and set a page as your homepage.')
+            setHomepageWarning(t("No homepage has been set. Go to Pages and set a page as your homepage."))
           } else {
             setHomepageWarning('')
           }
@@ -60,7 +62,7 @@ export default function DashboardPage() {
       } catch {
         if (active) {
           setStats({ pages: 0, published: 0, draft: 0, media: 0 })
-          setActiveTemplate('Not configured')
+          setActiveTemplate(t("Not configured"))
         }
       } finally {
         if (active) setLoading(false)
@@ -71,7 +73,7 @@ export default function DashboardPage() {
 
   const statItems = [
     {
-      label: 'Pages',
+      label: t("Pages"),
       value: stats.pages,
       icon: (
         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -80,7 +82,7 @@ export default function DashboardPage() {
       ),
     },
     {
-      label: 'Published',
+      label: t("Published"),
       value: stats.published,
       icon: (
         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -89,7 +91,7 @@ export default function DashboardPage() {
       ),
     },
     {
-      label: 'Draft',
+      label: t("Draft"),
       value: stats.draft,
       icon: (
         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -98,7 +100,7 @@ export default function DashboardPage() {
       ),
     },
     {
-      label: 'Media',
+      label: t("Media"),
       value: stats.media,
       icon: (
         <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -113,10 +115,10 @@ export default function DashboardPage() {
       <div>
         <PageHeader
           title={`Welcome, ${user?.name || 'Administrator'}`}
-          subtitle="Here's an overview of your website"
+          subtitle=={t("Here's an overview of your website")}
         />
         <Card className="p-6">
-          <LoadingState message="Loading dashboard..." />
+          <LoadingState message=={t("Loading dashboard...")} />
         </Card>
       </div>
     )
@@ -126,7 +128,7 @@ export default function DashboardPage() {
     <div>
       <PageHeader
         title={`Welcome, ${user?.name || 'Administrator'}`}
-        subtitle="Here's an overview of your website"
+        subtitle=={t("Here's an overview of your website")}
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -147,7 +149,7 @@ export default function DashboardPage() {
       <Card className="mt-6 p-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-500">Active Template</p>
+            <p className="text-sm font-medium text-gray-500">{t("Active Template")}</p>
             <p className="mt-2 text-lg font-semibold text-gray-900">
               {activeTemplate}
             </p>
