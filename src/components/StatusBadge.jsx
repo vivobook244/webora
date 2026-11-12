@@ -1,4 +1,8 @@
+import { useLanguage } from '../lib/LanguageContext'
+
 export default function StatusBadge({ status }) {
+  const { t } = useLanguage()
+  const labels = { PUBLISHED: t('Published'), ACTIVE: t('Active'), DRAFT: t('Draft'), INACTIVE: t('Inactive') }
   const styles = {
     PUBLISHED: 'bg-success-100 text-success-700',
     ACTIVE: 'bg-success-100 text-success-700',
@@ -10,7 +14,7 @@ export default function StatusBadge({ status }) {
 
   return (
     <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${className}`}>
-      {status}
+      {labels[status] || status}
     </span>
   )
 }
