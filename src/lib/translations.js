@@ -161,6 +161,7 @@ export const translations = {
   "Loading dashboard...": "Memuat dasbor...",
   "Not configured": "Belum dikonfigurasi",
   "Your homepage is still a draft. Publish it to make your website visible to visitors.": "Beranda Anda masih berupa draf. Publikasikan agar dapat dilihat pengunjung.",
+  "Your homepage \"{title}\" is still a draft. Publish it to make your website visible to visitors.": "Halaman beranda \"{title}\" masih berupa draf. Publikasikan agar dapat dilihat pengunjung.",
   "No homepage has been set. Go to Pages and set a page as your homepage.": "Belum ada halaman beranda. Buka Halaman dan tetapkan salah satunya sebagai beranda.",
   "Active Template": "Template Aktif",
   "Welcome, Administrator": "Selamat datang, Administrator",
