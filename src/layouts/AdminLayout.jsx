@@ -5,6 +5,16 @@ import { Outlet } from 'react-router-dom'
 import Sidebar, { MenuIcon } from '../components/Sidebar'
 import { useAuth } from '../lib/useAuth'
 
+function LanguageSwitcher() {
+  const { language, setLanguage } = useLanguage()
+  return (
+    <div className="flex items-center rounded-lg border border-gray-200 bg-gray-50 p-1" aria-label="Language">
+      <button type="button" onClick={() => setLanguage('id')} aria-pressed={language === 'id'} className={language === 'id' ? 'rounded-md bg-white px-2.5 py-1 text-xs font-semibold text-primary-700 shadow-sm' : 'rounded-md px-2.5 py-1 text-xs font-semibold text-gray-500 hover:text-gray-800'}>ID</button>
+      <button type="button" onClick={() => setLanguage('en')} aria-pressed={language === 'en'} className={language === 'en' ? 'rounded-md bg-white px-2.5 py-1 text-xs font-semibold text-primary-700 shadow-sm' : 'rounded-md px-2.5 py-1 text-xs font-semibold text-gray-500 hover:text-gray-800'}>EN</button>
+    </div>
+  )
+}
+
 export default function AdminLayout() {
   const { t } = useLanguage()
   const { t } = useLanguage()
@@ -34,6 +44,7 @@ export default function AdminLayout() {
           </button>
 
           <div className="flex items-center gap-3">
+            <LanguageSwitcher />
             <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary-100 text-sm font-semibold text-primary-700">
               {initials}
             </div>
