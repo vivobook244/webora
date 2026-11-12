@@ -136,7 +136,7 @@ function VariantSelector({ type, selectedVariant, onSelect, appearance, mediaLis
 
   return (
     <div className="space-y-2">
-      <label className="mb-1.5 block text-sm font-medium text-gray-700">Variant</label>
+      <label className="mb-1.5 block text-sm font-medium text-gray-700">{t("Variant")}</label>
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {variants.map((variant) => (
           <button
