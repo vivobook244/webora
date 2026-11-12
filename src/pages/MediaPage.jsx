@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import { useLanguage } from '../lib/LanguageContext'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
 import Button from '../components/Button'
@@ -38,6 +39,7 @@ function ImageIcon({ className }) {
 }
 
 export default function MediaPage() {
+  const { t } = useLanguage()
   const [media, setMedia] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -75,7 +77,7 @@ export default function MediaPage() {
       const newMedia = await uploadMediaDummy(file)
       setMedia((prev) => [newMedia, ...prev])
     } catch (err) {
-      setUploadError(err.message || 'Upload failed')
+      setUploadError(err.message || t("Upload failed"))
     } finally {
       setUploading(false)
       if (fileInputRef.current) fileInputRef.current.value = ''
@@ -98,7 +100,7 @@ export default function MediaPage() {
       setMedia((prev) => prev.map((m) => (m.id === updated.id ? updated : m)))
       setEditModal(null)
     } catch {
-      setUploadError('Failed to update media')
+      setUploadError(t("Failed to update media"))
     } finally {
       setSaving(false)
     }
@@ -111,7 +113,7 @@ export default function MediaPage() {
       setMedia((prev) => prev.filter((m) => m.id !== deleteId))
       setDeleteId(null)
     } catch {
-      setUploadError('Failed to delete media')
+      setUploadError(t("Failed to delete media"))
     } finally {
       setDeleting(false)
     }
@@ -124,9 +126,9 @@ export default function MediaPage() {
   if (loading) {
     return (
       <div>
-        <PageHeader title="Media Library" subtitle="Manage your image assets" />
+        <PageHeader title=={t("Media Library")} subtitle=={t("Manage your image assets")} />
         <Card className="p-6">
-          <LoadingState message="Loading media..." />
+          <LoadingState message=={t("Loading media...")} />
         </Card>
       </div>
     )
@@ -134,7 +136,7 @@ export default function MediaPage() {
 
   return (
     <div>
-      <PageHeader title="Media Library" subtitle="Manage your image assets">
+      <PageHeader title=={t("Media Library")} subtitle=={t("Manage your image assets")}>
         <input
           ref={fileInputRef}
           type="file"
@@ -143,7 +145,7 @@ export default function MediaPage() {
           className="hidden"
         />
         <Button onClick={() => fileInputRef.current?.click()} loading={uploading}>
-          {uploading ? 'Uploading...' : 'Upload Image'}
+          {uploading ? t("Uploading...") : t("Upload Image")}
         </Button>
       </PageHeader>
 
@@ -154,14 +156,14 @@ export default function MediaPage() {
       )}
 
       <div className="mb-4 max-w-sm">
-        <SearchInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search media..." />
+        <SearchInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder=={t("Search media...")} />
       </div>
 
       {filtered.length === 0 ? (
         <Card className="p-6">
           <EmptyState
-            title={search ? 'No media found' : 'No media yet'}
-            message={search ? 'Try a different search term' : 'Upload your first image to get started'}
+            title={search ? t("No media found") : t("No media yet")}
+            message={search ? t("Try a different search term") : t("Upload your first image to get started")}
             icon={ImageIcon}
           />
         </Card>
@@ -197,13 +199,13 @@ export default function MediaPage() {
                     onClick={() => openEdit(item)}
                     className="flex-1 rounded-lg border border-gray-200 px-2 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
                   >
-                    Edit
+                    {t("Edit")}
                   </button>
                   <button
                     onClick={() => setDeleteId(item.id)}
                     className="rounded-lg border border-error-200 px-2 py-1.5 text-xs font-medium text-error-600 hover:bg-error-50"
                   >
-                    Delete
+                    {t("Delete")}
                   </button>
                 </div>
               </div>
@@ -219,10 +221,10 @@ export default function MediaPage() {
         footer={
           <>
             <Button variant="secondary" onClick={() => setEditModal(null)} disabled={saving}>
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button onClick={handleSaveEdit} loading={saving}>
-              {saving ? 'Saving...' : 'Save'}
+              {saving ? t("Saving...") : t("Save")}
             </Button>
           </>
         }
