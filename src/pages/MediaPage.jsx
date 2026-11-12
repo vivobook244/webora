@@ -22,8 +22,8 @@ function formatSize(bytes) {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
 }
 
-function formatDate(dateStr) {
-  return new Date(dateStr).toLocaleDateString('en-US', {
+function formatDate(dateStr, language = 'en') {
+  return new Date(dateStr).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -39,7 +39,7 @@ function ImageIcon({ className }) {
 }
 
 export default function MediaPage() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const [media, setMedia] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -193,7 +193,7 @@ export default function MediaPage() {
               <div className="p-3">
                 <p className="truncate text-sm font-medium text-gray-900">{item.name}</p>
                 <p className="mt-0.5 text-xs text-gray-500">{formatSize(item.size)}</p>
-                <p className="mt-0.5 text-xs text-gray-400">{formatDate(item.createdAt)}</p>
+                <p className="mt-0.5 text-xs text-gray-400">{formatDate(item.createdAt, language)}</p>
                 <div className="mt-2 flex gap-2">
                   <button
                     onClick={() => openEdit(item)}
@@ -259,7 +259,7 @@ export default function MediaPage() {
             <div className="rounded-lg bg-gray-50 px-3 py-2 text-xs text-gray-500">
               <p>Type: {editModal.mimeType}</p>
               <p>Size: {formatSize(editModal.size)}</p>
-              <p>Uploaded: {formatDate(editModal.createdAt)}</p>
+              <p>Uploaded: {formatDate(editModal.createdAt, language)}</p>
             </div>
           </div>
         )}
