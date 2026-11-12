@@ -52,7 +52,7 @@ export default function DashboardPage() {
 
           const homepage = pages.find((p) => p.isHome)
           if (homepage && homepage.status === 'DRAFT') {
-            setHomepageWarning(`Your homepage "${homepage.title}" is still a draft. Publish it to make your website visible to visitors.`)
+            setHomepageWarning(t('Your homepage "{title}" is still a draft. Publish it to make your website visible to visitors.').replace('{title}', homepage.title))
           } else if (!homepage) {
             setHomepageWarning(t("No homepage has been set. Go to Pages and set a page as your homepage."))
           } else {
