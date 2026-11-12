@@ -24,8 +24,8 @@ import {
 } from '../services/dummy/pageDummy'
 import { generateSlug, isSlugUnique, generateUniqueSlug } from '../lib/slug'
 
-function formatDate(dateStr) {
-  return new Date(dateStr).toLocaleDateString('en-US', {
+function formatDate(dateStr, language = 'en') {
+  return new Date(dateStr).toLocaleDateString(language === 'id' ? 'id-ID' : 'en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
@@ -51,7 +51,7 @@ const EMPTY_FORM = {
 }
 
 export default function PagesPage() {
-  const { t } = useLanguage()
+  const { t, language } = useLanguage()
   const navigate = useNavigate()
   const [pages, setPages] = useState([])
   const [loading, setLoading] = useState(true)
@@ -336,7 +336,7 @@ export default function PagesPage() {
                     </td>
                     <td className="hidden px-4 py-3 text-gray-600 sm:table-cell">/{page.slug}</td>
                     <td className="px-4 py-3"><StatusBadge status={page.status} /></td>
-                    <td className="hidden px-4 py-3 text-gray-500 sm:table-cell">{formatDate(page.updatedAt)}</td>
+                    <td className="hidden px-4 py-3 text-gray-500 sm:table-cell">{formatDate(page.updatedAt, language)}</td>
                     <td className="px-4 py-3">
                       <div className="flex items-center justify-end gap-2">
                         <button
