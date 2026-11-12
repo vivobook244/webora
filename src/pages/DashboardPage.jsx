@@ -48,7 +48,7 @@ export default function DashboardPage() {
             draft: pages.filter((p) => p.status === 'DRAFT').length,
             media: media.length,
           })
-          setActiveTemplate(template?.name || t("Not configured"))
+          setActiveTemplate(template?.name || '')
 
           const homepage = pages.find((p) => p.isHome)
           if (homepage && homepage.status === 'DRAFT') {
@@ -62,7 +62,7 @@ export default function DashboardPage() {
       } catch {
         if (active) {
           setStats({ pages: 0, published: 0, draft: 0, media: 0 })
-          setActiveTemplate(t("Not configured"))
+          setActiveTemplate('')
         }
       } finally {
         if (active) setLoading(false)
@@ -151,7 +151,7 @@ export default function DashboardPage() {
           <div>
             <p className="text-sm font-medium text-gray-500">{t("Active Template")}</p>
             <p className="mt-2 text-lg font-semibold text-gray-900">
-              {activeTemplate}
+              {activeTemplate || t('Not configured')}
             </p>
           </div>
           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-gray-100 text-gray-400">
