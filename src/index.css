@@ -33,7 +33,7 @@
   }
 }
 
-/* Public website design tokens: all section layouts inherit Appearance settings. */
+/* Shared website design tokens. Preview and published pages use the same renderer. */
 .public-site main > section {
   padding-block: var(--section-spacing, 80px) !important;
 }
@@ -56,4 +56,70 @@
 .public-site input,
 .public-site textarea {
   font-family: var(--font-body, Inter), sans-serif;
+}
+
+/* Template: Modern Business */
+.public-site[data-template="modern-business"] > header {
+  background: var(--color-secondary) !important;
+  border-color: transparent !important;
+  box-shadow: 0 8px 28px rgb(15 23 42 / 12%);
+}
+
+.public-site[data-template="modern-business"] > header a,
+.public-site[data-template="modern-business"] > header button {
+  color: #fff !important;
+}
+
+.public-site[data-template="modern-business"] main > section:first-child {
+  background: var(--color-surface);
+}
+
+.public-site[data-template="modern-business"] main > section h1 {
+  letter-spacing: -0.045em;
+  line-height: 1.08;
+}
+
+.public-site[data-template="modern-business"] main > section h2 {
+  letter-spacing: -0.035em;
+}
+
+.public-site[data-template="modern-business"] > footer {
+  background: var(--color-secondary);
+}
+
+/* Template: Creative Studio */
+.public-site[data-template="creative-studio"] {
+  letter-spacing: -0.012em;
+}
+
+.public-site[data-template="creative-studio"] > header {
+  border-bottom: 0 !important;
+  background: var(--color-background) !important;
+}
+
+.public-site[data-template="creative-studio"] > header > div {
+  min-height: 88px;
+}
+
+.public-site[data-template="creative-studio"] main > section {
+  padding-inline: clamp(8px, 2vw, 28px);
+}
+
+.public-site[data-template="creative-studio"] main > section h1 {
+  font-size: clamp(2.75rem, 7vw, 5.75rem);
+  letter-spacing: -0.065em;
+  line-height: 0.98;
+}
+
+.public-site[data-template="creative-studio"] main > section h2 {
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+}
+
+.public-site[data-template="creative-studio"] main > section > div {
+  border-radius: clamp(0px, 1.5vw, 22px);
+}
+
+.public-site[data-template="creative-studio"] > footer {
+  background: var(--color-text);
 }
