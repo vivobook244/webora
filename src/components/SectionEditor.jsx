@@ -121,9 +121,9 @@ export default function SectionEditor({ type, content, onChange }) {
       return (
         <div className="space-y-4">
           <Input label="Title" value={content.title || ''} onChange={(e) => update('title', e.target.value)} />
-          <Textarea label=={t("Subtitle")} value={content.subtitle || ''} onChange={(e) => update('subtitle', e.target.value)} rows={2} />
-          <Input label=={t("Button Text")} value={content.buttonText || ''} onChange={(e) => update('buttonText', e.target.value)} />
-          <Input label=={t("Button URL")} value={content.buttonUrl || ''} onChange={(e) => update('buttonUrl', e.target.value)} placeholder="/about-us" />
+          <Textarea label={t("Subtitle")} value={content.subtitle || ''} onChange={(e) => update('subtitle', e.target.value)} rows={2} />
+          <Input label={t("Button Text")} value={content.buttonText || ''} onChange={(e) => update('buttonText', e.target.value)} />
+          <Input label={t("Button URL")} value={content.buttonUrl || ''} onChange={(e) => update('buttonUrl', e.target.value)} placeholder="/about-us" />
           <MediaSelectButton value={content.image || ''} onChange={(url) => update('image', url)} />
         </div>
       )
@@ -132,7 +132,7 @@ export default function SectionEditor({ type, content, onChange }) {
       return (
         <div className="space-y-4">
           <Input label="Title" value={content.title || ''} onChange={(e) => update('title', e.target.value)} />
-          <Textarea label=={t("Description")} value={content.description || ''} onChange={(e) => update('description', e.target.value)} rows={4} />
+          <Textarea label={t("Description")} value={content.description || ''} onChange={(e) => update('description', e.target.value)} rows={4} />
           <MediaSelectButton value={content.image || ''} onChange={(url) => update('image', url)} />
         </div>
       )
@@ -141,7 +141,7 @@ export default function SectionEditor({ type, content, onChange }) {
       return (
         <div className="space-y-4">
           <Input label="Title" value={content.title || ''} onChange={(e) => update('title', e.target.value)} />
-          <Textarea label=={t("Description")} value={content.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} />
+          <Textarea label={t("Description")} value={content.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} />
           <div>
             <label className="mb-1.5 block text-sm font-medium text-gray-700">{t("Services")}</label>
             <ListEditor
@@ -197,9 +197,9 @@ export default function SectionEditor({ type, content, onChange }) {
       return (
         <div className="space-y-4">
           <Input label="Title" value={content.title || ''} onChange={(e) => update('title', e.target.value)} />
-          <Textarea label=={t("Description")} value={content.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} />
-          <Input label=={t("Button Text")} value={content.buttonText || ''} onChange={(e) => update('buttonText', e.target.value)} />
-          <Input label=={t("Button URL")} value={content.buttonUrl || ''} onChange={(e) => update('buttonUrl', e.target.value)} />
+          <Textarea label={t("Description")} value={content.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} />
+          <Input label={t("Button Text")} value={content.buttonText || ''} onChange={(e) => update('buttonText', e.target.value)} />
+          <Input label={t("Button URL")} value={content.buttonUrl || ''} onChange={(e) => update('buttonUrl', e.target.value)} />
         </div>
       )
 
@@ -207,7 +207,7 @@ export default function SectionEditor({ type, content, onChange }) {
       return (
         <div className="space-y-4">
           <Input label="Title" value={content.title || ''} onChange={(e) => update('title', e.target.value)} />
-          <Textarea label=={t("Description")} value={content.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} />
+          <Textarea label={t("Description")} value={content.description || ''} onChange={(e) => update('description', e.target.value)} rows={2} />
           <Input label="Email" value={content.email || ''} onChange={(e) => update('email', e.target.value)} />
           <Input label="Phone" value={content.phone || ''} onChange={(e) => update('phone', e.target.value)} />
           <Input label="Address" value={content.address || ''} onChange={(e) => update('address', e.target.value)} />
@@ -218,7 +218,7 @@ export default function SectionEditor({ type, content, onChange }) {
       return (
         <div className="space-y-4">
           <Input label="Title" value={content.title || ''} onChange={(e) => update('title', e.target.value)} />
-          <Textarea label=={t("Content")} value={content.content || ''} onChange={(e) => update('content', e.target.value)} rows={6} />
+          <Textarea label={t("Content")} value={content.content || ''} onChange={(e) => update('content', e.target.value)} rows={6} />
         </div>
       )
 
@@ -226,10 +226,10 @@ export default function SectionEditor({ type, content, onChange }) {
       return (
         <div className="space-y-4">
           <Input label="Title" value={content.title || ''} onChange={(e) => update('title', e.target.value)} />
-          <Textarea label=={t("Description")} value={content.description || ''} onChange={(e) => update('description', e.target.value)} rows={3} />
+          <Textarea label={t("Description")} value={content.description || ''} onChange={(e) => update('description', e.target.value)} rows={3} />
           <MediaSelectButton value={content.image || ''} onChange={(url) => update('image', url)} />
           <Select
-            label=={t("Image Position")}
+            label={t("Image Position")}
             value={content.imagePosition || 'left'}
             onChange={(e) => update('imagePosition', e.target.value)}
             options={[
