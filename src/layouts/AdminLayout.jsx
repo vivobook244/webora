@@ -15,7 +15,6 @@ function LanguageSwitcher() {
 }
 
 export default function AdminLayout() {
-  const { t } = useLanguage()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user } = useAuth()
 
