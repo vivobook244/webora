@@ -126,9 +126,9 @@ export default function MediaPage() {
   if (loading) {
     return (
       <div>
-        <PageHeader title=={t("Media Library")} subtitle=={t("Manage your image assets")} />
+        <PageHeader title={t("Media Library")} subtitle={t("Manage your image assets")} />
         <Card className="p-6">
-          <LoadingState message=={t("Loading media...")} />
+          <LoadingState message={t("Loading media...")} />
         </Card>
       </div>
     )
@@ -136,7 +136,7 @@ export default function MediaPage() {
 
   return (
     <div>
-      <PageHeader title=={t("Media Library")} subtitle=={t("Manage your image assets")}>
+      <PageHeader title={t("Media Library")} subtitle={t("Manage your image assets")}>
         <input
           ref={fileInputRef}
           type="file"
@@ -156,7 +156,7 @@ export default function MediaPage() {
       )}
 
       <div className="mb-4 max-w-sm">
-        <SearchInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder=={t("Search media...")} />
+        <SearchInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder={t("Search media...")} />
       </div>
 
       {filtered.length === 0 ? (
