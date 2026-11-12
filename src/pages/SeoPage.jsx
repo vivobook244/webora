@@ -179,7 +179,7 @@ export default function SeoPage() {
         {/* Settings Column */}
         <div className="space-y-6">
           <Card className="p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">General SEO</h2>
+            <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("General SEO")}</h2>
             <div className="space-y-4">
               <div>
                 <Input
@@ -244,10 +244,10 @@ export default function SeoPage() {
           </Card>
 
           <Card className="p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">Social</h2>
+            <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Social")}</h2>
             <div className="space-y-4">
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">Open Graph Image</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">{t("Open Graph Image")}</label>
                 {previewOgImage ? (
                   <div className="flex items-center gap-3">
                     <div className="h-20 w-32 overflow-hidden rounded-lg border border-gray-200">
@@ -267,7 +267,7 @@ export default function SeoPage() {
                   </div>
                 ) : (
                   <Button variant="secondary" onClick={() => setMediaPickerOpen(true)} type="button">
-                    Select from Media Library
+                    {t("Select from Media Library")}
                   </Button>
                 )}
               </div>
@@ -281,7 +281,7 @@ export default function SeoPage() {
           </Card>
 
           <Card className="p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">Robots</h2>
+            <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Robots")}</h2>
             <Select
               label="Search Engine Indexing"
               value={seo.robots}
@@ -289,7 +289,7 @@ export default function SeoPage() {
               options={ROBOTS_OPTIONS}
             />
             <p className="mt-2 text-xs text-gray-400">
-              Controls whether search engines can index your website.
+              {t("Controls whether search engines can index your website.")}
             </p>
           </Card>
         </div>
@@ -297,7 +297,7 @@ export default function SeoPage() {
         {/* Preview Column */}
         <div className="space-y-6 lg:sticky lg:top-20 lg:self-start">
           <Card className="p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">Google Search Preview</h2>
+            <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Google Search Preview")}</h2>
             <div className="rounded-lg border border-gray-200 p-4">
               <div className="mb-1 truncate text-sm text-success-700">{previewUrl}</div>
               <div className="mb-1 truncate text-lg text-primary-700">{previewTitle}</div>
@@ -306,7 +306,7 @@ export default function SeoPage() {
           </Card>
 
           <Card className="p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">Social Preview</h2>
+            <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Social Preview")}</h2>
             <div className="overflow-hidden rounded-lg border border-gray-200">
               <div className="flex h-40 items-center justify-center bg-gray-100">
                 {seo.ogImage ? (
@@ -324,7 +324,7 @@ export default function SeoPage() {
                   <svg className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
-                  <span className="mt-2 text-xs">No image selected</span>
+                  <span className="mt-2 text-xs">{t("No image selected")}</span>
                 </div>
               </div>
               <div className="p-4">
