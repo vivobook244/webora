@@ -252,6 +252,19 @@ export const translations = {
   "Live": "Langsung",
   "Manage your website menu": "Kelola menu situs web"
 }
+  "Page title is missing": "Judul halaman belum diisi",
+  "Page slug is invalid": "Slug halaman tidak valid",
+  "Add at least one visible section before publishing": "Tambahkan setidaknya satu bagian yang terlihat sebelum mempublikasikan",
+  "Untitled": "Tanpa Judul",
+  "Preview mode - not indexed": "Mode pratinjau - tidak diindeks",
+  "PREVIEW MODE": "MODE PRATINJAU",
+  "Draft": "Draf",
+  "Published": "Dipublikasikan",
+  "Back to Editor": "Kembali ke Editor",
+  "Publish validation issues:": "Masalah validasi publikasi",
+  "Section \"{type}\" has an invalid variant": "Bagian \"{type}\" memiliki varian yang tidak valid",
+  "Section type \"{type}\" is not recognized": "Jenis bagian \"{type}\" tidak dikenali",
+  "The active template does not support the \"{type}\" section": "Template aktif tidak mendukung bagian \"{type}\"",
 }
 
 export function translate(value, language = 'en') {
