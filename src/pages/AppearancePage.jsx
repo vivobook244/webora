@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../lib/LanguageContext'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
 import Button from '../components/Button'
@@ -60,6 +61,7 @@ const RADIUS_OPTIONS = [
 ]
 
 export default function AppearancePage() {
+  const { t } = useLanguage()
   const [appearance, setAppearance] = useState(null)
   const [previewData, setPreviewData] = useState(null)
   const [previewLoading, setPreviewLoading] = useState(true)
@@ -158,7 +160,7 @@ export default function AppearancePage() {
     setSuccessMessage('')
     try {
       await updateAppearanceDummy(appearance)
-      setSuccessMessage('Appearance saved successfully.')
+      setSuccessMessage(t("Appearance saved successfully."))
       setTimeout(() => setSuccessMessage(''), 4000)
     } catch (err) {
       setError(err.message || 'Failed to save appearance settings')
@@ -185,7 +187,7 @@ export default function AppearancePage() {
   if (loading || !appearance) {
     return (
       <div>
-        <PageHeader title="Appearance" subtitle="Customize your website design" />
+        <PageHeader title="Appearance" subtitle=={t("Customize your website design")} />
         <Card className="p-6">
           <LoadingState message="Loading appearance..." />
         </Card>
@@ -195,12 +197,12 @@ export default function AppearancePage() {
 
   return (
     <div>
-      <PageHeader title="Appearance" subtitle="Customize your website design">
+      <PageHeader title="Appearance" subtitle=={t("Customize your website design")}>
         <Button variant="secondary" onClick={() => setResetOpen(true)}>
-          Reset to Defaults
+          {t("Reset to Defaults")}
         </Button>
         <Button onClick={handleSave} loading={saving}>
-          {saving ? 'Saving...' : 'Save Changes'}
+          {saving ? 'Saving...' : t("Save Changes")}
         </Button>
       </PageHeader>
 
@@ -222,41 +224,41 @@ export default function AppearancePage() {
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         <div className="space-y-6">
           <Card className="p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">Colors</h2>
+            <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Colors")}</h2>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <ColorPicker label="Primary" value={appearance.colors.primary} onChange={(v) => updateColor('primary', v)} />
-              <ColorPicker label="Secondary" value={appearance.colors.secondary} onChange={(v) => updateColor('secondary', v)} />
-              <ColorPicker label="Background" value={appearance.colors.background} onChange={(v) => updateColor('background', v)} />
-              <ColorPicker label="Surface" value={appearance.colors.surface} onChange={(v) => updateColor('surface', v)} />
-              <ColorPicker label="Text" value={appearance.colors.text} onChange={(v) => updateColor('text', v)} />
-              <ColorPicker label="Muted Text" value={appearance.colors.mutedText} onChange={(v) => updateColor('mutedText', v)} />
+              <ColorPicker label=={t("Primary")} value={appearance.colors.primary} onChange={(v) => updateColor('primary', v)} />
+              <ColorPicker label=={t("Secondary")} value={appearance.colors.secondary} onChange={(v) => updateColor('secondary', v)} />
+              <ColorPicker label=={t("Background")} value={appearance.colors.background} onChange={(v) => updateColor('background', v)} />
+              <ColorPicker label=={t("Surface")} value={appearance.colors.surface} onChange={(v) => updateColor('surface', v)} />
+              <ColorPicker label=={t("Text")} value={appearance.colors.text} onChange={(v) => updateColor('text', v)} />
+              <ColorPicker label=={t("Muted Text")} value={appearance.colors.mutedText} onChange={(v) => updateColor('mutedText', v)} />
             </div>
           </Card>
 
           <Card className="p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">Typography</h2>
+            <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Typography")}</h2>
             <div className="space-y-4">
-              <Select label="Heading Font" value={appearance.typography.headingFont} onChange={(e) => updateTypography('headingFont', e.target.value)} options={FONT_OPTIONS} />
-              <Select label="Body Font" value={appearance.typography.bodyFont} onChange={(e) => updateTypography('bodyFont', e.target.value)} options={FONT_OPTIONS} />
-              <Select label="Base Font Size" value={appearance.typography.baseSize} onChange={(e) => updateTypography('baseSize', e.target.value)} options={SIZE_OPTIONS} />
+              <Select label=={t("Heading Font")} value={appearance.typography.headingFont} onChange={(e) => updateTypography('headingFont', e.target.value)} options={FONT_OPTIONS} />
+              <Select label=={t("Body Font")} value={appearance.typography.bodyFont} onChange={(e) => updateTypography('bodyFont', e.target.value)} options={FONT_OPTIONS} />
+              <Select label=={t("Base Font Size")} value={appearance.typography.baseSize} onChange={(e) => updateTypography('baseSize', e.target.value)} options={SIZE_OPTIONS} />
             </div>
           </Card>
 
           <Card className="p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">Layout</h2>
+            <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Layout")}</h2>
             <div className="space-y-4">
-              <Select label="Container Width" value={appearance.layout.containerWidth} onChange={(e) => updateLayout('containerWidth', e.target.value)} options={CONTAINER_OPTIONS} />
-              <Select label="Section Spacing" value={appearance.layout.sectionSpacing} onChange={(e) => updateLayout('sectionSpacing', e.target.value)} options={SECTION_SPACING_OPTIONS} />
-              <Select label="Content Spacing" value={appearance.layout.contentSpacing} onChange={(e) => updateLayout('contentSpacing', e.target.value)} options={CONTENT_SPACING_OPTIONS} />
+              <Select label=={t("Container Width")} value={appearance.layout.containerWidth} onChange={(e) => updateLayout('containerWidth', e.target.value)} options={CONTAINER_OPTIONS} />
+              <Select label=={t("Section Spacing")} value={appearance.layout.sectionSpacing} onChange={(e) => updateLayout('sectionSpacing', e.target.value)} options={SECTION_SPACING_OPTIONS} />
+              <Select label=={t("Content Spacing")} value={appearance.layout.contentSpacing} onChange={(e) => updateLayout('contentSpacing', e.target.value)} options={CONTENT_SPACING_OPTIONS} />
             </div>
           </Card>
 
           <Card className="p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">Border Radius</h2>
+            <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Border Radius")}</h2>
             <div className="space-y-4">
-              <Select label="Small" value={appearance.radius.small} onChange={(e) => updateRadius('small', e.target.value)} options={RADIUS_OPTIONS} />
-              <Select label="Medium" value={appearance.radius.medium} onChange={(e) => updateRadius('medium', e.target.value)} options={RADIUS_OPTIONS} />
-              <Select label="Large" value={appearance.radius.large} onChange={(e) => updateRadius('large', e.target.value)} options={RADIUS_OPTIONS} />
+              <Select label=={t("Small")} value={appearance.radius.small} onChange={(e) => updateRadius('small', e.target.value)} options={RADIUS_OPTIONS} />
+              <Select label=={t("Medium")} value={appearance.radius.medium} onChange={(e) => updateRadius('medium', e.target.value)} options={RADIUS_OPTIONS} />
+              <Select label=={t("Large")} value={appearance.radius.large} onChange={(e) => updateRadius('large', e.target.value)} options={RADIUS_OPTIONS} />
             </div>
           </Card>
         </div>
@@ -265,15 +267,15 @@ export default function AppearancePage() {
           <Card className="p-4">
             <div className="mb-3 flex items-center justify-between gap-3">
               <div>
-                <h2 className="text-lg font-semibold text-gray-900">Live Website Preview</h2>
-                <p className="text-xs text-gray-500">Uses the current page content and active template</p>
+                <h2 className="text-lg font-semibold text-gray-900">{t("Live Website Preview")}</h2>
+                <p className="text-xs text-gray-500">{t("Uses the current page content and active template")}</p>
               </div>
               <span className="shrink-0 rounded-full bg-success-50 px-2.5 py-1 text-xs font-medium text-success-700">Live</span>
             </div>
 
             <div className="max-h-[75vh] overflow-auto rounded-lg border border-gray-200 bg-white">
               {previewLoading ? (
-                <div className="p-6"><LoadingState message="Loading website preview..." /></div>
+                <div className="p-6"><LoadingState message=={t("Loading website preview...")} /></div>
               ) : previewError ? (
                 <div className="p-6 text-sm text-error-600">{previewError}</div>
               ) : previewData?.page ? (
@@ -293,7 +295,7 @@ export default function AppearancePage() {
                 </PublicLayout>
               ) : (
                 <div className="p-8 text-center text-sm text-gray-500">
-                  Create a page and add sections to see the website preview.
+                  {t("Create a page and add sections to see the website preview.")}
                 </div>
               )}
             </div>
@@ -305,8 +307,8 @@ export default function AppearancePage() {
         open={resetOpen}
         onClose={() => setResetOpen(false)}
         onConfirm={handleReset}
-        title="Reset Appearance"
-        message="This will reset all appearance settings to their default values. This action cannot be undone."
+        title=={t("Reset Appearance")}
+        message=={t("This will reset all appearance settings to their default values. This action cannot be undone.")}
         confirmLabel="Reset"
         loading={resetting}
       />
