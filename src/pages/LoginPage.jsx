@@ -75,7 +75,7 @@ export default function LoginPage() {
             )}
 
             <Input
-              label=={t("Email")}
+              label={t("Email")}
               name="email"
               type="email"
               value={email}
@@ -87,12 +87,12 @@ export default function LoginPage() {
             />
 
             <Input
-              label=={t("Password")}
+              label={t("Password")}
               name="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder=={t("Enter your password")}
+              placeholder={t("Enter your password")}
               error={errors.password}
               required
               autoComplete="current-password"
