@@ -1,4 +1,4 @@
-import { isSafeUrl } from '../../lib/validation'
+import { isSafeUrl } from '../../lib/validation.js'
 
 export function getCssVars(appearance) {
   const colors = appearance?.colors || {}
