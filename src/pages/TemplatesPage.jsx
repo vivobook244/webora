@@ -159,7 +159,7 @@ export default function TemplatesPage() {
   if (loading) {
     return (
       <div>
-        <PageHeader title="Templates" subtitle={t("Choose your website template")} />
+        <PageHeader title={t("Templates")} subtitle={t("Choose your website template")} />
         <Card className="p-6">
           <LoadingState message={t("Loading templates...")} />
         </Card>
