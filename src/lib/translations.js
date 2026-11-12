@@ -234,7 +234,9 @@ export const translations = {
   "Administrator": "Administrator",
   "Loading navigation...": "Memuat navigasi...",
   "Loading SEO settings...": "Memuat pengaturan SEO...",
-  "Reset": "Atur Ulang"
+  "Reset": "Atur Ulang",
+  "Active": "Aktif",
+  "Inactive": "Tidak Aktif"
 }
 }
 
