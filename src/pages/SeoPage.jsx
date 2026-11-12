@@ -275,7 +275,7 @@ export default function SeoPage() {
                 label="Twitter Card"
                 value={seo.twitterCard}
                 onChange={(e) => setSeo((prev) => ({ ...prev, twitterCard: e.target.value }))}
-                options={TWITTER_CARD_OPTIONS}
+                options={TWITTER_CARD_OPTIONS.map((option) => ({ ...option, label: t(option.label) }))}
               />
             </div>
           </Card>
@@ -286,7 +286,7 @@ export default function SeoPage() {
               label="Search Engine Indexing"
               value={seo.robots}
               onChange={(e) => setSeo((prev) => ({ ...prev, robots: e.target.value }))}
-              options={ROBOTS_OPTIONS}
+              options={ROBOTS_OPTIONS.map((option) => ({ ...option, label: t(option.label) }))}
             />
             <p className="mt-2 text-xs text-gray-400">
               {t("Controls whether search engines can index your website.")}
