@@ -14,10 +14,12 @@ import AppearancePage from './pages/AppearancePage'
 import SeoPage from './pages/SeoPage'
 import PagePreview from './pages/admin/PagePreview'
 import PublicPage from './pages/PublicPage'
+import { LanguageProvider } from './lib/LanguageContext'
 
 function App() {
   return (
     <BrowserRouter>
+      <LanguageProvider>
       <AuthProvider>
         <Routes>
           <Route path="/" element={<PublicPage />} />
@@ -45,6 +47,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AuthProvider>
+      </LanguageProvider>
     </BrowserRouter>
   )
 }
