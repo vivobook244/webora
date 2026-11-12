@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../lib/LanguageContext'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
 import Button from '../components/Button'
@@ -9,6 +10,7 @@ import { getSiteSettingsDummy, updateSiteSettingsDummy } from '../services/dummy
 import { isSafeUrl } from '../lib/validation'
 
 export default function SettingsPage() {
+  const { t } = useLanguage()
   const [settings, setSettings] = useState(null)
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -41,15 +43,15 @@ export default function SettingsPage() {
   const validate = () => {
     const errs = {}
     if (!settings.siteName.trim()) {
-      errs.siteName = 'Site name is required'
+      errs.siteName = t("Site name is required")
     } else if (settings.siteName.length > 100) {
-      errs.siteName = 'Site name must be 100 characters or less'
+      errs.siteName = t("Site name must be 100 characters or less")
     }
     if (settings.siteDescription && settings.siteDescription.length > 300) {
-      errs.siteDescription = 'Site description must be 300 characters or less'
+      errs.siteDescription = t("Site description must be 300 characters or less")
     }
     if (settings.contact.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(settings.contact.email)) {
-      errs.contactEmail = 'Please enter a valid email address'
+      errs.contactEmail = t("Please enter a valid email address")
     }
     if (settings.logo && !isSafeUrl(settings.logo)) {
       errs.logo = 'Logo URL must be a valid http:// or https:// URL'
@@ -81,10 +83,10 @@ export default function SettingsPage() {
     setSaving(true)
     try {
       await updateSiteSettingsDummy(settings)
-      setSuccessMessage('Settings saved successfully.')
+      setSuccessMessage(t("Settings saved successfully."))
       setTimeout(() => setSuccessMessage(''), 4000)
     } catch (err) {
-      setErrors({ form: err.message || 'Failed to save settings. Please try again.' })
+      setErrors({ form: err.message || t("Failed to save settings. Please try again.") })
     } finally {
       setSaving(false)
     }
@@ -93,9 +95,9 @@ export default function SettingsPage() {
   if (loading || !settings) {
     return (
       <div>
-        <PageHeader title="Site Settings" subtitle="Configure your website" />
+        <PageHeader title=={t("Site Settings")} subtitle=={t("Configure your website")} />
         <Card className="p-6">
-          <LoadingState message="Loading settings..." />
+          <LoadingState message=={t("Loading settings...")} />
         </Card>
       </div>
     )
@@ -103,7 +105,7 @@ export default function SettingsPage() {
 
   return (
     <div>
-      <PageHeader title="Site Settings" subtitle="Configure your website" />
+      <PageHeader title=={t("Site Settings")} subtitle=={t("Configure your website")} />
 
       {successMessage && (
         <div className="mb-4 flex items-center gap-2 rounded-lg border border-success-200 bg-success-50 px-4 py-3 text-sm text-success-700 animate-fade-in">
@@ -122,10 +124,10 @@ export default function SettingsPage() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <Card className="p-6">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">Website</h2>
+          <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Website")}</h2>
           <div className="space-y-4">
             <Input
-              label="Site Name"
+              label=={t("Site Name")}
               name="siteName"
               value={settings.siteName}
               onChange={(e) => handleFieldChange(null, 'siteName', e.target.value)}
@@ -133,21 +135,21 @@ export default function SettingsPage() {
               required
             />
             <Textarea
-              label="Site Description"
+              label=={t("Site Description")}
               name="siteDescription"
               value={settings.siteDescription}
               onChange={(e) => handleFieldChange(null, 'siteDescription', e.target.value)}
               rows={3}
             />
             <Input
-              label="Logo URL"
+              label=={t("Logo URL")}
               name="logo"
               value={settings.logo}
               onChange={(e) => handleFieldChange(null, 'logo', e.target.value)}
               placeholder="https://example.com/logo.png"
             />
             <Input
-              label="Favicon URL"
+              label=={t("Favicon URL")}
               name="favicon"
               value={settings.favicon}
               onChange={(e) => handleFieldChange(null, 'favicon', e.target.value)}
@@ -157,10 +159,10 @@ export default function SettingsPage() {
         </Card>
 
         <Card className="p-6">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">Contact</h2>
+          <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Contact")}</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Input
-              label="Email"
+              label=={t("Email")}
               name="contactEmail"
               type="email"
               value={settings.contact.email}
@@ -169,21 +171,21 @@ export default function SettingsPage() {
               placeholder="admin@example.com"
             />
             <Input
-              label="Phone"
+              label=={t("Phone")}
               name="contactPhone"
               value={settings.contact.phone}
               onChange={(e) => handleFieldChange('contact', 'phone', e.target.value)}
               placeholder="+1 234 567 890"
             />
             <Input
-              label="WhatsApp"
+              label=={t("WhatsApp")}
               name="contactWhatsapp"
               value={settings.contact.whatsapp}
               onChange={(e) => handleFieldChange('contact', 'whatsapp', e.target.value)}
               placeholder="+1 234 567 890"
             />
             <Input
-              label="Address"
+              label=={t("Address")}
               name="contactAddress"
               value={settings.contact.address}
               onChange={(e) => handleFieldChange('contact', 'address', e.target.value)}
@@ -193,7 +195,7 @@ export default function SettingsPage() {
         </Card>
 
         <Card className="p-6">
-          <h2 className="mb-4 text-lg font-semibold text-gray-900">Social Media</h2>
+          <h2 className="mb-4 text-lg font-semibold text-gray-900">{t("Social Media")}</h2>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <Input
               label="Facebook"
@@ -235,7 +237,7 @@ export default function SettingsPage() {
 
         <div className="flex justify-end">
           <Button type="submit" loading={saving}>
-            {saving ? 'Saving...' : 'Save Settings'}
+            {saving ? t("Saving...") : t("Save Settings")}
           </Button>
         </div>
       </form>
