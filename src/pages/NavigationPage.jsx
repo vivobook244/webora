@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../lib/LanguageContext'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
 import Button from '../components/Button'
@@ -70,6 +71,7 @@ const EMPTY_FORM = {
 }
 
 export default function NavigationPage() {
+  const { t } = useLanguage()
   const [items, setItems] = useState([])
   const [pages, setPages] = useState([])
   const [loading, setLoading] = useState(true)
@@ -317,13 +319,13 @@ export default function NavigationPage() {
                 onClick={() => openEdit(item)}
                 className="rounded-lg border border-gray-200 px-2.5 py-1 text-xs font-medium text-gray-600 hover:bg-gray-50"
               >
-                Edit
+                {t("Edit")}
               </button>
               <button
                 onClick={() => setDeleteId(item.id)}
                 className="rounded-lg border border-error-200 px-2.5 py-1 text-xs font-medium text-error-600 hover:bg-error-50"
               >
-                Delete
+                {t("Delete")}
               </button>
             </div>
           </div>
@@ -336,9 +338,9 @@ export default function NavigationPage() {
   if (loading) {
     return (
       <div>
-        <PageHeader title="Navigation" subtitle="Manage your website menu" />
+        <PageHeader title=={t("Navigation")} subtitle="Manage your website menu" />
         <Card className="p-6">
-          <LoadingState message="Loading navigation..." />
+          <LoadingState message=={t("Loading navigation...")} />
         </Card>
       </div>
     )
@@ -348,7 +350,7 @@ export default function NavigationPage() {
 
   return (
     <div>
-      <PageHeader title="Navigation" subtitle="Manage your website menu">
+      <PageHeader title=={t("Navigation")} subtitle="Manage your website menu">
         <Button onClick={openCreate}>Add Menu Item</Button>
       </PageHeader>
 
@@ -379,17 +381,17 @@ export default function NavigationPage() {
         footer={
           <>
             <Button variant="secondary" onClick={() => setModalOpen(false)} disabled={saving}>
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button onClick={handleSave} loading={saving}>
-              {saving ? 'Saving...' : 'Save'}
+              {saving ? 'Saving...' : t("Save")}
             </Button>
           </>
         }
       >
         <div className="space-y-4">
           <Input
-            label="Label"
+            label=={t("Label")}
             name="label"
             value={form.label}
             onChange={(e) => setForm((prev) => ({ ...prev, label: e.target.value }))}
@@ -398,7 +400,7 @@ export default function NavigationPage() {
             placeholder="Menu label"
           />
           <Select
-            label="Type"
+            label=={t("Type")}
             name="type"
             value={form.type}
             onChange={(e) => setForm((prev) => ({ ...prev, type: e.target.value }))}
@@ -421,7 +423,7 @@ export default function NavigationPage() {
           )}
           {form.type === 'CUSTOM_URL' && (
             <Input
-              label="URL"
+              label=={t("URL")}
               name="url"
               value={form.url}
               onChange={(e) => setForm((prev) => ({ ...prev, url: e.target.value }))}
