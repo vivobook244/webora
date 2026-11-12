@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useLanguage } from '../lib/LanguageContext'
+import { useLanguage } from '../lib/LanguageContext'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
 import Button from '../components/Button'
@@ -39,6 +40,7 @@ function ImageIcon({ className }) {
 }
 
 export default function MediaPage() {
+  const { t } = useLanguage()
   const { t } = useLanguage()
   const [media, setMedia] = useState([])
   const [loading, setLoading] = useState(true)
