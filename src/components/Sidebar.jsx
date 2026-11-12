@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../lib/LanguageContext'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { logoutDummy } from '../services/dummy/authDummy'
 
@@ -93,6 +94,7 @@ function CloseIcon({ className }) {
 }
 
 export default function Sidebar({ open, onClose }) {
+  const { t } = useLanguage()
   const location = useLocation()
   const navigate = useNavigate()
   const [loggingOut, setLoggingOut] = useState(false)
@@ -137,12 +139,12 @@ export default function Sidebar({ open, onClose }) {
           }`}
         >
           <DashboardIcon className="h-5 w-5" />
-          Dashboard
+          {t("Dashboard")}
         </Link>
 
         <div className="mb-1 mt-6 px-3">
           <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-            Website
+            {t("Website")}
           </p>
         </div>
         <Link
@@ -154,7 +156,7 @@ export default function Sidebar({ open, onClose }) {
           }`}
         >
           <SettingsIcon className="h-5 w-5" />
-          Settings
+          {t("Settings")}
         </Link>
         <Link
           to="/admin/media"
@@ -165,7 +167,7 @@ export default function Sidebar({ open, onClose }) {
           }`}
         >
           <MediaIcon className="h-5 w-5" />
-          Media
+          {t("Media")}
         </Link>
         <Link
           to="/admin/templates"
@@ -176,7 +178,7 @@ export default function Sidebar({ open, onClose }) {
           }`}
         >
           <TemplateIcon className="h-5 w-5" />
-          Templates
+          {t("Templates")}
         </Link>
         <Link
           to="/admin/pages"
@@ -187,7 +189,7 @@ export default function Sidebar({ open, onClose }) {
           }`}
         >
           <PagesIcon className="h-5 w-5" />
-          Pages
+          {t("Pages")}
         </Link>
         <Link
           to="/admin/navigation"
@@ -198,7 +200,7 @@ export default function Sidebar({ open, onClose }) {
           }`}
         >
           <NavIcon className="h-5 w-5" />
-          Navigation
+          {t("Navigation")}
         </Link>
         <Link
           to="/admin/appearance"
@@ -209,7 +211,7 @@ export default function Sidebar({ open, onClose }) {
           }`}
         >
           <AppearanceIcon className="h-5 w-5" />
-          Appearance
+          {t("Appearance")}
         </Link>
         <Link
           to="/admin/seo"
@@ -220,12 +222,12 @@ export default function Sidebar({ open, onClose }) {
           }`}
         >
           <SeoIcon className="h-5 w-5" />
-          SEO
+          {t("SEO")}
         </Link>
 
         <div className="mb-1 mt-6 px-3">
           <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">
-            System
+            {t("System")}
           </p>
         </div>
         <button
@@ -234,7 +236,7 @@ export default function Sidebar({ open, onClose }) {
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-gray-900 disabled:opacity-60"
         >
           <LogoutIcon className="h-5 w-5" />
-          {loggingOut ? 'Logging out...' : 'Logout'}
+          {loggingOut ? t("Logging out...") : t("Logout")}
         </button>
       </nav>
     </div>
