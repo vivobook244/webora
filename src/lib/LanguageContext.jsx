@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import { translate } from './translations'
 
 const LanguageContext = createContext(null)
@@ -13,6 +13,10 @@ export function LanguageProvider({ children }) {
       return 'en'
     }
   })
+
+  useEffect(() => {
+    document.documentElement.lang = language
+  }, [language])
 
   const setLanguage = (nextLanguage) => {
     if (nextLanguage !== 'id' && nextLanguage !== 'en') return
