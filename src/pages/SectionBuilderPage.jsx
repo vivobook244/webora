@@ -365,7 +365,7 @@ export default function SectionBuilderPage() {
   if (loading) {
     return (
       <div>
-        <PageHeader title=={t("Section Builder")} subtitle=={t("Loading...")} />
+        <PageHeader title={t("Section Builder")} subtitle={t("Loading...")} />
         <Card className="p-6">
           <LoadingState message="Loading sections..." />
         </Card>
@@ -376,9 +376,9 @@ export default function SectionBuilderPage() {
   if (!page) {
     return (
       <div>
-        <PageHeader title=={t("Section Builder")} subtitle=={t("Page not found")} />
+        <PageHeader title={t("Section Builder")} subtitle={t("Page not found")} />
         <Card className="p-6">
-          <EmptyState title=={t("Page not found")} message=={t("This page may have been deleted")} icon={SectionIcon} />
+          <EmptyState title={t("Page not found")} message={t("This page may have been deleted")} icon={SectionIcon} />
         </Card>
         <div className="mt-4">
           <Link to="/admin/pages" className="text-sm font-medium text-primary-600 hover:text-primary-700">
@@ -427,8 +427,8 @@ export default function SectionBuilderPage() {
       {sections.length === 0 ? (
         <Card className="p-6">
           <EmptyState
-            title=={t("No sections yet")}
-            message=={t("Add your first section to start building this page")}
+            title={t("No sections yet")}
+            message={t("Add your first section to start building this page")}
             icon={SectionIcon}
           />
         </Card>
@@ -464,7 +464,7 @@ export default function SectionBuilderPage() {
                     onClick={() => handleMove(section, 'up')}
                     disabled={index === 0}
                     className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-30"
-                    title=={t("Move Up")}
+                    title={t("Move Up")}
                   >
                     <ArrowUpIcon className="h-4 w-4" />
                   </button>
@@ -472,7 +472,7 @@ export default function SectionBuilderPage() {
                     onClick={() => handleMove(section, 'down')}
                     disabled={index === arr.length - 1}
                     className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600 disabled:cursor-not-allowed disabled:opacity-30"
-                    title=={t("Move Down")}
+                    title={t("Move Down")}
                   >
                     <ArrowDownIcon className="h-4 w-4" />
                   </button>
@@ -493,7 +493,7 @@ export default function SectionBuilderPage() {
                   <button
                     onClick={() => setDuplicateId(section.id)}
                     className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 hover:text-gray-600"
-                    title=={t("Duplicate")}
+                    title={t("Duplicate")}
                   >
                     <CopyIcon className="h-4 w-4" />
                   </button>
@@ -519,7 +519,7 @@ export default function SectionBuilderPage() {
       <Modal
         open={addOpen}
         onClose={() => setAddOpen(false)}
-        title=={t("Add Section")}
+        title={t("Add Section")}
         size="lg"
         footer={
           <>
@@ -605,8 +605,8 @@ export default function SectionBuilderPage() {
         open={!!deleteId}
         onClose={() => setDeleteId(null)}
         onConfirm={handleDelete}
-        title=={t("Delete Section")}
-        message=={t("Are you sure you want to delete this section? This action cannot be undone.")}
+        title={t("Delete Section")}
+        message={t("Are you sure you want to delete this section? This action cannot be undone.")}
         loading={deleting}
       />
 
@@ -614,9 +614,9 @@ export default function SectionBuilderPage() {
         open={!!duplicateId}
         onClose={() => setDuplicateId(null)}
         onConfirm={handleDuplicate}
-        title=={t("Duplicate Section")}
-        message=={t("This will create a copy of this section placed right after the original.")}
-        confirmLabel=={t("Duplicate")}
+        title={t("Duplicate Section")}
+        message={t("This will create a copy of this section placed right after the original.")}
+        confirmLabel={t("Duplicate")}
         loading={duplicating}
       />
     </div>
