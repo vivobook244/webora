@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../../lib/LanguageContext'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import PublicLayout from '../../layouts/PublicLayout'
 import PageRenderer from '../../components/public/PageRenderer'
@@ -16,6 +17,7 @@ import { isValidSlug } from '../../lib/validation'
 import { getValidVariantId, getSectionVariants } from '../../data/sectionVariants'
 
 export default function PagePreview() {
+  const { t } = useLanguage()
   const { pageId } = useParams()
   const storageRevision = useStorageRevision()
   const navigate = useNavigate()
@@ -59,23 +61,23 @@ export default function PagePreview() {
           if (!active) return
 
           const errors = []
-          if (!pageData.title?.trim()) errors.push('Page title is missing')
-          if (!isValidSlug(pageData.slug)) errors.push('Page slug is invalid')
+          if (!pageData.title?.trim()) errors.push(t("Page title is missing"))
+          if (!isValidSlug(pageData.slug)) errors.push(t("Page slug is invalid"))
 
           if (!sectionData.some((section) => section.visible !== false)) {
-            errors.push('Add at least one visible section before publishing')
+            errors.push(t("Add at least one visible section before publishing"))
           }
 
           sectionData.forEach((s) => {
             const validVariant = getValidVariantId(s.type, s.variant)
             if (!validVariant) {
-              errors.push(`Section "${s.type}" has an invalid variant`)
+              errors.push(t('Section "{type}" has an invalid variant').replace('{type}', s.type))
             }
             if (!getSectionVariants(s.type).length) {
-              errors.push(`Section type "${s.type}" is not recognized`)
+              errors.push(t('Section type "{type}" is not recognized').replace('{type}', s.type))
             }
             if (Array.isArray(templateData?.sections) && !templateData.sections.includes(s.type)) {
-              errors.push(`The active template does not support the "${s.type}" section`)
+              errors.push(t('The active template does not support the "{type}" section').replace('{type}', s.type))
             }
           })
 
@@ -92,8 +94,8 @@ export default function PagePreview() {
   }, [pageId, storageRevision])
 
   useSeoMeta({
-    title: `Preview: ${page?.title || 'Untitled'}`,
-    description: 'Preview mode - not indexed',
+    title: `Preview: ${page?.title || t("Untitled")}`,
+    description: t("Preview mode - not indexed"),
     robots: 'noindex,nofollow',
   })
 
@@ -123,21 +125,21 @@ export default function PagePreview() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
             <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
           </svg>
-          <span className="text-sm font-semibold">PREVIEW MODE</span>
-          <span className="text-sm opacity-80">— {page.status === 'DRAFT' ? 'Draft' : 'Published'} page</span>
+          <span className="text-sm font-semibold">{t("PREVIEW MODE")}</span>
+          <span className="text-sm opacity-80">— {page.status === 'DRAFT' ? t("Draft") : t("Published")} {t('page')}</span>
         </div>
         <button
           onClick={() => navigate(`/admin/pages/${pageId}/sections`)}
           className="rounded-lg bg-white/20 px-4 py-1.5 text-sm font-medium transition-colors hover:bg-white/30"
         >
-          Back to Editor
+          {t("Back to Editor")}
         </button>
       </div>
 
       {/* Validation warnings */}
       {validationErrors.length > 0 && (
         <div className="border-b border-error-200 bg-error-50 px-4 py-3">
-          <p className="mb-1 text-sm font-semibold text-error-700">Publish validation issues:</p>
+          <p className="mb-1 text-sm font-semibold text-error-700">{t("Publish validation issues:")}</p>
           <ul className="list-inside list-disc text-sm text-error-600">
             {validationErrors.map((err, i) => (
               <li key={i}>{err}</li>
