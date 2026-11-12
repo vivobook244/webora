@@ -265,6 +265,13 @@ export const translations = {
   "Section \"{type}\" has an invalid variant": "Bagian \"{type}\" memiliki varian yang tidak valid",
   "Section type \"{type}\" is not recognized": "Jenis bagian \"{type}\" tidak dikenali",
   "The active template does not support the \"{type}\" section": "Template aktif tidak mendukung bagian \"{type}\"",
+  "page": "halaman",
+  "Summary": "Ringkasan",
+  "Summary with Large Image": "Ringkasan dengan Gambar Besar",
+  "Index, Follow (Default)": "Indeks, Ikuti (Default)",
+  "No Index, No Follow": "Jangan Indeks, Jangan Ikuti",
+  "Index, No Follow": "Indeks, Jangan Ikuti",
+  "No Index, Follow": "Jangan Indeks, Ikuti",
 }
 
 export function translate(value, language = 'en') {
