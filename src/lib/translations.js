@@ -268,6 +268,7 @@ export const translations = {
   "Index, No Follow": "Indeks, Jangan Ikuti",
   "No Index, Follow": "Jangan Indeks, Ikuti"
 }
+  "Search engine optimization settings": "Pengaturan optimasi mesin pencari",
 }
 
 export function translate(value, language = 'en') {
