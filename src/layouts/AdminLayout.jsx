@@ -1,10 +1,12 @@
 import { useState } from 'react'
 import { useLanguage } from '../lib/LanguageContext'
+import { useLanguage } from '../lib/LanguageContext'
 import { Outlet } from 'react-router-dom'
 import Sidebar, { MenuIcon } from '../components/Sidebar'
 import { useAuth } from '../lib/useAuth'
 
 export default function AdminLayout() {
+  const { t } = useLanguage()
   const { t } = useLanguage()
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const { user } = useAuth()
