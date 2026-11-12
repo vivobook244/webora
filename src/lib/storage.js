@@ -6,9 +6,15 @@ export function getStorageItem(key) {
   }
 }
 
+function notifyStorageChange(key) {
+  if (typeof window === 'undefined') return
+  window.dispatchEvent(new CustomEvent('webora:storage', { detail: { key } }))
+}
+
 export function setStorageItem(key, value) {
   try {
     localStorage.setItem(key, value)
+    notifyStorageChange(key)
     return true
   } catch (error) {
     const message = error?.name === 'QuotaExceededError'
@@ -21,6 +27,7 @@ export function setStorageItem(key, value) {
 export function removeStorageItem(key) {
   try {
     localStorage.removeItem(key)
+    notifyStorageChange(key)
     return true
   } catch (error) {
     throw new Error('Unable to update browser storage.', { cause: error })
