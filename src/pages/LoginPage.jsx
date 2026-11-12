@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useLanguage } from '../lib/LanguageContext'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../lib/useAuth'
 import Button from '../components/Button'
 import Input from '../components/Input'
 
 export default function LoginPage() {
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const { login } = useAuth()
   const [email, setEmail] = useState('')
@@ -16,12 +18,12 @@ export default function LoginPage() {
   const validate = () => {
     const errs = {}
     if (!email.trim()) {
-      errs.email = 'Email is required'
+      errs.email = t("Email is required")
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      errs.email = 'Please enter a valid email address'
+      errs.email = t("Please enter a valid email address")
     }
     if (!password) {
-      errs.password = 'Password is required'
+      errs.password = t("Password is required")
     }
     return errs
   }
@@ -39,7 +41,7 @@ export default function LoginPage() {
       await login(email, password)
       navigate('/admin')
     } catch (err) {
-      setFormError(err.message || 'Login failed. Please try again.')
+      setFormError(err.message || t("Login failed. Please try again."))
     } finally {
       setSubmitting(false)
     }
@@ -56,7 +58,7 @@ export default function LoginPage() {
           </div>
           <h1 className="text-2xl font-bold text-gray-900">CMS Lite</h1>
           <p className="mt-1 text-sm text-gray-500">
-            Sign in to your admin account
+            {t("Sign in to your admin account")}
           </p>
         </div>
 
@@ -69,7 +71,7 @@ export default function LoginPage() {
             )}
 
             <Input
-              label="Email"
+              label=={t("Email")}
               name="email"
               type="email"
               value={email}
@@ -81,24 +83,24 @@ export default function LoginPage() {
             />
 
             <Input
-              label="Password"
+              label=={t("Password")}
               name="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
+              placeholder=={t("Enter your password")}
               error={errors.password}
               required
               autoComplete="current-password"
             />
 
             <Button type="submit" loading={submitting} className="w-full">
-              {submitting ? 'Signing in...' : 'Sign In'}
+              {submitting ? t("Signing in...") : t("Sign In")}
             </Button>
           </form>
 
           <div className="mt-6 rounded-lg bg-gray-50 px-4 py-3 text-center text-xs text-gray-500">
-            <p className="font-medium text-gray-600">Demo Credentials</p>
+            <p className="font-medium text-gray-600">{t("Demo Credentials")}</p>
             <p className="mt-1">Email: admin@example.com</p>
             <p>Password: admin123</p>
           </div>
