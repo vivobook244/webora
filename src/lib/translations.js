@@ -238,6 +238,21 @@ export const translations = {
   "Active": "Aktif",
   "Inactive": "Tidak Aktif"
 }
+  "Add Menu Item": "Tambah Item Menu",
+  "Visible in menu": "Tampil di menu",
+  "Hidden": "Tersembunyi",
+  "General SEO": "SEO Umum",
+  "Social": "Sosial",
+  "Open Graph Image": "Gambar Open Graph",
+  "Select from Media Library": "Pilih dari Pustaka Media",
+  "Robots": "Robots",
+  "Controls whether search engines can index your website.": "Mengatur apakah mesin pencari dapat mengindeks situs web Anda.",
+  "Google Search Preview": "Pratinjau Google Search",
+  "Social Preview": "Pratinjau Sosial",
+  "No image selected": "Belum ada gambar dipilih",
+  "Variant": "Varian",
+  "Live": "Langsung",
+  "Your homepage is still a draft. Publish it to make your website visible to visitors.": "Beranda Anda masih berupa draf. Publikasikan agar dapat dilihat pengunjung.",
 }
 
 export function translate(value, language = 'en') {
