@@ -338,9 +338,9 @@ export default function NavigationPage() {
   if (loading) {
     return (
       <div>
-        <PageHeader title=={t("Navigation")} subtitle="Manage your website menu" />
+        <PageHeader title={t("Navigation")} subtitle="Manage your website menu" />
         <Card className="p-6">
-          <LoadingState message=={t("Loading navigation...")} />
+          <LoadingState message={t("Loading navigation...")} />
         </Card>
       </div>
     )
@@ -350,7 +350,7 @@ export default function NavigationPage() {
 
   return (
     <div>
-      <PageHeader title=={t("Navigation")} subtitle="Manage your website menu">
+      <PageHeader title={t("Navigation")} subtitle="Manage your website menu">
         <Button onClick={openCreate}>{t("Add Menu Item")}</Button>
       </PageHeader>
 
@@ -391,7 +391,7 @@ export default function NavigationPage() {
       >
         <div className="space-y-4">
           <Input
-            label=={t("Label")}
+            label={t("Label")}
             name="label"
             value={form.label}
             onChange={(e) => setForm((prev) => ({ ...prev, label: e.target.value }))}
@@ -400,7 +400,7 @@ export default function NavigationPage() {
             placeholder="Menu label"
           />
           <Select
-            label=={t("Type")}
+            label={t("Type")}
             name="type"
             value={form.type}
             onChange={(e) => setForm((prev) => ({ ...prev, type: e.target.value }))}
@@ -423,7 +423,7 @@ export default function NavigationPage() {
           )}
           {form.type === 'CUSTOM_URL' && (
             <Input
-              label=={t("URL")}
+              label={t("URL")}
               name="url"
               value={form.url}
               onChange={(e) => setForm((prev) => ({ ...prev, url: e.target.value }))}
