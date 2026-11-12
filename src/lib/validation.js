@@ -3,7 +3,10 @@ const DANGEROUS_PROTOCOLS = ['javascript:', 'data:', 'vbscript:', 'file:']
 export function isSafeUrl(value) {
   if (typeof value !== 'string') return false
   const url = value.trim()
-  if (!url || /[\u0000-\u001F\u007F]/.test(url)) return false
+  if (!url || [...url].some((character) => {
+    const code = character.charCodeAt(0)
+    return code <= 31 || code === 127
+  })) return false
 
   const lower = url.toLowerCase()
   if (DANGEROUS_PROTOCOLS.some((protocol) => lower.startsWith(protocol))) return false

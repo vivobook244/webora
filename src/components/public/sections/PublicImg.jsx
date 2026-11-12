@@ -1,13 +1,11 @@
+import { useState } from 'react'
 import { resolveMediaUrl } from '../publicUtils'
 
 function Img({ src, alt, className, mediaList, style }) {
-  const resolved = src
-    ? (src.startsWith('http') || src.startsWith('/') || src.startsWith('blob:') || src.startsWith('data:')
-      ? src
-      : mediaList?.find((m) => m.id === src)?.url || null)
-    : null
+  const [failedSrc, setFailedSrc] = useState(null)
+  const resolved = resolveMediaUrl(src, mediaList)
 
-  if (!resolved) {
+  if (!resolved || failedSrc === resolved) {
     return (
       <div className={`flex items-center justify-center bg-surface text-muted-text ${className}`} style={style}>
         <svg className="h-8 w-8 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -23,11 +21,7 @@ function Img({ src, alt, className, mediaList, style }) {
       alt={alt || ''}
       className={className}
       style={style}
-      onError={(e) => {
-        e.currentTarget.style.display = 'none'
-        const fb = e.currentTarget.nextElementSibling
-        if (fb) fb.style.display = 'flex'
-      }}
+      onError={() => setFailedSrc(resolved)}
     />
   )
 }
