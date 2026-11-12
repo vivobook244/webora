@@ -138,7 +138,7 @@ export default function SeoPage() {
       <div>
         <PageHeader title="SEO" subtitle="Search engine optimization settings" />
         <Card className="p-6">
-          <LoadingState message=={t("Loading SEO settings...")} />
+          <LoadingState message={t("Loading SEO settings...")} />
         </Card>
       </div>
     )
@@ -343,7 +343,7 @@ export default function SeoPage() {
         onConfirm={handleReset}
         title="Reset SEO"
         message="This will reset all SEO settings to their default values. This action cannot be undone."
-        confirmLabel=={t("Reset")}
+        confirmLabel={t("Reset")}
         loading={resetting}
       />
 
