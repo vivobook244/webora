@@ -5,6 +5,7 @@ import PageRenderer from '../components/public/PageRenderer'
 import NotFoundPage from '../components/public/NotFoundPage'
 import PublicLoading from '../components/public/PublicLoading'
 import { useSeoMeta } from '../lib/useSeoMeta'
+import useStorageRevision from '../lib/useStorageRevision'
 import { resolveMediaUrl } from '../components/public/publicUtils'
 import { getSiteSettingsDummy } from '../services/dummy/settingsDummy'
 import { getPagesDummy } from '../services/dummy/pageDummy'
@@ -17,6 +18,7 @@ import { getActiveTemplateDummy } from '../services/dummy/templateDummy'
 
 export default function PublicPage() {
   const { slug } = useParams()
+  const storageRevision = useStorageRevision()
   const [loading, setLoading] = useState(true)
   const [settings, setSettings] = useState(null)
   const [navItems, setNavItems] = useState([])
@@ -91,7 +93,7 @@ export default function PublicPage() {
       }
     })()
     return () => { active = false }
-  }, [slug])
+  }, [slug, storageRevision])
 
   const seoTitle = notFound || noHomepage
     ? (notFound ? 'Page Not Found' : 'Website')
