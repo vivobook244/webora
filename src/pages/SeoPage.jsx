@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../lib/LanguageContext'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
 import Button from '../components/Button'
@@ -28,6 +29,7 @@ const MAX_TITLE_LENGTH = 60
 const MAX_DESCRIPTION_LENGTH = 160
 
 export default function SeoPage() {
+  const { t } = useLanguage()
   const [seo, setSeo] = useState(null)
   const [mediaList, setMediaList] = useState([])
   const [loading, setLoading] = useState(true)
@@ -136,7 +138,7 @@ export default function SeoPage() {
       <div>
         <PageHeader title="SEO" subtitle="Search engine optimization settings" />
         <Card className="p-6">
-          <LoadingState message="Loading SEO settings..." />
+          <LoadingState message=={t("Loading SEO settings...")} />
         </Card>
       </div>
     )
@@ -154,7 +156,7 @@ export default function SeoPage() {
           Reset to Defaults
         </Button>
         <Button onClick={handleSave} loading={saving}>
-          {saving ? 'Saving...' : 'Save Changes'}
+          {saving ? 'Saving...' : t("Save Changes")}
         </Button>
       </PageHeader>
 
@@ -206,7 +208,7 @@ export default function SeoPage() {
                 <p className="mt-1 text-xs text-gray-400">{(seo.siteDescription || '').length}/{MAX_DESCRIPTION_LENGTH}</p>
               </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-gray-700">Keywords</label>
+                <label className="mb-1.5 block text-sm font-medium text-gray-700">{t("Keywords")}</label>
                 <div className="flex gap-2">
                   <input
                     type="text"
@@ -341,7 +343,7 @@ export default function SeoPage() {
         onConfirm={handleReset}
         title="Reset SEO"
         message="This will reset all SEO settings to their default values. This action cannot be undone."
-        confirmLabel="Reset"
+        confirmLabel=={t("Reset")}
         loading={resetting}
       />
 
