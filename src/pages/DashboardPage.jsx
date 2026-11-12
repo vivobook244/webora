@@ -114,7 +114,7 @@ export default function DashboardPage() {
     return (
       <div>
         <PageHeader
-          title={`Welcome, ${user?.name || t("Administrator")}`}
+          title={`${t("Welcome")}, ${user?.name || t("Administrator")}`}
           subtitle={t("Here's an overview of your website")}
         />
         <Card className="p-6">
@@ -127,7 +127,7 @@ export default function DashboardPage() {
   return (
     <div>
       <PageHeader
-        title={`Welcome, ${user?.name || t("Administrator")}`}
+        title={`${t("Welcome")}, ${user?.name || t("Administrator")}`}
         subtitle={t("Here's an overview of your website")}
       />
 
