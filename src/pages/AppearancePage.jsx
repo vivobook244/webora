@@ -7,6 +7,14 @@ import ColorPicker from '../components/ColorPicker'
 import LoadingState from '../components/LoadingState'
 import ConfirmModal from '../components/ConfirmModal'
 import { getAppearanceDummy, updateAppearanceDummy, resetAppearanceDummy } from '../services/dummy/appearanceDummy'
+import PageRenderer from '../components/public/PageRenderer'
+import PublicLayout from '../layouts/PublicLayout'
+import { getPagesDummy } from '../services/dummy/pageDummy'
+import { getSectionsByPageDummy } from '../services/dummy/sectionDummy'
+import { getSiteSettingsDummy } from '../services/dummy/settingsDummy'
+import { getNavigationDummy } from '../services/dummy/navigationDummy'
+import { getActiveTemplateDummy } from '../services/dummy/templateDummy'
+import { getMediaDummy } from '../services/dummy/mediaDummy'
 
 const FONT_OPTIONS = [
   { value: 'Inter', label: 'Inter' },
@@ -53,6 +61,9 @@ const RADIUS_OPTIONS = [
 
 export default function AppearancePage() {
   const [appearance, setAppearance] = useState(null)
+  const [previewData, setPreviewData] = useState(null)
+  const [previewLoading, setPreviewLoading] = useState(true)
+  const [previewError, setPreviewError] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [resetOpen, setResetOpen] = useState(false)
@@ -70,6 +81,35 @@ export default function AppearancePage() {
         if (active) setError('Failed to load appearance settings')
       } finally {
         if (active) setLoading(false)
+      }
+    })()
+    return () => { active = false }
+  }, [])
+
+  useEffect(() => {
+    let active = true
+    ;(async () => {
+      try {
+        const [pages, settings, navItems, template, mediaList] = await Promise.all([
+          getPagesDummy(),
+          getSiteSettingsDummy(),
+          getNavigationDummy(),
+          getActiveTemplateDummy(),
+          getMediaDummy(),
+        ])
+        const page = pages.find((item) => item.isHome)
+          || pages.find((item) => item.status === 'PUBLISHED')
+          || pages[0]
+          || null
+        const sections = page ? await getSectionsByPageDummy(page.id) : []
+
+        if (active) {
+          setPreviewData({ pages, page, sections, settings, navItems, template, mediaList })
+        }
+      } catch {
+        if (active) setPreviewError('Website preview data could not be loaded.')
+      } finally {
+        if (active) setPreviewLoading(false)
       }
     })()
     return () => { active = false }
@@ -153,21 +193,6 @@ export default function AppearancePage() {
     )
   }
 
-  const previewStyle = {
-    '--preview-primary': appearance.colors.primary,
-    '--preview-secondary': appearance.colors.secondary,
-    '--preview-bg': appearance.colors.background,
-    '--preview-surface': appearance.colors.surface,
-    '--preview-text': appearance.colors.text,
-    '--preview-muted': appearance.colors.mutedText,
-    '--preview-radius-sm': appearance.radius.small,
-    '--preview-radius-md': appearance.radius.medium,
-    '--preview-radius-lg': appearance.radius.large,
-    '--preview-heading-font': appearance.typography.headingFont,
-    '--preview-body-font': appearance.typography.bodyFont,
-    '--preview-base-size': appearance.typography.baseSize,
-  }
-
   return (
     <div>
       <PageHeader title="Appearance" subtitle="Customize your website design">
@@ -195,7 +220,6 @@ export default function AppearancePage() {
       )}
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        {/* Settings Column */}
         <div className="space-y-6">
           <Card className="p-6">
             <h2 className="mb-4 text-lg font-semibold text-gray-900">Colors</h2>
@@ -212,197 +236,66 @@ export default function AppearancePage() {
           <Card className="p-6">
             <h2 className="mb-4 text-lg font-semibold text-gray-900">Typography</h2>
             <div className="space-y-4">
-              <Select
-                label="Heading Font"
-                value={appearance.typography.headingFont}
-                onChange={(e) => updateTypography('headingFont', e.target.value)}
-                options={FONT_OPTIONS}
-              />
-              <Select
-                label="Body Font"
-                value={appearance.typography.bodyFont}
-                onChange={(e) => updateTypography('bodyFont', e.target.value)}
-                options={FONT_OPTIONS}
-              />
-              <Select
-                label="Base Font Size"
-                value={appearance.typography.baseSize}
-                onChange={(e) => updateTypography('baseSize', e.target.value)}
-                options={SIZE_OPTIONS}
-              />
+              <Select label="Heading Font" value={appearance.typography.headingFont} onChange={(e) => updateTypography('headingFont', e.target.value)} options={FONT_OPTIONS} />
+              <Select label="Body Font" value={appearance.typography.bodyFont} onChange={(e) => updateTypography('bodyFont', e.target.value)} options={FONT_OPTIONS} />
+              <Select label="Base Font Size" value={appearance.typography.baseSize} onChange={(e) => updateTypography('baseSize', e.target.value)} options={SIZE_OPTIONS} />
             </div>
           </Card>
 
           <Card className="p-6">
             <h2 className="mb-4 text-lg font-semibold text-gray-900">Layout</h2>
             <div className="space-y-4">
-              <Select
-                label="Container Width"
-                value={appearance.layout.containerWidth}
-                onChange={(e) => updateLayout('containerWidth', e.target.value)}
-                options={CONTAINER_OPTIONS}
-              />
-              <Select
-                label="Section Spacing"
-                value={appearance.layout.sectionSpacing}
-                onChange={(e) => updateLayout('sectionSpacing', e.target.value)}
-                options={SECTION_SPACING_OPTIONS}
-              />
-              <Select
-                label="Content Spacing"
-                value={appearance.layout.contentSpacing}
-                onChange={(e) => updateLayout('contentSpacing', e.target.value)}
-                options={CONTENT_SPACING_OPTIONS}
-              />
+              <Select label="Container Width" value={appearance.layout.containerWidth} onChange={(e) => updateLayout('containerWidth', e.target.value)} options={CONTAINER_OPTIONS} />
+              <Select label="Section Spacing" value={appearance.layout.sectionSpacing} onChange={(e) => updateLayout('sectionSpacing', e.target.value)} options={SECTION_SPACING_OPTIONS} />
+              <Select label="Content Spacing" value={appearance.layout.contentSpacing} onChange={(e) => updateLayout('contentSpacing', e.target.value)} options={CONTENT_SPACING_OPTIONS} />
             </div>
           </Card>
 
           <Card className="p-6">
             <h2 className="mb-4 text-lg font-semibold text-gray-900">Border Radius</h2>
             <div className="space-y-4">
-              <Select
-                label="Small"
-                value={appearance.radius.small}
-                onChange={(e) => updateRadius('small', e.target.value)}
-                options={RADIUS_OPTIONS}
-              />
-              <Select
-                label="Medium"
-                value={appearance.radius.medium}
-                onChange={(e) => updateRadius('medium', e.target.value)}
-                options={RADIUS_OPTIONS}
-              />
-              <Select
-                label="Large"
-                value={appearance.radius.large}
-                onChange={(e) => updateRadius('large', e.target.value)}
-                options={RADIUS_OPTIONS}
-              />
+              <Select label="Small" value={appearance.radius.small} onChange={(e) => updateRadius('small', e.target.value)} options={RADIUS_OPTIONS} />
+              <Select label="Medium" value={appearance.radius.medium} onChange={(e) => updateRadius('medium', e.target.value)} options={RADIUS_OPTIONS} />
+              <Select label="Large" value={appearance.radius.large} onChange={(e) => updateRadius('large', e.target.value)} options={RADIUS_OPTIONS} />
             </div>
           </Card>
         </div>
 
-        {/* Live Preview Column */}
         <div className="lg:sticky lg:top-20 lg:self-start">
-          <Card className="p-6">
-            <h2 className="mb-4 text-lg font-semibold text-gray-900">Live Preview</h2>
-            <div
-              style={previewStyle}
-              className="overflow-hidden rounded-lg border border-gray-200"
-            >
-              {/* Preview Header */}
-              <div
-                className="flex items-center justify-between px-6 py-4"
-                style={{
-                  backgroundColor: 'var(--preview-surface)',
-                  fontFamily: 'var(--preview-heading-font)',
-                }}
-              >
-                <span
-                  className="text-base font-bold"
-                  style={{ color: 'var(--preview-text)' }}
+          <Card className="p-4">
+            <div className="mb-3 flex items-center justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-semibold text-gray-900">Live Website Preview</h2>
+                <p className="text-xs text-gray-500">Uses the current page content and active template</p>
+              </div>
+              <span className="shrink-0 rounded-full bg-success-50 px-2.5 py-1 text-xs font-medium text-success-700">Live</span>
+            </div>
+
+            <div className="max-h-[75vh] overflow-auto rounded-lg border border-gray-200 bg-white">
+              {previewLoading ? (
+                <div className="p-6"><LoadingState message="Loading website preview..." /></div>
+              ) : previewError ? (
+                <div className="p-6 text-sm text-error-600">{previewError}</div>
+              ) : previewData?.page ? (
+                <PublicLayout
+                  settings={previewData.settings}
+                  navItems={previewData.navItems}
+                  pages={previewData.pages}
+                  appearance={appearance}
+                  template={previewData.template}
                 >
-                  Your Website
-                </span>
-                <div className="flex gap-4">
-                  <span className="text-sm" style={{ color: 'var(--preview-muted)' }}>Home</span>
-                  <span className="text-sm" style={{ color: 'var(--preview-muted)' }}>About</span>
+                  <PageRenderer
+                    page={previewData.page}
+                    sections={previewData.sections}
+                    mediaList={previewData.mediaList}
+                    template={previewData.template}
+                  />
+                </PublicLayout>
+              ) : (
+                <div className="p-8 text-center text-sm text-gray-500">
+                  Create a page and add sections to see the website preview.
                 </div>
-              </div>
-
-              {/* Preview Hero */}
-              <div
-                className="px-6 py-12 text-center"
-                style={{
-                  backgroundColor: 'var(--preview-bg)',
-                  fontFamily: 'var(--preview-body-font)',
-                  fontSize: 'var(--preview-base-size)',
-                }}
-              >
-                <h1
-                  className="text-2xl font-bold"
-                  style={{
-                    color: 'var(--preview-text)',
-                    fontFamily: 'var(--preview-heading-font)',
-                  }}
-                >
-                  Welcome to Our Company
-                </h1>
-                <p
-                  className="mt-3 text-sm"
-                  style={{ color: 'var(--preview-muted)' }}
-                >
-                  Professional services for your business needs
-                </p>
-                <button
-                  className="mt-4 px-5 py-2 text-sm font-medium text-white"
-                  style={{
-                    backgroundColor: 'var(--preview-primary)',
-                    borderRadius: 'var(--preview-radius-md)',
-                  }}
-                >
-                  Get Started
-                </button>
-              </div>
-
-              {/* Preview Card */}
-              <div
-                className="px-6 py-8"
-                style={{
-                  backgroundColor: 'var(--preview-surface)',
-                }}
-              >
-                <div
-                  className="mx-auto max-w-sm p-5"
-                  style={{
-                    backgroundColor: 'var(--preview-bg)',
-                    borderRadius: 'var(--preview-radius-lg)',
-                    boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
-                  }}
-                >
-                  <h3
-                    className="text-base font-semibold"
-                    style={{
-                      color: 'var(--preview-text)',
-                      fontFamily: 'var(--preview-heading-font)',
-                    }}
-                  >
-                    Our Services
-                  </h3>
-                  <p
-                    className="mt-2 text-sm"
-                    style={{ color: 'var(--preview-muted)' }}
-                  >
-                    We offer comprehensive solutions tailored to your needs, delivered with excellence and care.
-                  </p>
-                  <div className="mt-3">
-                    <input
-                      type="text"
-                      disabled
-                      placeholder="Enter your email"
-                      className="w-full px-3 py-2 text-sm"
-                      style={{
-                        backgroundColor: 'var(--preview-surface)',
-                        color: 'var(--preview-text)',
-                        borderRadius: 'var(--preview-radius-sm)',
-                        border: '1px solid var(--preview-muted)',
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Preview Footer */}
-              <div
-                className="px-6 py-4 text-center"
-                style={{
-                  backgroundColor: 'var(--preview-secondary)',
-                }}
-              >
-                <p className="text-xs" style={{ color: '#fff' }}>
-                  © 2026 Your Website. All rights reserved.
-                </p>
-              </div>
+              )}
             </div>
           </Card>
         </div>
