@@ -8,9 +8,9 @@ export function LanguageProvider({ children }) {
   const [language, setLanguageState] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEY)
-      return saved === 'id' || saved === 'en' ? saved : 'en'
+      return saved === 'id' || saved === 'en' ? saved : 'id'
     } catch {
-      return 'en'
+      return 'id'
     }
   })
 
