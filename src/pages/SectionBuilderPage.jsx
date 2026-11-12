@@ -10,10 +10,14 @@ import Modal from '../components/Modal'
 import ConfirmModal from '../components/ConfirmModal'
 import SectionEditor from '../components/SectionEditor'
 import PublicSectionRenderer from '../components/public/PublicSectionRenderer'
+import PageRenderer from '../components/public/PageRenderer'
+import PublicLayout from '../layouts/PublicLayout'
 import { getCssVars } from '../components/public/publicUtils'
 import { SECTION_TYPES, getDefaultContent } from '../lib/sectionTypes'
 import { getSectionVariants, getValidVariantId, getDefaultVariantId, getSectionVariant } from '../data/sectionVariants'
-import { getPageByIdDummy } from '../services/dummy/pageDummy'
+import { getPageByIdDummy, getPagesDummy } from '../services/dummy/pageDummy'
+import { getSiteSettingsDummy } from '../services/dummy/settingsDummy'
+import { getNavigationDummy } from '../services/dummy/navigationDummy'
 import { getAppearanceDummy } from '../services/dummy/appearanceDummy'
 import { getMediaDummy } from '../services/dummy/mediaDummy'
 import { getActiveTemplateDummy } from '../services/dummy/templateDummy'
@@ -160,6 +164,9 @@ export default function SectionBuilderPage() {
   const { pageId } = useParams()
   const navigate = useNavigate()
   const [page, setPage] = useState(null)
+  const [pages, setPages] = useState([])
+  const [settings, setSettings] = useState(null)
+  const [navItems, setNavItems] = useState([])
   const [sections, setSections] = useState([])
   const [appearance, setAppearance] = useState(null)
   const [mediaList, setMediaList] = useState([])
@@ -185,18 +192,24 @@ export default function SectionBuilderPage() {
 
   const loadSections = async () => {
     try {
-      const [pageData, sectionData, appearanceData, mediaData, templateData] = await Promise.all([
+      const [pageData, sectionData, appearanceData, mediaData, templateData, pagesData, settingsData, navigationData] = await Promise.all([
         getPageByIdDummy(pageId),
         getSectionsByPageDummy(pageId),
         getAppearanceDummy(),
         getMediaDummy(),
         getActiveTemplateDummy(),
+        getPagesDummy(),
+        getSiteSettingsDummy(),
+        getNavigationDummy(),
       ])
       const validated = sectionData.map((s) => {
         const validVariant = getValidVariantId(s.type, s.variant)
         return validVariant ? s : { ...s, variant: getDefaultVariantId(s.type) }
       })
       setPage(pageData)
+      setPages(pagesData)
+      setSettings(settingsData)
+      setNavItems(navigationData)
       setSections(validated)
       setAppearance(appearanceData)
       setMediaList(mediaData)
@@ -396,6 +409,18 @@ export default function SectionBuilderPage() {
           {error}
         </div>
       )}
+
+      <Card className="mb-6 overflow-hidden">
+        <div className="border-b border-gray-100 px-4 py-3">
+          <h2 className="text-sm font-semibold text-gray-900">Live Website Preview</h2>
+          <p className="mt-1 text-xs text-gray-500">This preview uses the same layout and section renderer as the published website.</p>
+        </div>
+        <div className="max-h-[760px] overflow-auto">
+          <PublicLayout settings={settings} navItems={navItems} pages={pages} appearance={appearance} template={template}>
+            <PageRenderer page={page} sections={sections} mediaList={mediaList} template={template} />
+          </PublicLayout>
+        </div>
+      </Card>
 
       {sections.length === 0 ? (
         <Card className="p-6">
