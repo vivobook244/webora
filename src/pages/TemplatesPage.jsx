@@ -30,6 +30,7 @@ function TemplateIcon({ className }) {
 }
 
 function TemplatePreview({ template, previewData, compact = false }) {
+  const { t } = useLanguage()
   if (!previewData) {
     return (
       <div className="flex min-h-48 items-center justify-center bg-gray-50 p-6 text-sm text-gray-500">
