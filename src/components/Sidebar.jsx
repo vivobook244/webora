@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import { useLanguage } from '../lib/LanguageContext'
-import { useLanguage } from '../lib/LanguageContext'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { logoutDummy } from '../services/dummy/authDummy'
 
@@ -95,7 +94,6 @@ function CloseIcon({ className }) {
 }
 
 export default function Sidebar({ open, onClose }) {
-  const { t } = useLanguage()
   const { t } = useLanguage()
   const location = useLocation()
   const navigate = useNavigate()
