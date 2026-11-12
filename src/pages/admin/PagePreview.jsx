@@ -4,6 +4,7 @@ import PublicLayout from '../../layouts/PublicLayout'
 import PageRenderer from '../../components/public/PageRenderer'
 import PublicLoading from '../../components/public/PublicLoading'
 import { useSeoMeta } from '../../lib/useSeoMeta'
+import useStorageRevision from '../../lib/useStorageRevision'
 import { getSiteSettingsDummy } from '../../services/dummy/settingsDummy'
 import { getPreviewPageDummy, getPagesDummy } from '../../services/dummy/pageDummy'
 import { getSectionsByPageDummy } from '../../services/dummy/sectionDummy'
@@ -16,6 +17,7 @@ import { getValidVariantId, getSectionVariants } from '../../data/sectionVariant
 
 export default function PagePreview() {
   const { pageId } = useParams()
+  const storageRevision = useStorageRevision()
   const navigate = useNavigate()
   const [loading, setLoading] = useState(true)
   const [settings, setSettings] = useState(null)
@@ -87,7 +89,7 @@ export default function PagePreview() {
       }
     })()
     return () => { active = false }
-  }, [pageId])
+  }, [pageId, storageRevision])
 
   useSeoMeta({
     title: `Preview: ${page?.title || 'Untitled'}`,
