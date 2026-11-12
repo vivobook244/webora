@@ -524,7 +524,7 @@ export default function SectionBuilderPage() {
         footer={
           <>
             <Button variant="secondary" onClick={() => setAddOpen(false)} disabled={creating}>
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button onClick={handleCreate} loading={creating} disabled={!newType}>
               {creating ? t("Creating...") : t("Add Section")}
@@ -573,10 +573,10 @@ export default function SectionBuilderPage() {
         footer={
           <>
             <Button variant="secondary" onClick={() => setEditSection(null)} disabled={saving}>
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button onClick={handleSaveEdit} loading={saving}>
-              {saving ? 'Saving...' : 'Save'}
+              {saving ? t("Saving...") : 'Save'}
             </Button>
           </>
         }
