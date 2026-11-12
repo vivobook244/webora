@@ -115,10 +115,10 @@ export default function DashboardPage() {
       <div>
         <PageHeader
           title={`Welcome, ${user?.name || t("Administrator")}`}
-          subtitle=={t("Here's an overview of your website")}
+          subtitle={t("Here's an overview of your website")}
         />
         <Card className="p-6">
-          <LoadingState message=={t("Loading dashboard...")} />
+          <LoadingState message={t("Loading dashboard...")} />
         </Card>
       </div>
     )
@@ -128,7 +128,7 @@ export default function DashboardPage() {
     <div>
       <PageHeader
         title={`Welcome, ${user?.name || t("Administrator")}`}
-        subtitle=={t("Here's an overview of your website")}
+        subtitle={t("Here's an overview of your website")}
       />
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
