@@ -5,11 +5,13 @@ import PageRenderer from '../../components/public/PageRenderer'
 import PublicLoading from '../../components/public/PublicLoading'
 import { useSeoMeta } from '../../lib/useSeoMeta'
 import { getSiteSettingsDummy } from '../../services/dummy/settingsDummy'
-import { getPreviewPageDummy } from '../../services/dummy/pageDummy'
+import { getPreviewPageDummy, getPagesDummy } from '../../services/dummy/pageDummy'
 import { getSectionsByPageDummy } from '../../services/dummy/sectionDummy'
 import { getNavigationDummy } from '../../services/dummy/navigationDummy'
 import { getAppearanceDummy } from '../../services/dummy/appearanceDummy'
 import { getMediaDummy } from '../../services/dummy/mediaDummy'
+import { getActiveTemplateDummy } from '../../services/dummy/templateDummy'
+import { isValidSlug } from '../../lib/validation'
 import { getValidVariantId, getSectionVariants } from '../../data/sectionVariants'
 
 export default function PagePreview() {
@@ -21,6 +23,7 @@ export default function PagePreview() {
   const [pages, setPages] = useState([])
   const [appearance, setAppearance] = useState(null)
   const [mediaList, setMediaList] = useState([])
+  const [template, setTemplate] = useState(null)
   const [page, setPage] = useState(null)
   const [sections, setSections] = useState([])
   const [validationErrors, setValidationErrors] = useState([])
@@ -29,13 +32,14 @@ export default function PagePreview() {
     let active = true
     ;(async () => {
       try {
-        const [settingsData, navData, pagesData, appearanceData, mediaData, pageData] = await Promise.all([
+        const [settingsData, navData, pagesData, appearanceData, mediaData, pageData, templateData] = await Promise.all([
           getSiteSettingsDummy(),
           getNavigationDummy(),
-          getPreviewPageDummy(pageId).then((p) => p ? [p] : []),
+          getPagesDummy(),
           getAppearanceDummy(),
           getMediaDummy(),
           getPreviewPageDummy(pageId),
+          getActiveTemplateDummy(),
         ])
 
         if (!active) return
@@ -46,14 +50,19 @@ export default function PagePreview() {
         setAppearance(appearanceData)
         setMediaList(mediaData)
         setPage(pageData)
+        setTemplate(templateData)
 
         if (pageData) {
           const sectionData = await getSectionsByPageDummy(pageData.id)
           if (!active) return
 
           const errors = []
-          if (!pageData.title) errors.push('Page title is missing')
-          if (!pageData.slug) errors.push('Page slug is missing')
+          if (!pageData.title?.trim()) errors.push('Page title is missing')
+          if (!isValidSlug(pageData.slug)) errors.push('Page slug is invalid')
+
+          if (!sectionData.some((section) => section.visible !== false)) {
+            errors.push('Add at least one visible section before publishing')
+          }
 
           sectionData.forEach((s) => {
             const validVariant = getValidVariantId(s.type, s.variant)
@@ -62,6 +71,9 @@ export default function PagePreview() {
             }
             if (!getSectionVariants(s.type).length) {
               errors.push(`Section type "${s.type}" is not recognized`)
+            }
+            if (Array.isArray(templateData?.sections) && !templateData.sections.includes(s.type)) {
+              errors.push(`The active template does not support the "${s.type}" section`)
             }
           })
 
@@ -132,8 +144,8 @@ export default function PagePreview() {
         </div>
       )}
 
-      <PublicLayout settings={settings} navItems={navItems} pages={pages} appearance={appearance}>
-        <PageRenderer page={page} sections={sections} mediaList={mediaList} />
+      <PublicLayout settings={settings} navItems={navItems} pages={pages} appearance={appearance} template={template}>
+        <PageRenderer page={page} sections={sections} mediaList={mediaList} template={template} />
       </PublicLayout>
     </div>
   )

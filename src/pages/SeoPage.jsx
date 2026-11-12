@@ -9,6 +9,8 @@ import LoadingState from '../components/LoadingState'
 import ConfirmModal from '../components/ConfirmModal'
 import MediaPicker from '../components/MediaPicker'
 import { getSeoDummy, updateSeoDummy, resetSeoDummy } from '../services/dummy/seoDummy'
+import { getMediaDummy } from '../services/dummy/mediaDummy'
+import { resolveMediaUrl } from '../components/public/publicUtils'
 
 const TWITTER_CARD_OPTIONS = [
   { value: 'summary', label: 'Summary' },
@@ -27,6 +29,7 @@ const MAX_DESCRIPTION_LENGTH = 160
 
 export default function SeoPage() {
   const [seo, setSeo] = useState(null)
+  const [mediaList, setMediaList] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [resetOpen, setResetOpen] = useState(false)
@@ -41,8 +44,11 @@ export default function SeoPage() {
     let active = true
     ;(async () => {
       try {
-        const data = await getSeoDummy()
-        if (active) setSeo(data)
+        const [data, media] = await Promise.all([getSeoDummy(), getMediaDummy()])
+        if (active) {
+          setSeo(data)
+          setMediaList(media)
+        }
       } catch {
         if (active) setError('Failed to load SEO settings')
       } finally {
@@ -59,6 +65,8 @@ export default function SeoPage() {
     } else if (seo.siteTitle.length > MAX_TITLE_LENGTH) {
       errs.siteTitle = `Title must be ${MAX_TITLE_LENGTH} characters or less`
     }
+    if ((seo.keywords || []).length > 30) errs.keywords = 'Use up to 30 keywords'
+    if ((seo.keywords || []).some((keyword) => String(keyword).length > 40)) errs.keywords = 'Each keyword must be 40 characters or fewer'
     if (seo.siteDescription && seo.siteDescription.length > MAX_DESCRIPTION_LENGTH) {
       errs.siteDescription = `Description must be ${MAX_DESCRIPTION_LENGTH} characters or less`
     }
@@ -82,8 +90,8 @@ export default function SeoPage() {
       setSeo((prev) => ({ ...prev, keywords: uniqueKeywords }))
       setSuccessMessage('SEO settings saved successfully.')
       setTimeout(() => setSuccessMessage(''), 4000)
-    } catch {
-      setError('Failed to save SEO settings')
+    } catch (err) {
+      setError(err.message || 'Failed to save SEO settings')
     } finally {
       setSaving(false)
     }
@@ -97,8 +105,8 @@ export default function SeoPage() {
       setResetOpen(false)
       setSuccessMessage('SEO settings reset to defaults.')
       setTimeout(() => setSuccessMessage(''), 4000)
-    } catch {
-      setError('Failed to reset SEO settings')
+    } catch (err) {
+      setError(err.message || 'Failed to reset SEO settings')
     } finally {
       setResetting(false)
     }
@@ -137,6 +145,7 @@ export default function SeoPage() {
   const previewTitle = seo.siteTitle || 'Your Website'
   const previewUrl = 'https://yourwebsite.com'
   const previewDescription = seo.siteDescription || 'No description set.'
+  const previewOgImage = resolveMediaUrl(seo.ogImage, mediaList)
 
   return (
     <div>
@@ -237,11 +246,11 @@ export default function SeoPage() {
             <div className="space-y-4">
               <div>
                 <label className="mb-1.5 block text-sm font-medium text-gray-700">Open Graph Image</label>
-                {seo.ogImage ? (
+                {previewOgImage ? (
                   <div className="flex items-center gap-3">
                     <div className="h-20 w-32 overflow-hidden rounded-lg border border-gray-200">
                       <img
-                        src={seo.ogImage.startsWith('http') || seo.ogImage.startsWith('/') ? seo.ogImage : undefined}
+                        src={previewOgImage}
                         alt="OG preview"
                         className="h-full w-full object-cover"
                         onError={(e) => { e.currentTarget.style.display = 'none' }}

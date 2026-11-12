@@ -83,8 +83,8 @@ export default function SettingsPage() {
       await updateSiteSettingsDummy(settings)
       setSuccessMessage('Settings saved successfully.')
       setTimeout(() => setSuccessMessage(''), 4000)
-    } catch {
-      setErrors({ form: 'Failed to save settings. Please try again.' })
+    } catch (err) {
+      setErrors({ form: err.message || 'Failed to save settings. Please try again.' })
     } finally {
       setSaving(false)
     }

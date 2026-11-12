@@ -13,6 +13,7 @@ import { getNavigationDummy } from '../services/dummy/navigationDummy'
 import { getAppearanceDummy } from '../services/dummy/appearanceDummy'
 import { getMediaDummy } from '../services/dummy/mediaDummy'
 import { getSeoDummy } from '../services/dummy/seoDummy'
+import { getActiveTemplateDummy } from '../services/dummy/templateDummy'
 
 export default function PublicPage() {
   const { slug } = useParams()
@@ -23,6 +24,7 @@ export default function PublicPage() {
   const [appearance, setAppearance] = useState(null)
   const [mediaList, setMediaList] = useState([])
   const [seo, setSeo] = useState(null)
+  const [template, setTemplate] = useState(null)
   const [page, setPage] = useState(null)
   const [sections, setSections] = useState([])
   const [notFound, setNotFound] = useState(false)
@@ -35,13 +37,14 @@ export default function PublicPage() {
       setNotFound(false)
       setNoHomepage(false)
       try {
-        const [settingsData, navData, pagesData, appearanceData, mediaData, seoData] = await Promise.all([
+        const [settingsData, navData, pagesData, appearanceData, mediaData, seoData, templateData] = await Promise.all([
           getSiteSettingsDummy(),
           getNavigationDummy(),
           getPagesDummy(),
           getAppearanceDummy(),
           getMediaDummy(),
           getSeoDummy(),
+          getActiveTemplateDummy(),
         ])
 
         if (!active) return
@@ -52,6 +55,7 @@ export default function PublicPage() {
         setAppearance(appearanceData)
         setMediaList(mediaData)
         setSeo(seoData)
+        setTemplate(templateData)
 
         let targetPage = null
 
@@ -103,14 +107,18 @@ export default function PublicPage() {
     ? null
     : resolveMediaUrl(page?.seo?.ogImage || seo?.ogImage, mediaList)
 
+  const publicOgImage = ogImage && !ogImage.startsWith('blob:') ? ogImage : null
+
   useSeoMeta({
     title: seoTitle,
     description: seoDescription,
     ogTitle: seoTitle,
     ogDescription: seoDescription,
-    ogImage,
+    ogImage: publicOgImage,
     twitterCard: notFound || noHomepage ? 'summary' : seo?.twitterCard,
-    robots: notFound || noHomepage ? 'noindex,nofollow' : seo?.robots,
+    robots: notFound || noHomepage || page?.status !== 'PUBLISHED' ? 'noindex,nofollow' : seo?.robots,
+    keywords: seo?.keywords || [],
+    canonicalUrl: typeof window !== 'undefined' ? window.location.origin + (page?.isHome ? '/' : window.location.pathname) : '',
   })
 
   if (loading || !appearance) {
@@ -119,7 +127,7 @@ export default function PublicPage() {
 
   if (notFound) {
     return (
-      <PublicLayout settings={settings} navItems={navItems} pages={pages} appearance={appearance}>
+      <PublicLayout settings={settings} navItems={navItems} pages={pages} appearance={appearance} template={template}>
         <NotFoundPage />
       </PublicLayout>
     )
@@ -127,7 +135,7 @@ export default function PublicPage() {
 
   if (noHomepage) {
     return (
-      <PublicLayout settings={settings} navItems={navItems} pages={pages} appearance={appearance}>
+      <PublicLayout settings={settings} navItems={navItems} pages={pages} appearance={appearance} template={template}>
         <div className="flex min-h-[60vh] flex-col items-center justify-center px-6 text-center">
           <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-2xl" style={{ backgroundColor: 'var(--color-surface)' }}>
             <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5} style={{ color: 'var(--color-muted-text)' }}>
@@ -146,8 +154,8 @@ export default function PublicPage() {
   }
 
   return (
-    <PublicLayout settings={settings} navItems={navItems} pages={pages} appearance={appearance}>
-      <PageRenderer page={page} sections={sections} mediaList={mediaList} />
+    <PublicLayout settings={settings} navItems={navItems} pages={pages} appearance={appearance} template={template}>
+      <PageRenderer page={page} sections={sections} mediaList={mediaList} template={template} />
     </PublicLayout>
   )
 }

@@ -1,3 +1,5 @@
+import { resolveMediaUrl } from '../publicUtils'
+
 function Img({ src, alt, className, mediaList, style }) {
   const resolved = src
     ? (src.startsWith('http') || src.startsWith('/') || src.startsWith('blob:') || src.startsWith('data:')

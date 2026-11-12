@@ -16,6 +16,7 @@ import { getSectionVariants, getValidVariantId, getDefaultVariantId, getSectionV
 import { getPageByIdDummy } from '../services/dummy/pageDummy'
 import { getAppearanceDummy } from '../services/dummy/appearanceDummy'
 import { getMediaDummy } from '../services/dummy/mediaDummy'
+import { getActiveTemplateDummy } from '../services/dummy/templateDummy'
 import {
   getSectionsByPageDummy,
   createSectionDummy,
@@ -95,6 +96,7 @@ function PreviewWrapper({ appearance, children }) {
   const cssVars = getCssVars(appearance)
   return (
     <div
+      className="public-site"
       style={{
         ...cssVars,
         backgroundColor: 'var(--color-background)',
@@ -103,7 +105,7 @@ function PreviewWrapper({ appearance, children }) {
         fontSize: 'var(--font-size-base)',
       }}
     >
-      {children}
+      <main>{children}</main>
     </div>
   )
 }
@@ -161,6 +163,7 @@ export default function SectionBuilderPage() {
   const [sections, setSections] = useState([])
   const [appearance, setAppearance] = useState(null)
   const [mediaList, setMediaList] = useState([])
+  const [template, setTemplate] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
@@ -182,11 +185,12 @@ export default function SectionBuilderPage() {
 
   const loadSections = async () => {
     try {
-      const [pageData, sectionData, appearanceData, mediaData] = await Promise.all([
+      const [pageData, sectionData, appearanceData, mediaData, templateData] = await Promise.all([
         getPageByIdDummy(pageId),
         getSectionsByPageDummy(pageId),
         getAppearanceDummy(),
         getMediaDummy(),
+        getActiveTemplateDummy(),
       ])
       const validated = sectionData.map((s) => {
         const validVariant = getValidVariantId(s.type, s.variant)
@@ -196,6 +200,7 @@ export default function SectionBuilderPage() {
       setSections(validated)
       setAppearance(appearanceData)
       setMediaList(mediaData)
+      setTemplate(templateData)
     } catch {
       setError('Failed to load page data')
     } finally {
@@ -212,6 +217,10 @@ export default function SectionBuilderPage() {
     return () => { active = false }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageId])
+
+  const allowedTypes = Array.isArray(template?.sections)
+    ? SECTION_TYPES.filter((type) => template.sections.includes(type.value))
+    : SECTION_TYPES
 
   const handleAddTypeChange = (e) => {
     const type = e.target.value
@@ -500,7 +509,7 @@ export default function SectionBuilderPage() {
           <div>
             <label className="mb-1.5 block text-sm font-medium text-gray-700">Section Type <span className="text-error-500">*</span></label>
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
-              {SECTION_TYPES.map((type) => (
+              {allowedTypes.map((type) => (
                 <button
                   key={type.value}
                   type="button"

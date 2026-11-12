@@ -138,7 +138,7 @@ export default function MediaPage() {
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*"
+          accept="image/png,image/jpeg,image/gif,image/webp,image/avif"
           onChange={handleUpload}
           className="hidden"
         />

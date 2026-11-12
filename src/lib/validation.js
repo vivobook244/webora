@@ -1,18 +1,32 @@
 const DANGEROUS_PROTOCOLS = ['javascript:', 'data:', 'vbscript:', 'file:']
 
-export function isSafeUrl(url) {
-  if (!url || typeof url !== 'string') return false
-  const trimmed = url.trim()
-  if (!trimmed) return false
-  const lower = trimmed.toLowerCase()
-  for (const protocol of DANGEROUS_PROTOCOLS) {
-    if (lower.startsWith(protocol)) return false
-  }
-  if (lower.startsWith('http://') || lower.startsWith('https://')) return true
-  if (lower.startsWith('/')) return true
-  if (lower.startsWith('./') || lower.startsWith('../')) return true
-  if (/^[a-z][a-z0-9+.-]*:/i.test(trimmed) && !lower.startsWith('mailto:') && !lower.startsWith('tel:')) {
+export function isSafeUrl(value) {
+  if (typeof value !== 'string') return false
+  const url = value.trim()
+  if (!url || /[\u0000-\u001F\u007F]/.test(url)) return false
+
+  const lower = url.toLowerCase()
+  if (DANGEROUS_PROTOCOLS.some((protocol) => lower.startsWith(protocol))) return false
+  if (url.startsWith('//')) return false
+  if (url.startsWith('/') || url.startsWith('./') || url.startsWith('../') || url.startsWith('#')) return true
+  if (/^(mailto|tel):/i.test(url)) return true
+
+  try {
+    const parsed = new URL(url)
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:'
+  } catch {
     return false
   }
-  return true
+}
+
+export function isValidHexColor(value) {
+  return typeof value === 'string' && /^#[0-9A-Fa-f]{6}$/.test(value)
+}
+
+export function isValidSlug(value) {
+  return typeof value === 'string' && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(value)
+}
+
+export function isValidCssLength(value) {
+  return typeof value === 'string' && /^(\d+(?:\.\d+)?)(px|rem|em|%)$/.test(value)
 }

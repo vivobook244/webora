@@ -120,8 +120,8 @@ export default function AppearancePage() {
       await updateAppearanceDummy(appearance)
       setSuccessMessage('Appearance saved successfully.')
       setTimeout(() => setSuccessMessage(''), 4000)
-    } catch {
-      setError('Failed to save appearance settings')
+    } catch (err) {
+      setError(err.message || 'Failed to save appearance settings')
     } finally {
       setSaving(false)
     }
@@ -135,8 +135,8 @@ export default function AppearancePage() {
       setResetOpen(false)
       setSuccessMessage('Appearance reset to defaults.')
       setTimeout(() => setSuccessMessage(''), 4000)
-    } catch {
-      setError('Failed to reset appearance settings')
+    } catch (err) {
+      setError(err.message || 'Failed to reset appearance settings')
     } finally {
       setResetting(false)
     }

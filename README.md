@@ -1,13 +1,17 @@
-# CMS Lite
+# Webora
 
-A simple Content Management System for building and managing company profile / landing page websites.
+Webora is a lightweight Content Management System for building and managing company profile, institutional, and landing-page websites through structured templates, pages, sections, variants, and content.
 
-## Tech Stack
+It intentionally avoids arbitrary HTML/CSS/JavaScript editing and keeps the website-building workflow structured and predictable.
 
-- React + Vite
+## Current Architecture
+
+- React + Vite + JavaScript
 - Tailwind CSS
 - React Router
-- Dummy JSON + localStorage (temporary data layer)
+- Dummy JSON + localStorage for structured application data
+- IndexedDB for uploaded image files
+- API service layer prepared for a future backend (not used by the UI yet)
 
 ## Requirements
 
@@ -26,13 +30,7 @@ npm install
 npm run dev
 ```
 
-## Build
-
-```bash
-npm run build
-```
-
-## Preview (Production Build)
+## Build and Preview
 
 ```bash
 npm run build
@@ -50,99 +48,83 @@ npm run lint
 - Email: `admin@example.com`
 - Password: `admin123`
 
+The demo login is frontend-only and must not be used as production authentication.
+
 ## Environment
 
-See `.env.example`:
+See `.env.example` for `VITE_API_URL`. The API URL is reserved for future backend integration. The current UI continues to use dummy services.
+
+All `VITE_*` variables are exposed to the browser. Never put secrets, passwords, or private tokens in frontend environment variables.
+
+## Current Data Flow
 
 ```
-VITE_API_URL=http://localhost:3001/api
+Dummy JSON → Dummy Service → React UI → localStorage
+                                  └── IndexedDB (uploaded media files)
 ```
 
-The API URL is preparation for a future backend. The UI does not call it yet, so the app works fine without it. All `VITE_*` variables are exposed to the browser — never put secrets, passwords, or private tokens in frontend environment variables.
+## Future Data Flow
+
+```
+React UI → API Service → Express API → MongoDB
+```
+
+The API service layer is prepared but is not called by the UI yet.
 
 ## Project Structure
 
 ```
 src/
 ├── components/       # Reusable UI components
-│   ├── public/       # Public website renderers
-│   └── sections/     # Admin section preview components
-├── layouts/          # Layout wrappers (AdminLayout, PublicLayout)
-├── pages/            # Route pages
+│   └── public/       # Public website renderers
+├── layouts/          # Admin and public layouts
+├── pages/            # Admin, preview, and public pages
 ├── services/
-│   ├── api/          # API abstraction layer (prepared, not yet used)
-│   └── dummy/        # Dummy data services (active data source)
-├── data/             # Dummy JSON initial data
-├── lib/              # Auth context, hooks, storage, validation utilities
-├── App.jsx           # Router + route definitions
-└── main.jsx          # App entry point
+│   ├── api/          # Prepared API abstraction (unused)
+│   └── dummy/        # Active frontend data services
+├── data/             # Initial dummy JSON and configuration
+├── lib/              # Auth, storage, validation, IndexedDB media
+├── App.jsx
+└── main.jsx
 ```
 
-## Data Flow (Current)
+## Website Rendering
 
-```
-Dummy JSON → Dummy Service → React UI → localStorage
-```
+The active template controls available public sections and whether the shared public header/footer are rendered. Appearance settings are exposed as shared CSS variables and applied to the public renderer. Admin Preview and Public Website use the same `PublicLayout` and `PageRenderer` components and load the same page list for navigation.
 
-## Data Flow (Future)
+## Browser Storage
 
-```
-React UI → API Service → Express API → MongoDB
-```
+Structured data is stored in localStorage. Uploaded image blobs are stored in IndexedDB; localStorage stores only media metadata and the IndexedDB asset key. Media URLs are recreated when the application loads.
 
-The API service layer is prepared but not called by the UI yet.
+Browser storage remains local to a browser profile and device. Clearing browser data removes the prototype's content and uploaded files. Export, backup, multi-device synchronization, and server-side media storage are future backend work.
 
-## SPA Routing
+## SPA Deployment
 
-CMS Lite uses client-side routing. When deploying to static hosting, configure a fallback so all routes serve `index.html`:
+Webora uses client-side routing. The repository includes:
 
-```
-/* → /index.html
-```
+- `vercel.json` for Vercel SPA rewrites.
+- `public/_redirects` for Netlify SPA fallback.
 
-This is required for direct access and page refreshes on routes like `/admin/pages`, `/about-us`, etc.
+For other static hosting providers, configure all non-asset routes to serve `index.html`.
 
-### Static Hosting
+## Current Limitations
 
-The app is compatible with static hosting platforms that support SPA fallback:
+**This repository is a frontend prototype, not a production multi-user CMS.**
 
-- Vercel: add a `vercel.json` with `rewrites` rule for `/*` to `/index.html`
-- Netlify: add a `_redirects` file with `/* /index.html 200`
-- Cloudflare Pages: set SPA fallback in project settings
-- Other: configure fallback to `index.html` for all non-asset routes
+- Authentication is a demo-only local session with a 12-hour expiry. It is not a security boundary.
+- Role checks are frontend-only. Server-side authentication and authorization do not exist yet.
+- Application records are browser-local and are not synchronized between devices.
+- Uploaded media is stored in browser IndexedDB, not in a shared object-storage service.
+- SEO metadata is updated client-side. Search engines and social crawlers may require server rendering or prerendering for reliable metadata discovery.
+- There is no production database, server-side validation, backup service, or audit log.
 
-## Deployment Limitations
-
-**CMS Lite is frontend-only.** This version is NOT production-ready for multi-user use.
-
-- Data is stored in the browser via localStorage — it is browser-specific, device-specific, and can be cleared by the user at any time
-- Authentication is dummy/localStorage-based — it is not secure for production
-- Backend and API are not implemented — the API service layer exists only as preparation
-- localStorage is not suitable for a production database, multi-user scenarios, or backups
-- Role-based access control exists only for UI behavior, not as a security boundary
-
-### Security Notes
-
-- Module 14 performs frontend security hardening only (input validation, URL sanitization, XSS prevention, localStorage safety, error boundaries)
-- This does NOT make the app production-secure — it reduces common frontend risks
-- The following must be implemented before production use:
-  - Real backend authentication (JWT, sessions)
-  - Server-side data validation and authorization
-  - Database (MongoDB or equivalent)
-  - Secure file upload handling
-  - HTTPS enforcement
-
-### Known Dependency Vulnerabilities
-
-`npm audit` reports vulnerabilities in devDependencies (tailwindcss, vite/esbuild) and react-router-dom v6. Fixes require major version upgrades (tailwindcss 4, vite 8, react-router 7) which are breaking changes. These do not affect production builds since vulnerable packages are build-time only or the vulnerabilities require specific attack conditions.
+Before production multi-user use, implement the planned Express backend, cookie/session authentication, server-side authorization, database persistence, shared media storage, backups, and operational monitoring.
 
 ## localStorage Keys
 
-The app uses these localStorage keys:
-
-- `cms_lite_auth` — dummy session
+- `cms_lite_auth` — demo session
 - `cms_lite_site_settings` — site settings
-- `cms_lite_media` — media library
+- `cms_lite_media` — media metadata
 - `cms_lite_active_template` — active template ID
 - `cms_lite_pages` — pages
 - `cms_lite_sections` — sections
@@ -150,23 +132,4 @@ The app uses these localStorage keys:
 - `cms_lite_appearance` — appearance settings
 - `cms_lite_seo` — SEO settings
 
-All localStorage reads use try/catch with fallback to default data. Corrupt data in one key does not affect other keys.
-
-## Features
-
-- Admin authentication (dummy)
-- Dashboard with statistics
-- Site settings management
-- Media library (image upload simulation, 5 MB limit)
-- Template system with activation
-- Page management with slug validation, status control, and homepage assignment
-- Section builder with 10 section types: Hero, About, Services, Gallery, Testimonial, CTA, Contact, Rich Text, Image + Text, FAQ
-- Section variants per type
-- Navigation management (page links, custom URLs, 2-level nesting)
-- Appearance customization (colors, typography, layout, radius) with live preview
-- SEO settings (site title, description, keywords, robots, Open Graph, Twitter Card)
-- Page preview (draft and published states)
-- Publish/unpublish workflow
-- Public website rendering with responsive design
-- Error boundary for crash recovery
-- Input validation and URL sanitization throughout
+Uploaded image blobs are stored separately in IndexedDB database `webora_media`.

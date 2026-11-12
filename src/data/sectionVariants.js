@@ -56,18 +56,17 @@ export function getSectionVariants(type) {
 }
 
 export function getSectionVariant(type, variantId) {
-  const variants = getSectionVariants(type)
-  const found = variants.find((v) => v.id === variantId)
-  if (found) return found
-  return variants[0] || null
+  return getSectionVariants(type).find((variant) => variant.id === variantId) || null
 }
 
 export function getValidVariantId(type, variantId) {
-  const variant = getSectionVariant(type, variantId)
-  return variant ? variant.id : null
+  return getSectionVariant(type, variantId)?.id || null
 }
 
 export function getDefaultVariantId(type) {
-  const variants = getSectionVariants(type)
-  return variants[0] ? variants[0].id : null
+  return getSectionVariants(type)[0]?.id || null
+}
+
+export function isValidSectionVariant(type, variantId) {
+  return Boolean(getSectionVariant(type, variantId))
 }

@@ -34,7 +34,7 @@ export default function PublicHeader({ settings, navItems, pages }) {
   }
 
   return (
-    <header className="sticky top-0 z-50 border-b" style={{ backgroundColor: 'var(--color-background)', borderColor: 'var(--color-muted-text)', borderColorOpacity: 0.15 }}>
+    <header className="sticky top-0 z-50 border-b" style={{ backgroundColor: 'var(--color-background)', borderColor: 'color-mix(in srgb, var(--color-muted-text) 20%, transparent)' }}>
       <div className="mx-auto flex h-16 items-center justify-between px-6" style={{ maxWidth: 'var(--container-width)' }}>
         <Link to="/" className="flex items-center gap-2">
           <span className="text-lg font-bold" style={{ color: 'var(--color-text)', fontFamily: 'var(--font-heading)' }}>
@@ -60,7 +60,7 @@ export default function PublicHeader({ settings, navItems, pages }) {
       </div>
 
       {mobileOpen && (
-        <div className="border-t lg:hidden" style={{ backgroundColor: 'var(--color-background)', borderColor: 'var(--color-muted-text)', borderColorOpacity: 0.15 }}>
+        <div className="border-t lg:hidden" style={{ backgroundColor: 'var(--color-background)', borderColor: 'color-mix(in srgb, var(--color-muted-text) 20%, transparent)' }}>
           <ul className="space-y-1 px-6 py-4">
             {topLevel.map((item) => {
               if (!isItemValid(item)) return null

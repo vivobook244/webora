@@ -2,8 +2,8 @@ import { Navigate } from 'react-router-dom'
 import { useAuth } from '../lib/useAuth'
 import LoadingState from '../components/LoadingState'
 
-export default function ProtectedRoute({ children }) {
-  const { isAuthenticated, loading } = useAuth()
+export default function ProtectedRoute({ children, roles = ['ADMIN'] }) {
+  const { user, isAuthenticated, loading } = useAuth()
 
   if (loading) {
     return (
@@ -15,6 +15,10 @@ export default function ProtectedRoute({ children }) {
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />
+  }
+
+  if (!roles.includes(user?.role)) {
+    return <Navigate to="/" replace />
   }
 
   return children

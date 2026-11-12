@@ -30,6 +30,21 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
+  useEffect(() => {
+    if (!user?.expiresAt) return undefined
+    const remaining = user.expiresAt - Date.now()
+    if (remaining <= 0) {
+      setUser(null)
+      logoutDummy().catch(() => {})
+      return undefined
+    }
+    const timeoutId = setTimeout(() => {
+      setUser(null)
+      logoutDummy().catch(() => {})
+    }, remaining)
+    return () => clearTimeout(timeoutId)
+  }, [user])
+
   const login = useCallback(async (email, password) => {
     const session = await loginDummy(email, password)
     setUser(session)
@@ -37,8 +52,11 @@ export function AuthProvider({ children }) {
   }, [])
 
   const logout = useCallback(async () => {
-    await logoutDummy()
-    setUser(null)
+    try {
+      await logoutDummy()
+    } finally {
+      setUser(null)
+    }
   }, [])
 
   return (

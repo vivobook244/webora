@@ -15,6 +15,9 @@
       "testimonial",
       "cta",
       "contact",
+      "richtext",
+      "imagetext",
+      "faq",
       "footer"
     ]
   }

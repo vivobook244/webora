@@ -1,16 +1,19 @@
 import defaultSections from '../../data/sections.json'
+import defaultTemplates from '../../data/templates.json'
 import { getStorageItem, setStorageItem } from '../../lib/storage'
+import { isValidSectionVariant, SECTION_VARIANT_CONFIG } from '../../data/sectionVariants'
 
 const SECTIONS_KEY = 'cms_lite_sections'
+const ACTIVE_TEMPLATE_KEY = 'cms_lite_active_template'
 
 function loadSections() {
   const raw = getStorageItem(SECTIONS_KEY)
-  if (!raw) return [...defaultSections]
+  if (!raw) return JSON.parse(JSON.stringify(defaultSections))
   try {
     const parsed = JSON.parse(raw)
-    return Array.isArray(parsed) ? parsed : [...defaultSections]
+    return Array.isArray(parsed) ? parsed : JSON.parse(JSON.stringify(defaultSections))
   } catch {
-    return [...defaultSections]
+    return JSON.parse(JSON.stringify(defaultSections))
   }
 }
 
@@ -18,106 +21,105 @@ function saveSections(sections) {
   setStorageItem(SECTIONS_KEY, JSON.stringify(sections))
 }
 
+function validateSection(data) {
+  if (!data.pageId) throw new Error('Section must belong to a page.')
+  if (!SECTION_VARIANT_CONFIG[data.type]) throw new Error('Unknown section type.')
+  if (!isValidSectionVariant(data.type, data.variant)) throw new Error('Invalid variant for this section type.')
+  const activeId = getStorageItem(ACTIVE_TEMPLATE_KEY)
+  const template = defaultTemplates.find((item) => item.id === activeId)
+    || defaultTemplates.find((item) => item.status === 'ACTIVE')
+  if (template?.sections && !template.sections.includes(data.type)) {
+    throw new Error('The active template does not support this section type.')
+  }
+}
+
 export async function getSectionsByPageDummy(pageId) {
-  await new Promise((resolve) => setTimeout(resolve, 300))
-  const sections = loadSections()
-  return sections
-    .filter((s) => s.pageId === pageId)
-    .sort((a, b) => a.order - b.order)
+  return loadSections()
+    .filter((section) => section.pageId === pageId)
+    .sort((a, b) => (a.order || 0) - (b.order || 0))
 }
 
 export async function getSectionByIdDummy(id) {
-  await new Promise((resolve) => setTimeout(resolve, 200))
-  const sections = loadSections()
-  return sections.find((s) => s.id === id) || null
+  return loadSections().find((section) => section.id === id) || null
 }
 
 export async function createSectionDummy(data) {
-  await new Promise((resolve) => setTimeout(resolve, 400))
+  validateSection(data)
   const sections = loadSections()
-  const pageSections = sections.filter((s) => s.pageId === data.pageId)
-  const maxOrder = pageSections.reduce((max, s) => Math.max(max, s.order), 0)
-  const newSection = {
-    id: `section_${Date.now()}`,
+  const pageSections = sections.filter((section) => section.pageId === data.pageId)
+  const maxOrder = pageSections.reduce((max, section) => Math.max(max, section.order || 0), 0)
+  const created = {
+    id: `section_${crypto.randomUUID?.() || Date.now()}`,
     pageId: data.pageId,
     type: data.type,
-    variant: data.variant || 'default',
+    variant: data.variant,
     order: maxOrder + 1,
     visible: true,
     content: data.content || {},
   }
-  saveSections([...sections, newSection])
-  return newSection
+  saveSections([...sections, created])
+  return created
 }
 
 export async function updateSectionDummy(id, data) {
-  await new Promise((resolve) => setTimeout(resolve, 400))
   const sections = loadSections()
-  const index = sections.findIndex((s) => s.id === id)
-  if (index === -1) {
-    throw new Error('Section not found')
-  }
-  sections[index] = { ...sections[index], ...data }
+  const index = sections.findIndex((section) => section.id === id)
+  if (index === -1) throw new Error('Section not found')
+  const next = { ...sections[index], ...data }
+  validateSection(next)
+  sections[index] = next
   saveSections(sections)
   return sections[index]
 }
 
 export async function deleteSectionDummy(id) {
-  await new Promise((resolve) => setTimeout(resolve, 300))
   const sections = loadSections()
-  const target = sections.find((s) => s.id === id)
-  const filtered = sections.filter((s) => s.id !== id)
-  if (target) {
-    const pageSections = filtered
-      .filter((s) => s.pageId === target.pageId)
-      .sort((a, b) => a.order - b.order)
-    pageSections.forEach((s, i) => { s.order = i + 1 })
-  }
+  const target = sections.find((section) => section.id === id)
+  if (!target) throw new Error('Section not found')
+  const filtered = sections.filter((section) => section.id !== id)
+  const siblings = filtered
+    .filter((section) => section.pageId === target.pageId)
+    .sort((a, b) => a.order - b.order)
+  siblings.forEach((section, index) => { section.order = index + 1 })
   saveSections(filtered)
   return true
 }
 
 export async function duplicateSectionDummy(id) {
-  await new Promise((resolve) => setTimeout(resolve, 400))
   const sections = loadSections()
-  const original = sections.find((s) => s.id === id)
-  if (!original) {
-    throw new Error('Section not found')
-  }
-  const pageSections = sections.filter((s) => s.pageId === original.pageId)
-  const originalOrder = original.order
-  pageSections.forEach((s) => {
-    if (s.order > originalOrder) s.order += 1
+  const original = sections.find((section) => section.id === id)
+  if (!original) throw new Error('Section not found')
+  const siblings = sections.filter((section) => section.pageId === original.pageId)
+  siblings.forEach((section) => {
+    if (section.order > original.order) section.order += 1
   })
-  const newSection = {
+  const duplicated = {
     ...original,
-    id: `section_${Date.now()}`,
-    order: originalOrder + 1,
-    content: JSON.parse(JSON.stringify(original.content)),
+    id: `section_${crypto.randomUUID?.() || Date.now()}`,
+    order: original.order + 1,
+    content: JSON.parse(JSON.stringify(original.content || {})),
     visible: true,
   }
-  saveSections([...sections, newSection])
-  return newSection
+  saveSections([...sections, duplicated])
+  return duplicated
 }
 
 export async function reorderSectionsDummy(pageId, orderedIds) {
-  await new Promise((resolve) => setTimeout(resolve, 300))
   const sections = loadSections()
-  orderedIds.forEach((id, i) => {
-    const section = sections.find((s) => s.id === id)
-    if (section) section.order = i + 1
+  const pageIds = new Set(sections.filter((section) => section.pageId === pageId).map((section) => section.id))
+  orderedIds.forEach((id, index) => {
+    if (!pageIds.has(id)) return
+    const section = sections.find((item) => item.id === id)
+    if (section) section.order = index + 1
   })
   saveSections(sections)
-  return sections.filter((s) => s.pageId === pageId).sort((a, b) => a.order - b.order)
+  return sections.filter((section) => section.pageId === pageId).sort((a, b) => a.order - b.order)
 }
 
 export async function toggleSectionVisibilityDummy(id) {
-  await new Promise((resolve) => setTimeout(resolve, 200))
   const sections = loadSections()
-  const index = sections.findIndex((s) => s.id === id)
-  if (index === -1) {
-    throw new Error('Section not found')
-  }
+  const index = sections.findIndex((section) => section.id === id)
+  if (index === -1) throw new Error('Section not found')
   sections[index].visible = !sections[index].visible
   saveSections(sections)
   return sections[index]

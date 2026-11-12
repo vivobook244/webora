@@ -1,29 +1,56 @@
 import { useEffect } from 'react'
 
-export function useSeoMeta({ title, description, ogTitle, ogDescription, ogImage, twitterCard, robots }) {
+export function useSeoMeta({
+  title,
+  description,
+  keywords = [],
+  ogTitle,
+  ogDescription,
+  ogImage,
+  twitterCard,
+  robots,
+  canonicalUrl,
+}) {
   useEffect(() => {
     if (title) document.title = title
 
-    const setMetaContent = (name, content, useProperty = false) => {
-      if (!content) return
-      const attr = useProperty ? 'property' : 'name'
-      let el = document.head.querySelector(`meta[${attr}="${name}"]`)
-      if (!el) {
-        el = document.createElement('meta')
-        el.setAttribute(attr, name)
-        document.head.appendChild(el)
+    const updateMeta = (attribute, key, value) => {
+      const selector = `meta[${attribute}="${key}"]`
+      let element = document.head.querySelector(selector)
+      if (!value) {
+        element?.remove()
+        return
       }
-      el.setAttribute('content', content)
+      if (!element) {
+        element = document.createElement('meta')
+        element.setAttribute(attribute, key)
+        document.head.appendChild(element)
+      }
+      element.setAttribute('content', String(value))
     }
 
-    setMetaContent('description', description)
-    setMetaContent('og:title', ogTitle || title, true)
-    setMetaContent('og:description', ogDescription || description, true)
-    setMetaContent('twitter:card', twitterCard)
-    setMetaContent('robots', robots)
+    updateMeta('name', 'description', description)
+    updateMeta('name', 'keywords', Array.isArray(keywords) ? keywords.join(', ') : keywords)
+    updateMeta('name', 'robots', robots || 'index,follow')
+    updateMeta('name', 'twitter:card', twitterCard || 'summary')
+    updateMeta('name', 'twitter:title', ogTitle || title)
+    updateMeta('name', 'twitter:description', ogDescription || description)
+    updateMeta('name', 'twitter:image', ogImage)
+    updateMeta('property', 'og:title', ogTitle || title)
+    updateMeta('property', 'og:description', ogDescription || description)
+    updateMeta('property', 'og:image', ogImage)
+    updateMeta('property', 'og:type', 'website')
 
-    if (ogImage) {
-      setMetaContent('og:image', ogImage, true)
+    let canonical = document.head.querySelector('link[rel="canonical"]')
+    if (canonicalUrl) {
+      if (!canonical) {
+        canonical = document.createElement('link')
+        canonical.rel = 'canonical'
+        document.head.appendChild(canonical)
+      }
+      canonical.href = canonicalUrl
+    } else {
+      canonical?.remove()
     }
-  }, [title, description, ogTitle, ogDescription, ogImage, twitterCard, robots])
+  }, [title, description, keywords, ogTitle, ogDescription, ogImage, twitterCard, robots, canonicalUrl])
 }

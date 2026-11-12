@@ -183,8 +183,8 @@ export default function PagesPage() {
       await deletePageDummy(deleteId)
       setPages((prev) => prev.filter((p) => p.id !== deleteId))
       setDeleteId(null)
-    } catch {
-      setError('Failed to delete page')
+    } catch (err) {
+      setError(err.message || 'Failed to delete page')
     } finally {
       setDeleting(false)
     }
@@ -217,8 +217,8 @@ export default function PagesPage() {
       setPublishId(null)
       setSuccessMessage('Page published successfully.')
       setTimeout(() => setSuccessMessage(''), 4000)
-    } catch {
-      setError('Failed to publish page')
+    } catch (err) {
+      setError(err.message || 'Failed to publish page')
     } finally {
       setPublishing(false)
     }
@@ -233,8 +233,8 @@ export default function PagesPage() {
       setUnpublishId(null)
       setSuccessMessage('Page unpublished successfully.')
       setTimeout(() => setSuccessMessage(''), 4000)
-    } catch {
-      setError('Failed to unpublish page')
+    } catch (err) {
+      setError(err.message || 'Failed to unpublish page')
     } finally {
       setUnpublishing(false)
     }

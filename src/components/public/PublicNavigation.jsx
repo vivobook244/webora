@@ -2,10 +2,11 @@ import { Link } from 'react-router-dom'
 import { isSafeUrl } from '../../lib/validation'
 
 export default function PublicNavigation({ items, pages }) {
-  const visibleItems = items
+  const visibleItems = (items || [])
     .filter((item) => item.visible)
     .sort((a, b) => a.order - b.order)
 
+  const pageList = pages || []
   const topLevel = visibleItems.filter((item) => !item.parentId)
   const childrenOf = (parentId) => visibleItems.filter((item) => item.parentId === parentId)
 
@@ -14,7 +15,7 @@ export default function PublicNavigation({ items, pages }) {
       return isSafeUrl(item.url) ? item.url : null
     }
     if (item.type === 'PAGE' && item.pageId) {
-      const page = pages.find((p) => p.id === item.pageId)
+      const page = pageList.find((p) => p.id === item.pageId)
       if (page && page.status === 'PUBLISHED') {
         return page.isHome ? '/' : `/${page.slug}`
       }
@@ -25,7 +26,7 @@ export default function PublicNavigation({ items, pages }) {
   const isItemValid = (item) => {
     if (item.type === 'CUSTOM_URL') return !!item.url
     if (item.type === 'PAGE' && item.pageId) {
-      const page = pages.find((p) => p.id === item.pageId)
+      const page = pageList.find((p) => p.id === item.pageId)
       return page && page.status === 'PUBLISHED'
     }
     return false

@@ -32,3 +32,28 @@
     @apply rounded-xl border border-gray-200 bg-white shadow-sm;
   }
 }
+
+/* Public website design tokens: all section layouts inherit Appearance settings. */
+.public-site main > section {
+  padding-block: var(--section-spacing, 80px) !important;
+}
+
+.public-site main > section .grid {
+  gap: var(--content-spacing, 24px);
+}
+
+.public-site h1,
+.public-site h2,
+.public-site h3,
+.public-site h4 {
+  font-family: var(--font-heading, Inter), sans-serif;
+}
+
+.public-site p,
+.public-site li,
+.public-site a,
+.public-site button,
+.public-site input,
+.public-site textarea {
+  font-family: var(--font-body, Inter), sans-serif;
+}

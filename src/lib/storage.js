@@ -9,16 +9,21 @@ export function getStorageItem(key) {
 export function setStorageItem(key, value) {
   try {
     localStorage.setItem(key, value)
-  } catch {
-    // localStorage may be full or unavailable — fail silently
+    return true
+  } catch (error) {
+    const message = error?.name === 'QuotaExceededError'
+      ? 'Browser storage is full. Remove unused media or data and try again.'
+      : 'Browser storage is unavailable. Check your browser privacy settings.'
+    throw new Error(message, { cause: error })
   }
 }
 
 export function removeStorageItem(key) {
   try {
     localStorage.removeItem(key)
-  } catch {
-    // fail silently
+    return true
+  } catch (error) {
+    throw new Error('Unable to update browser storage.', { cause: error })
   }
 }
 
