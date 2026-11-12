@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useLanguage } from '../lib/LanguageContext'
 import { useNavigate } from 'react-router-dom'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
@@ -50,6 +51,7 @@ const EMPTY_FORM = {
 }
 
 export default function PagesPage() {
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const [pages, setPages] = useState([])
   const [loading, setLoading] = useState(true)
@@ -78,7 +80,7 @@ export default function PagesPage() {
         const data = await getPagesDummy()
         if (active) setPages(data)
       } catch {
-        if (active) setError('Failed to load pages')
+        if (active) setError(t("Failed to load pages"))
       } finally {
         if (active) setLoading(false)
       }
@@ -129,14 +131,14 @@ export default function PagesPage() {
   const validate = () => {
     const errs = {}
     if (!form.title.trim()) {
-      errs.title = 'Title is required'
+      errs.title = t("Title is required")
     }
     if (!form.slug.trim()) {
-      errs.slug = 'Slug is required'
+      errs.slug = t("Slug is required")
     } else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(form.slug)) {
       errs.slug = 'Slug must be URL-friendly (lowercase letters, numbers, hyphens)'
     } else if (!isSlugUnique(form.slug, pages, editingId)) {
-      errs.slug = 'Slug is already in use'
+      errs.slug = t("Slug is already in use")
     }
     return errs
   }
@@ -171,7 +173,7 @@ export default function PagesPage() {
       }
       setModalOpen(false)
     } catch (err) {
-      setError(err.message || 'Failed to save page')
+      setError(err.message || t("Failed to save page"))
     } finally {
       setSaving(false)
     }
@@ -184,7 +186,7 @@ export default function PagesPage() {
       setPages((prev) => prev.filter((p) => p.id !== deleteId))
       setDeleteId(null)
     } catch (err) {
-      setError(err.message || 'Failed to delete page')
+      setError(err.message || t("Failed to delete page"))
     } finally {
       setDeleting(false)
     }
@@ -192,11 +194,11 @@ export default function PagesPage() {
 
   const validatePublish = (page) => {
     const errs = []
-    if (!page.title?.trim()) errs.push('Title is required')
-    if (!page.slug?.trim()) errs.push('Slug is required')
-    else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(page.slug)) errs.push('Slug must be URL-friendly')
+    if (!page.title?.trim()) errs.push(t("Title is required"))
+    if (!page.slug?.trim()) errs.push(t("Slug is required"))
+    else if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(page.slug)) errs.push(t("Slug must be URL-friendly"))
     const otherPages = pages.filter((p) => p.id !== page.id)
-    if (!isSlugUnique(page.slug, otherPages, page.id)) errs.push('Slug must be unique')
+    if (!isSlugUnique(page.slug, otherPages, page.id)) errs.push(t("Slug must be unique"))
     return errs
   }
 
@@ -215,10 +217,10 @@ export default function PagesPage() {
       const updated = await publishPageDummy(publishId)
       setPages((prev) => prev.map((p) => (p.id === updated.id ? updated : p)))
       setPublishId(null)
-      setSuccessMessage('Page published successfully.')
+      setSuccessMessage(t("Page published successfully."))
       setTimeout(() => setSuccessMessage(''), 4000)
     } catch (err) {
-      setError(err.message || 'Failed to publish page')
+      setError(err.message || t("Failed to publish page"))
     } finally {
       setPublishing(false)
     }
@@ -231,10 +233,10 @@ export default function PagesPage() {
       const updated = await unpublishPageDummy(unpublishId)
       setPages((prev) => prev.map((p) => (p.id === updated.id ? updated : p)))
       setUnpublishId(null)
-      setSuccessMessage('Page unpublished successfully.')
+      setSuccessMessage(t("Page unpublished successfully."))
       setTimeout(() => setSuccessMessage(''), 4000)
     } catch (err) {
-      setError(err.message || 'Failed to unpublish page')
+      setError(err.message || t("Failed to unpublish page"))
     } finally {
       setUnpublishing(false)
     }
@@ -251,9 +253,9 @@ export default function PagesPage() {
   if (loading) {
     return (
       <div>
-        <PageHeader title="Pages" subtitle="Manage your website pages" />
+        <PageHeader title=={t("Pages")} subtitle=={t("Manage your website pages")} />
         <Card className="p-6">
-          <LoadingState message="Loading pages..." />
+          <LoadingState message=={t("Loading pages...")} />
         </Card>
       </div>
     )
@@ -261,8 +263,8 @@ export default function PagesPage() {
 
   return (
     <div>
-      <PageHeader title="Pages" subtitle="Manage your website pages">
-        <Button onClick={openCreate}>Create Page</Button>
+      <PageHeader title=={t("Pages")} subtitle=={t("Manage your website pages")}>
+        <Button onClick={openCreate}>{t("Create Page")}</Button>
       </PageHeader>
 
       {successMessage && (
@@ -282,16 +284,16 @@ export default function PagesPage() {
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="flex-1 max-w-sm">
-          <SearchInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search pages..." />
+          <SearchInput value={search} onChange={(e) => setSearch(e.target.value)} placeholder=={t("Search pages...")} />
         </div>
         <div className="w-full sm:w-40">
           <Select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             options={[
-              { value: 'ALL', label: 'All Status' },
-              { value: 'DRAFT', label: 'Draft' },
-              { value: 'PUBLISHED', label: 'Published' },
+              { value: 'ALL', label: t("All Status") },
+              { value: 'DRAFT', label: t("Draft") },
+              { value: 'PUBLISHED', label: t("Published") },
             ]}
           />
         </div>
@@ -300,8 +302,8 @@ export default function PagesPage() {
       {filtered.length === 0 ? (
         <Card className="p-6">
           <EmptyState
-            title={search || statusFilter !== 'ALL' ? 'No pages found' : 'No pages yet'}
-            message={search || statusFilter !== 'ALL' ? 'Try a different search or filter' : 'Create your first page to get started'}
+            title={search || statusFilter !== 'ALL' ? t("No pages found") : t("No pages yet")}
+            message={search || statusFilter !== 'ALL' ? t("Try a different search or filter") : t("Create your first page to get started")}
             icon={PageIcon}
           />
         </Card>
@@ -311,11 +313,11 @@ export default function PagesPage() {
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-gray-200 bg-gray-50">
-                  <th className="px-4 py-3 text-left font-medium text-gray-500">Title</th>
-                  <th className="hidden px-4 py-3 text-left font-medium text-gray-500 sm:table-cell">Slug</th>
-                  <th className="px-4 py-3 text-left font-medium text-gray-500">Status</th>
-                  <th className="hidden px-4 py-3 text-left font-medium text-gray-500 sm:table-cell">Updated</th>
-                  <th className="px-4 py-3 text-right font-medium text-gray-500">Actions</th>
+                  <th className="px-4 py-3 text-left font-medium text-gray-500">{t("Title")}</th>
+                  <th className="hidden px-4 py-3 text-left font-medium text-gray-500 sm:table-cell">{t("Slug")}</th>
+                  <th className="px-4 py-3 text-left font-medium text-gray-500">{t("Status")}</th>
+                  <th className="hidden px-4 py-3 text-left font-medium text-gray-500 sm:table-cell">{t("Updated")}</th>
+                  <th className="px-4 py-3 text-right font-medium text-gray-500">{t("Actions")}</th>
                 </tr>
               </thead>
               <tbody>
@@ -326,7 +328,7 @@ export default function PagesPage() {
                         <span className="font-medium text-gray-900">{page.title}</span>
                         {page.isHome && (
                           <span className="inline-flex items-center rounded-md bg-primary-100 px-2 py-0.5 text-xs font-medium text-primary-700">
-                            Home
+                            {t("Home")}
                           </span>
                         )}
                       </div>
@@ -340,43 +342,43 @@ export default function PagesPage() {
                         <button
                           onClick={() => navigate(`/admin/pages/${page.id}/preview`)}
                           className="rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
-                          title="Preview page"
+                          title=={t("Preview page")}
                         >
-                          Preview
+                          {t("Preview")}
                         </button>
                         <button
                           onClick={() => navigate(`/admin/pages/${page.id}/sections`)}
                           className="rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
-                          title="Manage Sections"
+                          title=={t("Manage Sections")}
                         >
-                          Sections
+                          {t("Sections")}
                         </button>
                         <button
                           onClick={() => openEdit(page)}
                           className="rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
                         >
-                          Edit
+                          {t("Edit")}
                         </button>
                         {page.status === 'DRAFT' ? (
                           <button
                             onClick={() => setPublishId(page.id)}
                             className="rounded-lg border border-success-200 px-2.5 py-1.5 text-xs font-medium text-success-700 hover:bg-success-50"
                           >
-                            Publish
+                            {t("Publish")}
                           </button>
                         ) : (
                           <button
                             onClick={() => setUnpublishId(page.id)}
                             className="rounded-lg border border-warning-200 px-2.5 py-1.5 text-xs font-medium text-warning-700 hover:bg-warning-50"
                           >
-                            Unpublish
+                            {t("Unpublish")}
                           </button>
                         )}
                         <button
                           onClick={() => setDeleteId(page.id)}
                           className="rounded-lg border border-error-200 px-2.5 py-1.5 text-xs font-medium text-error-600 hover:bg-error-50"
                         >
-                          Delete
+                          {t("Delete")}
                         </button>
                       </div>
                     </td>
@@ -391,30 +393,30 @@ export default function PagesPage() {
       <Modal
         open={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={editingId ? 'Edit Page' : 'Create Page'}
+        title={editingId ? t("Edit Page") : t("Create Page")}
         footer={
           <>
             <Button variant="secondary" onClick={() => setModalOpen(false)} disabled={saving}>
-              Cancel
+              {t("Cancel")}
             </Button>
             <Button onClick={handleSave} loading={saving}>
-              {saving ? 'Saving...' : 'Save'}
+              {saving ? t("Saving...") : t("Save")}
             </Button>
           </>
         }
       >
         <div className="space-y-4">
           <Input
-            label="Title"
+            label=={t("Title")}
             name="title"
             value={form.title}
             onChange={handleTitleChange}
             error={errors.title}
             required
-            placeholder="Page title"
+            placeholder=={t("Page title")}
           />
           <Input
-            label="Slug"
+            label=={t("Slug")}
             name="slug"
             value={form.slug}
             onChange={handleSlugChange}
@@ -423,13 +425,13 @@ export default function PagesPage() {
             placeholder="url-friendly-slug"
           />
           <Select
-            label="Status"
+            label=={t("Status")}
             name="status"
             value={form.status}
             onChange={(e) => setForm((prev) => ({ ...prev, status: e.target.value }))}
             options={[
-              { value: 'DRAFT', label: 'Draft' },
-              { value: 'PUBLISHED', label: 'Published' },
+              { value: 'DRAFT', label: t("Draft") },
+              { value: 'PUBLISHED', label: t("Published") },
             ]}
           />
           <div className="flex items-center gap-2">
@@ -441,13 +443,13 @@ export default function PagesPage() {
               className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
             />
             <label htmlFor="isHome" className="text-sm font-medium text-gray-700">
-              Set as Homepage
+              {t("Set as Homepage")}
             </label>
           </div>
           <div className="border-t border-gray-100 pt-4">
-            <p className="mb-3 text-sm font-semibold text-gray-700">SEO</p>
+            <p className="mb-3 text-sm font-semibold text-gray-700">{t("SEO")}</p>
             <Input
-              label="SEO Title"
+              label=={t("SEO Title")}
               name="seoTitle"
               value={form.seoTitle}
               onChange={(e) => setForm((prev) => ({ ...prev, seoTitle: e.target.value }))}
@@ -455,7 +457,7 @@ export default function PagesPage() {
             />
             <div className="mt-4">
               <Textarea
-                label="SEO Description"
+                label=={t("SEO Description")}
                 name="seoDescription"
                 value={form.seoDescription}
                 onChange={(e) => setForm((prev) => ({ ...prev, seoDescription: e.target.value }))}
@@ -464,7 +466,7 @@ export default function PagesPage() {
               />
             </div>
             <div className="mt-4">
-              <label className="mb-1.5 block text-sm font-medium text-gray-700">OG Image</label>
+              <label className="mb-1.5 block text-sm font-medium text-gray-700">{t("OG Image")}</label>
               {form.ogImage ? (
                 <div className="flex items-center gap-3">
                   <span className="text-sm text-gray-500">{form.ogImage}</span>
@@ -473,14 +475,14 @@ export default function PagesPage() {
                     onClick={() => setMediaPickerOpen(true)}
                     className="rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
                   >
-                    Change
+                    {t("Change")}
                   </button>
                   <button
                     type="button"
                     onClick={() => setForm((prev) => ({ ...prev, ogImage: '' }))}
                     className="rounded-lg border border-gray-200 px-2.5 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
                   >
-                    Remove
+                    {t("Remove")}
                   </button>
                 </div>
               ) : (
@@ -489,7 +491,7 @@ export default function PagesPage() {
                   onClick={() => setMediaPickerOpen(true)}
                   className="rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
                 >
-                  Select from Media Library
+                  {t("Select from Media Library")}
                 </button>
               )}
             </div>
@@ -501,8 +503,8 @@ export default function PagesPage() {
         open={!!deleteId}
         onClose={() => setDeleteId(null)}
         onConfirm={handleDelete}
-        title="Delete Page"
-        message="Are you sure you want to delete this page? This action cannot be undone."
+        title=={t("Delete Page")}
+        message=={t("Are you sure you want to delete this page? This action cannot be undone.")}
         loading={deleting}
       />
 
@@ -510,9 +512,9 @@ export default function PagesPage() {
         open={!!publishId}
         onClose={() => setPublishId(null)}
         onConfirm={handlePublish}
-        title="Publish Page"
-        message="This page will be visible on your public website. Continue?"
-        confirmLabel="Publish"
+        title=={t("Publish Page")}
+        message=={t("This page will be visible on your public website. Continue?")}
+        confirmLabel=={t("Publish")}
         loading={publishing}
       />
 
@@ -520,9 +522,9 @@ export default function PagesPage() {
         open={!!unpublishId}
         onClose={() => setUnpublishId(null)}
         onConfirm={handleUnpublish}
-        title="Unpublish Page"
-        message="This page will no longer be visible on your public website. It will return to draft status."
-        confirmLabel="Unpublish"
+        title=={t("Unpublish Page")}
+        message=={t("This page will no longer be visible on your public website. It will return to draft status.")}
+        confirmLabel=={t("Unpublish")}
         loading={unpublishing}
       />
 
