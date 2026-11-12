@@ -247,7 +247,7 @@ export default function NavigationPage() {
 
   const getPageTitle = (pageId) => {
     const page = pages.find((p) => p.id === pageId)
-    return page ? page.title : 'Page not found'
+    return page ? page.title : t("Page not found")
   }
 
   const renderNavItem = (item, isChild = false) => {
@@ -285,7 +285,7 @@ export default function NavigationPage() {
                     <span className="text-gray-400">({getPageTitle(item.pageId)})</span>
                   )}
                   {item.type === 'PAGE' && !pages.find((p) => p.id === item.pageId) && (
-                    <span className="text-error-500">Page not found</span>
+                    <span className="text-error-500">{t("Page not found")}</span>
                   )}
                 </div>
               </div>
@@ -384,7 +384,7 @@ export default function NavigationPage() {
               {t("Cancel")}
             </Button>
             <Button onClick={handleSave} loading={saving}>
-              {saving ? 'Saving...' : t("Save")}
+              {saving ? t("Saving...") : t("Save")}
             </Button>
           </>
         }
