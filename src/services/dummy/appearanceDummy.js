@@ -4,6 +4,7 @@ import { getStorageItem, setStorageItem } from '../../lib/storage'
 import { isValidCssLength, isValidHexColor } from '../../lib/validation'
 
 const APPEARANCE_KEY = 'cms_lite_appearance'
+const ACTIVE_TEMPLATE_KEY = 'cms_lite_active_template'
 const FONT_OPTIONS = ['Inter', 'system-ui', 'Arial', 'Helvetica', 'Georgia', 'Times New Roman', 'Courier New']
 
 function cloneDefault() {
