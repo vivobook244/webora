@@ -1,9 +1,9 @@
 [
   {
     "id": "template_corporate",
-    "name": "Corporate",
-    "slug": "corporate",
-    "description": "Clean, professional layout for company profiles and institutional websites.",
+    "name": "Personal Journal",
+    "slug": "personal-journal",
+    "description": "A private, personal blog with a calm, intimate layout and warm editorial details.",
     "thumbnail": "",
     "status": "ACTIVE",
     "sections": [
@@ -19,13 +19,38 @@
       "imagetext",
       "faq",
       "footer"
-    ]
+    ],
+    "theme": {
+      "colors": {
+        "primary": "#8A5A44",
+        "secondary": "#4A342E",
+        "background": "#FBF5EF",
+        "surface": "#F2E7DC",
+        "text": "#3F302B",
+        "mutedText": "#8B756B"
+      },
+      "typography": {
+        "headingFont": "Georgia",
+        "bodyFont": "Inter",
+        "baseSize": "16px"
+      },
+      "layout": {
+        "containerWidth": "1080px",
+        "sectionSpacing": "88px",
+        "contentSpacing": "28px"
+      },
+      "radius": {
+        "small": "8px",
+        "medium": "14px",
+        "large": "22px"
+      }
+    }
   },
   {
     "id": "template_modern_business",
-    "name": "Modern Business",
-    "slug": "modern-business",
-    "description": "Bold business layout with a strong navigation bar, spacious content and clear calls to action.",
+    "name": "Newsroom",
+    "slug": "newsroom",
+    "description": "A clear, fact-focused news blog with strong editorial hierarchy and an up-to-date visual tone.",
     "thumbnail": "",
     "status": "INACTIVE",
     "sections": [
@@ -41,13 +66,38 @@
       "imagetext",
       "faq",
       "footer"
-    ]
+    ],
+    "theme": {
+      "colors": {
+        "primary": "#B8323B",
+        "secondary": "#18324B",
+        "background": "#F7F8FA",
+        "surface": "#E9EEF3",
+        "text": "#182634",
+        "mutedText": "#647586"
+      },
+      "typography": {
+        "headingFont": "Arial",
+        "bodyFont": "Arial",
+        "baseSize": "16px"
+      },
+      "layout": {
+        "containerWidth": "1200px",
+        "sectionSpacing": "64px",
+        "contentSpacing": "22px"
+      },
+      "radius": {
+        "small": "2px",
+        "medium": "4px",
+        "large": "8px"
+      }
+    }
   },
   {
     "id": "template_creative_studio",
-    "name": "Creative Studio",
-    "slug": "creative-studio",
-    "description": "Expressive editorial style for creative teams, agencies, portfolios and brands.",
+    "name": "Business Profile",
+    "slug": "business-profile",
+    "description": "A confident business website built around trust, integrity and proven experience.",
     "thumbnail": "",
     "status": "INACTIVE",
     "sections": [
@@ -63,6 +113,31 @@
       "imagetext",
       "faq",
       "footer"
-    ]
+    ],
+    "theme": {
+      "colors": {
+        "primary": "#1F5A4B",
+        "secondary": "#173B35",
+        "background": "#F8F8F3",
+        "surface": "#E9EFEA",
+        "text": "#26352F",
+        "mutedText": "#718078"
+      },
+      "typography": {
+        "headingFont": "Georgia",
+        "bodyFont": "Inter",
+        "baseSize": "16px"
+      },
+      "layout": {
+        "containerWidth": "1200px",
+        "sectionSpacing": "80px",
+        "contentSpacing": "26px"
+      },
+      "radius": {
+        "small": "4px",
+        "medium": "8px",
+        "large": "12px"
+      }
+    }
   }
 ]
