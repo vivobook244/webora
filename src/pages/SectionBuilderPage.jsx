@@ -131,6 +131,7 @@ function VariantPreview({ type, variantId, appearance, mediaList }) {
 }
 
 function VariantSelector({ type, selectedVariant, onSelect, appearance, mediaList }) {
+  const { t } = useLanguage()
   const variants = getSectionVariants(type)
   if (variants.length === 0) return null
 
