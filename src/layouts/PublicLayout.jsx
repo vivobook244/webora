@@ -3,7 +3,7 @@ import PublicFooter from '../components/public/PublicFooter'
 import { getCssVars } from '../components/public/publicUtils'
 
 export default function PublicLayout({ settings, navItems, pages, appearance, template, children }) {
-  const cssVars = getCssVars(appearance)
+  const cssVars = getCssVars(appearance, template)
   const sections = Array.isArray(template?.sections) ? template.sections : null
   const showHeader = !sections || sections.includes('header')
   const showFooter = !sections || sections.includes('footer')
