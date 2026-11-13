@@ -1,10 +1,10 @@
 import { isSafeUrl } from '../../lib/validation.js'
 
-export function getCssVars(appearance) {
-  const colors = appearance?.colors || {}
-  const typography = appearance?.typography || {}
-  const layout = appearance?.layout || {}
-  const radius = appearance?.radius || {}
+export function getCssVars(appearance, template) {
+  const colors = { ...(appearance?.colors || {}), ...(template?.theme?.colors || {}) }
+  const typography = { ...(appearance?.typography || {}), ...(template?.theme?.typography || {}) }
+  const layout = { ...(appearance?.layout || {}), ...(template?.theme?.layout || {}) }
+  const radius = { ...(appearance?.radius || {}), ...(template?.theme?.radius || {}) }
 
   return {
     '--color-primary': colors.primary || '#2563EB',
