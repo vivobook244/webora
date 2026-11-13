@@ -391,21 +391,41 @@ export default function SectionBuilderPage() {
   }
 
   return (
-    <div>
-      <PageHeader
-        title={page.title}
-        subtitle={
-          <span className="flex items-center gap-2">
+    <div className="section-builder space-y-5">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="min-w-0">
+          <Link to="/admin/pages" className="mb-2 inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-gray-400 transition hover:text-primary-600">
+            <span aria-hidden="true">←</span> {t("Pages")}
+          </Link>
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="text-2xl font-bold tracking-tight text-gray-950">{page.title}</h1>
             <StatusBadge status={page.status} />
-            <span>{t("Section Builder")}</span>
-          </span>
-        }
-      >
-        <Button variant="secondary" onClick={() => navigate('/admin/pages')}>
-          {t("Back to Pages")}
-        </Button>
-        <Button onClick={() => setAddOpen(true)}>{t("Add Section")}</Button>
-      </PageHeader>
+          </div>
+          <p className="mt-1 text-sm text-gray-500">{t("Section Builder")} <span className="mx-1 text-gray-300">/</span> <span className="font-mono text-xs">/{page.slug}</span></p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="secondary" onClick={() => navigate('/admin/pages')}>{t("Back to Pages")}</Button>
+          <Button onClick={() => setAddOpen(true)}><span className="mr-1 text-base leading-none">+</span>{t("Add Section")}</Button>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        <div className="rounded-xl border border-gray-200 bg-white px-4 py-3">
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-gray-400">Page ID</p>
+          <p className="mt-1 truncate font-mono text-xs font-semibold text-gray-700">{page.id}</p>
+        </div>
+        <div className="rounded-xl border border-gray-200 bg-white px-4 py-3">
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-gray-400">Sections</p>
+          <p className="mt-1 text-xl font-semibold tabular-nums text-gray-900">{sections.length}</p>
+        </div>
+        <div className="rounded-xl border border-gray-200 bg-white px-4 py-3">
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-gray-400">Visible</p>
+          <p className="mt-1 text-xl font-semibold tabular-nums text-emerald-600">{sections.filter((section) => section.visible).length}</p>
+        </div>
+        <div className="rounded-xl border border-gray-200 bg-white px-4 py-3">
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-gray-400">Hidden</p>
+          <p className="mt-1 text-xl font-semibold tabular-nums text-amber-600">{sections.filter((section) => !section.visible).length}</p>
+        </div>
+      </div>
 
       {error && (
         <div className="mb-4 rounded-lg border border-error-200 bg-error-50 px-4 py-3 text-sm text-error-700">
@@ -413,15 +433,24 @@ export default function SectionBuilderPage() {
         </div>
       )}
 
-      <Card className="mb-6 overflow-hidden">
-        <div className="border-b border-gray-100 px-4 py-3">
-          <h2 className="text-sm font-semibold text-gray-900">{t("Live Website Preview")}</h2>
-          <p className="mt-1 text-xs text-gray-500">{t("This preview uses the same layout and section renderer as the published website.")}</p>
+      <Card className="mb-6 overflow-hidden border-gray-200 shadow-sm">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 bg-gray-50/80 px-5 py-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_0_3px_rgba(16,185,129,0.12)]" />
+              <h2 className="text-sm font-semibold text-gray-900">{t("Live Website Preview")}</h2>
+              <span className="rounded-md border border-gray-200 bg-white px-1.5 py-0.5 font-mono text-[10px] text-gray-500">LIVE</span>
+            </div>
+            <p className="mt-1 text-xs text-gray-500">{t("This preview uses the same layout and section renderer as the published website.")}</p>
+          </div>
+          <span className="font-mono text-[10px] uppercase tracking-wider text-gray-400">/{page.slug}</span>
         </div>
-        <div className="max-h-[760px] overflow-auto">
-          <PublicLayout settings={settings} navItems={navItems} pages={pages} appearance={appearance} template={template}>
-            <PageRenderer page={page} sections={sections} mediaList={mediaList} template={template} />
-          </PublicLayout>
+        <div className="max-h-[680px] overflow-auto bg-gray-100 p-3 sm:p-5">
+          <div className="mx-auto max-w-6xl overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
+            <PublicLayout settings={settings} navItems={navItems} pages={pages} appearance={appearance} template={template}>
+              <PageRenderer page={page} sections={sections} mediaList={mediaList} template={template} />
+            </PublicLayout>
+          </div>
         </div>
       </Card>
 
@@ -436,8 +465,8 @@ export default function SectionBuilderPage() {
       ) : (
         <div className="space-y-3">
           {[...sections].sort((a, b) => a.order - b.order).map((section, index, arr) => (
-            <Card key={section.id} className={`p-4 ${!section.visible ? 'opacity-60' : ''}`}>
-              <div className="flex items-start justify-between gap-4">
+            <Card key={section.id} className={`overflow-hidden border-gray-200 shadow-sm transition-shadow hover:shadow-md ${!section.visible ? 'opacity-65' : ''}`}>
+              <div className="flex items-start justify-between gap-4 p-4">
                 <div className="flex items-start gap-3">
                   <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-sm font-semibold text-gray-500">
                     {section.order}
@@ -445,6 +474,7 @@ export default function SectionBuilderPage() {
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="text-sm font-semibold text-gray-900">{typeLabel(section.type)}</h3>
+                      <span className="font-mono text-[10px] uppercase tracking-wider text-gray-400">{section.type}</span>
                       <span className="inline-flex items-center rounded-md bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
                         {variantLabel(section.type, section.variant)}
                       </span>
@@ -507,11 +537,11 @@ export default function SectionBuilderPage() {
                   </button>
                 </div>
               </div>
-              <div className="mt-3 overflow-hidden rounded-lg border border-gray-200">
+              <div className="border-t border-gray-100 bg-gray-50 p-3"><div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
                 <PreviewWrapper appearance={appearance}>
                   <PublicSectionRenderer section={section} mediaList={mediaList} />
                 </PreviewWrapper>
-              </div>
+              </div></div>
             </Card>
           ))}
         </div>
@@ -533,36 +563,57 @@ export default function SectionBuilderPage() {
           </>
         }
       >
-        <div className="space-y-4">
-          <div>
-            <label className="mb-1.5 block text-sm font-medium text-gray-700">{t("Section Type")} <span className="text-error-500">*</span></label>
-            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-5">
-              {allowedTypes.map((type) => (
+        <div className="space-y-6">
+          <div className="rounded-xl border border-gray-200 bg-gray-50/80 p-4">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary-600">01 / Structure</p>
+                <h3 className="mt-1 text-sm font-semibold text-gray-900">{t("Choose a section type")}</h3>
+                <p className="mt-1 text-xs text-gray-500">Select a content module to insert into this page.</p>
+              </div>
+              <span className="rounded-md border border-gray-200 bg-white px-2 py-1 font-mono text-[10px] text-gray-500">{allowedTypes.length} MODULES</span>
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {allowedTypes.map((type, index) => (
                 <button
                   key={type.value}
                   type="button"
-                  onClick={handleAddTypeChange}
-                  value={type.value}
-                  className={`rounded-lg border px-3 py-2 text-sm font-medium transition-all ${
+                  onClick={() => handleAddTypeChange({ target: { value: type.value } })}
+                  className={`group relative min-h-[94px] rounded-lg border p-3 text-left transition-all ${
                     newType === type.value
-                      ? 'border-primary-500 bg-primary-50 text-primary-700'
-                      : 'border-gray-200 text-gray-600 hover:border-gray-300 hover:bg-gray-50'
+                      ? 'border-primary-500 bg-white shadow-sm ring-2 ring-primary-100'
+                      : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm'
                   }`}
                 >
-                  {type.label}
+                  <span className={`mb-3 flex h-8 w-8 items-center justify-center rounded-lg font-mono text-xs font-bold ${
+                    newType === type.value ? 'bg-primary-600 text-white' : 'bg-gray-100 text-gray-500 group-hover:bg-gray-200'
+                  }`}>{String(index + 1).padStart(2, '0')}</span>
+                  <span className="block text-sm font-semibold text-gray-800">{type.label}</span>
+                  <span className="mt-0.5 block font-mono text-[10px] text-gray-400">{type.value}</span>
+                  {newType === type.value && <span className="absolute right-3 top-3 h-2 w-2 rounded-full bg-primary-500" />}
                 </button>
               ))}
             </div>
           </div>
           {newType && (
-            <VariantSelector
-              type={newType}
-              selectedVariant={newVariant}
-              onSelect={setNewVariant}
-              appearance={appearance}
-              mediaList={mediaList}
-            />
+            <div className="rounded-xl border border-gray-200 p-4">
+              <div className="mb-4 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-primary-600">02 / Presentation</p>
+                  <h3 className="mt-1 text-sm font-semibold text-gray-900">Choose layout variant</h3>
+                </div>
+                <span className="rounded-md bg-gray-100 px-2 py-1 font-mono text-[10px] text-gray-500">{newType.toUpperCase()}</span>
+              </div>
+              <VariantSelector
+                type={newType}
+                selectedVariant={newVariant}
+                onSelect={setNewVariant}
+                appearance={appearance}
+                mediaList={mediaList}
+              />
+            </div>
           )}
+          {!newType && <p className="rounded-lg border border-dashed border-gray-300 px-4 py-5 text-center text-xs text-gray-400">Select a module above to configure its layout.</p>}
         </div>
       </Modal>
 
