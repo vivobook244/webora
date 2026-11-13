@@ -1,4 +1,5 @@
 import defaultAppearance from '../../data/appearance.json'
+import defaultTemplates from '../../data/templates.json'
 import { getStorageItem, setStorageItem } from '../../lib/storage'
 import { isValidCssLength, isValidHexColor } from '../../lib/validation'
 
@@ -9,17 +10,27 @@ function cloneDefault() {
   return JSON.parse(JSON.stringify(defaultAppearance))
 }
 
+function getActiveTemplateTheme() {
+  const activeId = getStorageItem(ACTIVE_TEMPLATE_KEY)
+  return defaultTemplates.find((template) => template.id === activeId)?.theme || defaultTemplates[0]?.theme || {}
+}
+
+function withTemplateDefaults(base) {
+  const theme = getActiveTemplateTheme()
+  return {
+    colors: { ...defaultAppearance.colors, ...(theme.colors || {}), ...(base?.colors || {}) },
+    typography: { ...defaultAppearance.typography, ...(theme.typography || {}), ...(base?.typography || {}) },
+    layout: { ...defaultAppearance.layout, ...(theme.layout || {}), ...(base?.layout || {}) },
+    radius: { ...defaultAppearance.radius, ...(theme.radius || {}), ...(base?.radius || {}) },
+  }
+}
+
 function loadAppearance() {
   const raw = getStorageItem(APPEARANCE_KEY)
-  if (!raw) return cloneDefault()
+  if (!raw) return withTemplateDefaults()
   try {
     const stored = JSON.parse(raw)
-    const merged = {
-      colors: { ...defaultAppearance.colors, ...(stored?.colors || {}) },
-      typography: { ...defaultAppearance.typography, ...(stored?.typography || {}) },
-      layout: { ...defaultAppearance.layout, ...(stored?.layout || {}) },
-      radius: { ...defaultAppearance.radius, ...(stored?.radius || {}) },
-    }
+    const merged = withTemplateDefaults(stored)
     validateAppearance(merged)
     return merged
   } catch {
@@ -68,7 +79,7 @@ export async function updateAppearanceDummy(data) {
 }
 
 export async function resetAppearanceDummy() {
-  const fresh = cloneDefault()
+  const fresh = withTemplateDefaults()
   saveAppearance(fresh)
   return fresh
 }
