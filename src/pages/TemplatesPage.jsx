@@ -44,7 +44,13 @@ function TemplatePreview({ template, previewData, compact = false }) {
       settings={previewData.settings}
       navItems={previewData.navItems}
       pages={previewData.pages}
-      appearance={previewData.appearance}
+      appearance={{
+        ...previewData.appearance,
+        colors: { ...previewData.appearance.colors, ...(template.theme?.colors || {}) },
+        typography: { ...previewData.appearance.typography, ...(template.theme?.typography || {}) },
+        layout: { ...previewData.appearance.layout, ...(template.theme?.layout || {}) },
+        radius: { ...previewData.appearance.radius, ...(template.theme?.radius || {}) },
+      }}
       template={template}
     >
       <PageRenderer
