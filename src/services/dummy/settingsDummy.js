@@ -4,6 +4,26 @@ import { isSafeUrl } from '../../lib/validation'
 
 const SETTINGS_KEY = 'cms_lite_site_settings'
 
+const LEGACY_APP_NAME = 'Webora'
+const LEGACY_APP_DESCRIPTION = 'Lightweight website content management'
+const DEFAULT_SITE_NAME = 'Your Website'
+
+function normalizeLegacySiteIdentity(settings) {
+  if (
+    settings?.siteName === LEGACY_APP_NAME &&
+    settings?.siteDescription === LEGACY_APP_DESCRIPTION
+  ) {
+    const migrated = {
+      ...settings,
+      siteName: DEFAULT_SITE_NAME,
+      siteDescription: '',
+    }
+    setStorageItem(SETTINGS_KEY, JSON.stringify(migrated))
+    return migrated
+  }
+  return settings
+}
+
 export async function getSiteSettingsDummy() {
   await new Promise((resolve) => setTimeout(resolve, 300))
 
@@ -14,12 +34,13 @@ export async function getSiteSettingsDummy() {
 
   try {
     const stored = JSON.parse(raw)
-    return {
+    const settings = {
       ...defaultSettings,
       ...(stored || {}),
       contact: { ...defaultSettings.contact, ...(stored?.contact || {}) },
       social: { ...defaultSettings.social, ...(stored?.social || {}) },
     }
+    return normalizeLegacySiteIdentity(settings)
   } catch {
     return { ...defaultSettings }
   }
